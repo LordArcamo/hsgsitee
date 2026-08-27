@@ -1,0 +1,40 @@
+<!-- ===== 14. CURRENT OPPORTUNITIES ===== -->
+<section class="sec" id="jobs">
+  <div class="wrap">
+    <div class="jobs-head rv">
+      <div class="sec-head">
+        <p class="eyebrow is-career">Current Opportunities</p>
+        <h2>Looking for What's Next?</h2>
+        <p class="lede">Explore opportunities across professional, management, technology, healthcare, finance, operations, and leadership fields.</p>
+      </div>
+      <div class="jobs-actions">
+        <a class="btn" href="#">View Current Opportunities <span class="arrow" aria-hidden="true">→</span></a>
+        <a class="btn btn--ghost" href="#">Submit Your Resume</a>
+      </div>
+    </div>
+
+    <div class="board rv" style="--d:1">
+      <div class="board-bar">
+        <span class="board-flag">Design examples — not current openings</span>
+        <div class="board-ctl">
+          <div class="dots" id="jobdots" role="tablist" aria-label="Opportunity pages"></div>
+          <button class="pausebtn" id="jobpause" type="button" aria-pressed="false">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
+            <span id="jobpausetxt">Pause</span>
+          </button>
+        </div>
+      </div>
+      <div class="joblist" id="joblist" aria-live="polite"></div>
+    </div>
+
+    <p class="board-caption rv">
+      The roles above are design examples informed by high-demand U.S. professional and management occupations. In production this board pulls real, currently active HSG openings from the Job Board — never placeholder roles.
+    </p>
+  </div>
+</section>
+
+
+<script>
+  import { initJobsBoard } from "../../scripts/jobs-board";
+  initJobsBoard();
+</script>

@@ -1,0 +1,21 @@
+/* ============================================================
+   HIRING SOLUTIONS GROUP — global stylesheet
+
+   These partials are imported in the SAME order they appeared in
+   the original single-file mockup. Several rules share specificity
+   and rely on source order, so keep this order when adding files.
+
+   Styles are intentionally global rather than Astro-scoped: the
+   opportunities board and the shortlist demonstration build markup
+   at runtime via innerHTML, and scoped styles would not apply to
+   nodes created after render.
+   ============================================================ */
+
+@import "./tokens.css";      /* palette, base elements, shared atoms, reveal */
+@import "./logo.css";      /* brand artwork, light + dark variants           */
+@import "./header.css";      /* sticky header, primary nav, mobile menu      */
+@import "./sections.css";    /* hero through final CTA, in page order        */
+@import "./footer.css";
+@import "./widgets.css";     /* vetting graphic, career menu, jump bar, shortlist */
+@import "./imagery.css";    /* real photography and brand artwork              */
+@import "./mock-note.css";   /* delete with components/MockNote.astro at launch */

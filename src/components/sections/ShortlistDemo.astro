@@ -1,0 +1,73 @@
+<!-- ===== 6. SHORTLIST DEMONSTRATION ===== -->
+<!-- Illustrative preview of Collaborative Search. Deliberately reuses the
+     Collaborative Search vocabulary rather than introducing a second method,
+     and every elimination carries a written reason so the narrowing reads as
+     judgement rather than as an applicant-tracking score. -->
+<section class="sec sec--soft" id="shortlist">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <p class="eyebrow is-brand">Beyond the Resume</p>
+      <h2>50 Candidate Profiles. One Hiring Decision.</h2>
+      <p class="sl-sub">See how a hypothetical candidate pool becomes a focused shortlist.</p>
+      <p class="lede">Finding candidates is not the hardest part of executive recruiting.</p>
+      <p class="lede">Understanding which person has the experience, leadership style, judgment, motivations, working style, and organizational fit to succeed is where the real work begins.</p>
+      <p class="lede">HSG goes beyond the resume to help clients narrow a large candidate pool into a smaller group of people worth serious consideration.</p>
+    </div>
+
+    <div class="sl-demo rv" style="--d:1">
+      <div class="sl-bar">
+        <div class="sl-stages" id="slStages" aria-label="Evaluation stages"></div>
+        <div class="sl-ctl">
+          <p class="sl-count"><b id="slCount">50</b> <span id="slCountLbl">in consideration</span></p>
+          <button class="sl-play" id="slPlay" type="button" aria-pressed="false">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
+            <span id="slPlayTxt">Pause</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="sl-body">
+        <aside class="sl-role">
+          <span class="tag">Example role</span>
+          <h3>VP of Operations</h3>
+          <p class="meta">Manufacturing · Northern New Jersey</p>
+          <h4>What the company needs</h4>
+          <ul class="req" id="slReq"></ul>
+        </aside>
+
+        <div class="sl-pool">
+          <div class="pool-top">
+            <p class="pool-lbl">50 sample profiles</p>
+            <p class="pool-note" id="slNote"></p>
+          </div>
+
+          <div class="pool-view" id="slView">
+            <div class="pool-track" id="slTrack"></div>
+          </div>
+
+          <p class="pool-caution">Experience gets someone into consideration. Deeper evaluation determines who deserves a closer look.</p>
+          <p class="sl-fine">Candidate profiles shown are fictional examples created to demonstrate the evaluation process.</p>
+        </div>
+      </div>
+
+      <div class="sl-funnel">
+        <div class="fn-row" id="slFunnel"></div>
+        <p class="sl-fine">Candidate counts and filtering shown are illustrative. Every search and evaluation process is different.</p>
+      </div>
+    </div>
+
+    <div class="sl-payoff rv" style="--d:2">
+      <div>
+        <h3>Narrowing the Field Is Only the Beginning.</h3>
+        <p>The deeper questions begin once the obvious qualifications have been considered.</p>
+      </div>
+      <a class="btn" href="#collaborative">See How Collaborative Search<sup>®</sup> Works <span class="arrow arrow--down" aria-hidden="true">↓</span></a>
+    </div>
+  </div>
+</section>
+
+
+<script>
+  import { initShortlist } from "../../scripts/shortlist";
+  initShortlist();
+</script>

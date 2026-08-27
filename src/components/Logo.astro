@@ -1,0 +1,48 @@
+---
+import { Image } from "astro:assets";
+import { SITE } from "../data/site";
+
+import logoCompact from "../assets/brand/hsg-logo.png";
+import logoCompactDark from "../assets/brand/hsg-logo-dark.png";
+import logoFull from "../assets/brand/hsg-logo-full.png";
+import logoFullDark from "../assets/brand/hsg-logo-full-dark.png";
+
+interface Props {
+  /** "compact" is the mark plus wordmark; "full" adds the rule and slogan. */
+  variant?: "compact" | "full";
+  /** Rendered height in CSS px. Width follows the artwork's aspect ratio. */
+  height?: number;
+  /**
+   * Set on a surface that is dark in BOTH palettes — the footer panel is
+   * --panel, which stays near-black even in the light theme. Such a surface
+   * must not follow the page theme: it always wants the light-on-dark
+   * artwork, so only that one is rendered.
+   */
+  onPanel?: boolean;
+}
+
+const { variant = "compact", height = 44, onPanel = false } = Astro.props;
+
+const light = variant === "full" ? logoFull : logoCompact;
+const dark = variant === "full" ? logoFullDark : logoCompactDark;
+
+/*
+ * Two files rather than a CSS filter: the wordmark is slate grey and
+ * disappears on the dark panel, while the squirrel and ring must keep
+ * their brand purple and green. The dark artwork lifts only the grey.
+ * The light one carries the alt text; the dark one is decorative so the
+ * name is not announced twice.
+ */
+const alt = `${SITE.name} — ${SITE.tagline}`;
+---
+
+<span class="logo-img">
+  {onPanel ? (
+    <Image src={dark} alt={alt} height={height} densities={[1, 2]} />
+  ) : (
+    <>
+      <Image class="logo-img--light" src={light} alt={alt} height={height} densities={[1, 2]} />
+      <Image class="logo-img--dark" src={dark} alt="" aria-hidden="true" height={height} densities={[1, 2]} />
+    </>
+  )}
+</span>

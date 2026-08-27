@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://hiringsolutionsgroup.com/sitemap-index.xml

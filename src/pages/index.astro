@@ -1,0 +1,56 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import MockNote from "../components/MockNote.astro";
+import Header from "../components/Header.astro";
+import AudienceBar from "../components/AudienceBar.astro";
+import Footer from "../components/Footer.astro";
+
+import Hero from "../components/sections/Hero.astro";
+import TwoAudiences from "../components/sections/TwoAudiences.astro";
+import WhyTwoSided from "../components/sections/WhyTwoSided.astro";
+import HiringSolutions from "../components/sections/HiringSolutions.astro";
+import CareerSolutions from "../components/sections/CareerSolutions.astro";
+import PlanAhead from "../components/sections/PlanAhead.astro";
+import ShortlistDemo from "../components/sections/ShortlistDemo.astro";
+import CollaborativeSearch from "../components/sections/CollaborativeSearch.astro";
+import PrivateVetting from "../components/sections/PrivateVetting.astro";
+import PeopleNotPaper from "../components/sections/PeopleNotPaper.astro";
+import ExperienceProof from "../components/sections/ExperienceProof.astro";
+import ForensicInterviewing from "../components/sections/ForensicInterviewing.astro";
+import SuccessStory from "../components/sections/SuccessStory.astro";
+import MeetMichael from "../components/sections/MeetMichael.astro";
+import Opportunities from "../components/sections/Opportunities.astro";
+import Insights from "../components/sections/Insights.astro";
+import GeographicReach from "../components/sections/GeographicReach.astro";
+import FinalCta from "../components/sections/FinalCta.astro";
+---
+
+<BaseLayout>
+  {/* Remove MockNote — and src/styles/mock-note.css — at launch. */}
+  <MockNote />
+  <Header />
+  <AudienceBar />
+
+  <main id="main">
+    <Hero />
+    <TwoAudiences />
+    <WhyTwoSided />
+    <HiringSolutions />
+    <CareerSolutions />
+    <PlanAhead />
+    <ShortlistDemo />
+    <CollaborativeSearch />
+    <PrivateVetting />
+    <PeopleNotPaper />
+    <ExperienceProof />
+    <ForensicInterviewing />
+    <SuccessStory />
+    <MeetMichael />
+    <Opportunities />
+    <Insights />
+    <GeographicReach />
+    <FinalCta />
+  </main>
+
+  <Footer />
+</BaseLayout>

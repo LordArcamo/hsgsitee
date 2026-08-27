@@ -1,0 +1,108 @@
+/* ============================================================
+   HEADER
+   ============================================================ */
+.hdr { position: sticky; top: 0; z-index: 60; background: var(--surface); transition: box-shadow .3s ease; }
+.hdr.scrolled { box-shadow: 0 6px 26px rgba(24,21,43,.07); }
+/* three-segment rule: brand · hiring · career */
+.hdr::after {
+  content: ""; display: block; height: 3px;
+  background: linear-gradient(90deg,
+    var(--accent) 0 40%, var(--hiring) 40% 70%, var(--career-fill) 70% 100%);
+}
+.hdr-in {
+  max-width: var(--wrap); margin-inline: auto; padding: 12px var(--gut);
+  display: flex; align-items: center; justify-content: space-between; gap: 22px;
+}
+.logo { display: inline-flex; align-items: center; gap: 12px; text-decoration: none; }
+.logo img { transition: opacity .25s var(--ease); }
+.logo:hover img { opacity: .82; }
+
+.nav { display: flex; align-items: center; gap: 24px; }
+.nav a {
+  position: relative; padding: 4px 0; font-size: 14.5px; font-weight: 700;
+  color: var(--ink-2); text-decoration: none; white-space: nowrap; transition: color .18s ease;
+}
+.nav a::after {
+  content: ""; position: absolute; left: 0; right: 100%; bottom: -3px; height: 2px;
+  background: var(--accent); transition: right .3s var(--ease);
+}
+.nav a:hover { color: var(--accent); }
+.nav a:hover::after { right: 0; }
+
+.hdr-cta { display: flex; align-items: center; gap: 12px; }
+.hdr-cta .btn { min-height: 44px; padding: 0 20px; font-size: 14px; box-shadow: 0 10px 22px rgba(90,45,145,.18); }
+.hdr-cta .btn--ghost { box-shadow: none; }
+
+.burger {
+  display: none; width: 46px; height: 46px; border-radius: 10px;
+  border: 1px solid var(--rule); background: var(--surface); color: var(--ink);
+  cursor: pointer; place-items: center;
+}
+.burger span { display: block; width: 20px; height: 2px; background: currentColor; box-shadow: 0 -6px 0 currentColor, 0 6px 0 currentColor; }
+.burger[aria-expanded="true"] span { box-shadow: 0 -6px 0 currentColor, 0 6px 0 currentColor; }
+
+.mobile-nav {
+  display: none; border-top: 1px solid var(--rule); background: var(--surface);
+  padding: 16px var(--gut) 26px;
+}
+.mobile-nav.open { display: block; }
+.mobile-nav ul { display: grid; gap: 2px; }
+.mobile-nav a {
+  display: block; padding: 13px 0; font-size: 16px; font-weight: 700;
+  color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--rule-soft);
+}
+.mobile-nav .m-actions { display: grid; gap: 10px; margin-top: 18px; }
+.mobile-nav .btn { width: 100%; }
+
+/* ------------------------------------------------------------
+   Header fit
+
+   The mockup gave the brand, eight nav links and two buttons a 1260px
+   wrap to share. Measured, they want ~1450px, so the browser shrank
+   whatever could shrink: the wordmark broke onto four lines and
+   "Find a Job" onto three, at every desktop width.
+
+   The wrap's content box tops out at 1148px (1260 minus two 56px
+   gutters) and does not grow past a 1260px viewport, so the nav at its
+   full 14.5px/24px needs 775px and never fits beside the brand and the
+   buttons — on any screen. It therefore runs one step down whenever it
+   is shown, and the header carries one primary call to action while the
+   full nav is up.
+
+   Nothing here may flex-shrink: an item allowed to shrink below its
+   content silently overflows (overflow is visible on the header), which
+   is how the nav ended up sitting on top of the buttons. Everything is
+   flex: none so that a bad fit shows up as overflow instead of overlap.
+   ------------------------------------------------------------ */
+.hdr .logo,
+.hdr .hdr-cta,
+.hdr .nav { flex: none; }
+/* Header CTAs are two or three short words and must stay on one line.
+   Body CTAs keep the default and are free to wrap — "See How Collaborative
+   Search® Works" is wider than a phone. */
+.hdr .btn { white-space: nowrap; }
+
+/* ---- full nav ----
+   The real logo lockup is ~185px wide at 44px tall, against 269px for the
+   placeholder wordmark it replaced. That 85px buys back the nav's designed
+   14.5px/24px on a normal desktop; it steps down once before collapsing. */
+@media (max-width: 1279px) {
+  .nav { gap: 18px; }
+  .nav a { font-size: 13.5px; }
+}
+
+@media (min-width: 1180px) {
+  /* "Find a Job" is one click away via the Jobs link that is now on show */
+  .hdr-cta .btn--ghost { display: none; }
+}
+
+/* ---- burger ---- */
+@media (max-width: 1179px) {
+  .nav { display: none; }
+  .burger { display: grid; }
+}
+
+/* Below this the brand plus two buttons plus the burger stop fitting. */
+@media (max-width: 1040px) { .hdr-cta .btn--ghost { display: none; } }
+
+@media (max-width: 560px) { .hdr-cta .btn { display: none; } }

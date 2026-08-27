@@ -1,0 +1,19 @@
+/* ============================================================
+   REAL IMAGERY
+   Rules for the photographs and brand artwork that replaced the
+   mockup's placeholders. Imported after the section styles so it
+   can override the placeholder treatments.
+   ============================================================ */
+
+/* The portrait frame keeps its 4/5 crop, rounded corners and shadow;
+   the photograph simply fills it. */
+.portrait img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* The frame no longer needs the placeholder monogram or its caption. */
+.portrait .mono,
+.portrait figcaption { display: none; }

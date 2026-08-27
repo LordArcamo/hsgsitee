@@ -1,0 +1,113 @@
+---
+import { SITE } from "../data/site";
+// Self-hosted Inter, the first family in the design's font stack. These
+// packages register the family as exactly "Inter", so the stack in
+// tokens.css picks them up with no CSS change. Weights are the ones the
+// design actually uses — add an import here if you introduce another.
+import "@fontsource/inter/400.css";
+import "@fontsource/inter/600.css";
+import "@fontsource/inter/700.css";
+import "@fontsource/inter/800.css";
+import "@fontsource/inter/900.css";
+import "../styles/global.css";
+
+interface Props {
+  title?: string;
+  description?: string;
+  /** Path of this page, used for the canonical URL. */
+  path?: string;
+}
+
+const {
+  title = SITE.title,
+  description = SITE.description,
+  path = "/",
+} = Astro.props;
+
+const canonical = new URL(path, Astro.site ?? SITE.url).href;
+const ogImage = new URL(SITE.ogImage, Astro.site ?? SITE.url).href;
+
+/*
+ * EmploymentAgency is the LocalBusiness subtype that fits an executive
+ * recruiting firm. Every value here comes from the page itself — do not add
+ * ratings, review counts or awards unless they can be substantiated.
+ */
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "EmploymentAgency",
+  name: SITE.name,
+  description: SITE.description,
+  url: canonical,
+  telephone: SITE.phoneHref,
+  email: SITE.email,
+  slogan: SITE.tagline,
+  founder: { "@type": "Person", name: SITE.founder },
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: SITE.address.street,
+    addressLocality: SITE.address.locality,
+    addressRegion: SITE.address.region,
+    postalCode: SITE.address.postalCode,
+    addressCountry: SITE.address.country,
+  },
+  areaServed: SITE.areaServed.map((name) => ({
+    "@type": "AdministrativeArea",
+    name,
+  })),
+  knowsAbout: [
+    "Executive recruiting",
+    "Executive search",
+    "Career coaching",
+    "Candidate vetting",
+    "Executive interviewing",
+  ],
+};
+---
+
+<!--
+  data-theme pins the palette. "light" is the white ground; "dark" is the
+  near-black one. Remove the attribute entirely to follow the visitor's
+  system preference instead — the tokens in tokens.css support all three.
+-->
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
+    <link rel="icon" href="/favicon-192.png" sizes="192x192" type="image/png" />
+    <link rel="apple-touch-icon" href="/favicon-180.png" />
+    <meta name="theme-color" content="#5a2d91" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#100e1c" media="(prefers-color-scheme: dark)" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={SITE.name} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <script
+      is:inline
+      type="application/ld+json"
+      set:html={JSON.stringify(structuredData)}
+    />
+  </head>
+
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <slot />
+  </body>
+</html>
+
+<script>
+  import { initReveal } from "../scripts/reveal";
+  initReveal();
+</script>
