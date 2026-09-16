@@ -20,6 +20,9 @@
 }
 .hero-grid { display: grid; grid-template-columns: 1.08fr .92fr; gap: clamp(30px, 4.5vw, 68px); align-items: center; }
 .hero h1 { font-size: clamp(34px, 4.6vw, 58px); line-height: 1.06; letter-spacing: -.03em; margin-top: 20px; }
+/* practice-colour accents per spec: green = Hiring, gold = Career */
+.hero h1 .t-hire { color: var(--hiring-head); }
+.hero h1 .t-career { color: var(--career-head); }
 .brandline {
   font-family: var(--display); font-weight: 800;
   font-size: clamp(19px, 2.1vw, 26px); letter-spacing: -.022em;
@@ -36,7 +39,7 @@
   border: 1px solid var(--rule); box-shadow: var(--shadow-lg);
   background:
     linear-gradient(155deg, color-mix(in srgb, var(--accent) 22%, transparent), transparent 62%),
-    linear-gradient(20deg, color-mix(in srgb, var(--hiring) 16%, transparent), transparent 58%),
+    linear-gradient(20deg, color-mix(in srgb, var(--hiring-fill) 16%, transparent), transparent 58%),
     var(--soft);
   display: grid; place-items: center; text-align: center; padding: 24px;
 }
@@ -55,7 +58,7 @@
 
 .proofbar {
   margin-top: clamp(40px, 5vw, 66px);
-  display: grid; grid-template-columns: repeat(4, 1fr);
+  display: grid; grid-template-columns: repeat(5, 1fr);
   border: 1px solid var(--rule); border-radius: 16px; background: var(--surface);
   box-shadow: var(--shadow); overflow: hidden;
 }
@@ -72,8 +75,11 @@
   .hero-fig { max-width: 460px; }
   .hero-badge { left: auto; right: 14px; }
   .proofbar { grid-template-columns: repeat(2, 1fr); }
-  .proofbar div:nth-child(2) { border-right: 0; }
-  .proofbar div:nth-child(-n+2) { border-bottom: 1px solid var(--rule-soft); }
+  .proofbar div { border-right: 1px solid var(--rule-soft); }
+  .proofbar div:nth-child(2n) { border-right: 0; }
+  .proofbar div:nth-child(-n+4) { border-bottom: 1px solid var(--rule-soft); }
+  /* odd final stat spans the full row instead of leaving a gap */
+  .proofbar div:last-child:nth-child(odd) { grid-column: 1 / -1; border-right: 0; }
 }
 
 /* ============================================================
@@ -89,7 +95,7 @@
 }
 .acard:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
 .acard::before { content: ""; position: absolute; inset: 0 0 auto 0; height: 4px; background: var(--c); }
-.acard--hire { --c: var(--hiring); }
+.acard--hire { --c: var(--hiring-fill); }
 .acard--career { --c: var(--career-fill); }
 .acard h3 { font-size: clamp(21px, 2.2vw, 27px); }
 .acard > p { color: var(--ink-2); font-size: 16px; }
@@ -174,7 +180,7 @@
   box-shadow: var(--shadow-sm);
   transition: transform .3s var(--ease), box-shadow .3s var(--ease), border-color .3s var(--ease);
 }
-.cap:hover { transform: translateY(-4px); box-shadow: var(--shadow); border-color: color-mix(in srgb, var(--hiring) 40%, var(--rule)); }
+.cap:hover { transform: translateY(-4px); box-shadow: var(--shadow); border-color: color-mix(in srgb, var(--hiring-fill) 40%, var(--rule)); }
 .cap-ic {
   width: 42px; height: 42px; border-radius: 12px; display: grid; place-items: center;
   background: var(--hiring-soft); color: var(--hiring);
@@ -195,7 +201,7 @@
 }
 .flow::before {
   content: ""; position: absolute; left: 0; right: 0; top: 17px; height: 2px;
-  background: linear-gradient(90deg, var(--accent), var(--hiring));
+  background: linear-gradient(90deg, var(--accent), var(--hiring-fill));
   border-radius: 2px;
 }
 .step { position: relative; padding-top: 46px; padding-right: 14px; }
@@ -205,7 +211,7 @@
   background: var(--surface); border: 3px solid var(--accent);
   transition: transform .3s var(--ease), background .3s var(--ease);
 }
-.step:nth-child(n+5)::before { border-color: var(--hiring); }
+.step:nth-child(n+5)::before { border-color: var(--hiring-fill); }
 .step:hover::before { transform: scale(1.18); background: var(--accent-soft); }
 .step .n { font-size: 11px; font-weight: 800; letter-spacing: .14em; color: var(--ink-3); font-variant-numeric: tabular-nums; }
 .step h4 { font-size: 17px; margin-top: 4px; }
@@ -320,7 +326,7 @@
 }
 .stat::after {
   content: ""; position: absolute; inset: auto 0 0 0; height: 3px;
-  background: linear-gradient(90deg, var(--accent), var(--hiring));
+  background: linear-gradient(90deg, var(--accent), var(--hiring-fill));
   transform: scaleX(0); transform-origin: left; transition: transform .6s var(--ease);
 }
 .stat.in::after { transform: scaleX(1); }
@@ -426,8 +432,8 @@
   padding: 14px 20px; border-bottom: 1px solid var(--rule); background: var(--soft);
 }
 .board-bar .live { display: inline-flex; align-items: center; gap: 9px; font-size: 12.5px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-2); }
-.dot-live { width: 8px; height: 8px; border-radius: 50%; background: var(--hiring); box-shadow: 0 0 0 0 color-mix(in srgb, var(--hiring) 60%, transparent); animation: pulse 2.6s infinite; }
-@keyframes pulse { 0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--hiring) 55%, transparent); } 70% { box-shadow: 0 0 0 9px transparent; } 100% { box-shadow: 0 0 0 0 transparent; } }
+.dot-live { width: 8px; height: 8px; border-radius: 50%; background: var(--hiring-fill); box-shadow: 0 0 0 0 color-mix(in srgb, var(--hiring-fill) 60%, transparent); animation: pulse 2.6s infinite; }
+@keyframes pulse { 0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--hiring-fill) 55%, transparent); } 70% { box-shadow: 0 0 0 9px transparent; } 100% { box-shadow: 0 0 0 0 transparent; } }
 
 .board-ctl { display: flex; align-items: center; gap: 12px; }
 .dots { display: flex; gap: 7px; }
@@ -553,7 +559,7 @@
   transition: transform .3s var(--ease), background .3s var(--ease);
 }
 .door:hover { transform: translateY(-4px); background: rgba(255,255,255,.06); }
-.door--a { --c: var(--hiring); }
+.door--a { --c: var(--hiring-fill); }
 .door--b { --c: var(--career-fill); }
 .door h3 { color: var(--panel-ink); font-size: clamp(21px, 2.3vw, 28px); }
 .door p { color: var(--panel-ink-2); font-size: 15.5px; }

@@ -5,7 +5,7 @@
    ============================================================ */
 
 export type FactKey =
-  "years" | "yearsSentence" | "placements" | "network" | "partners" | "resumes";
+  "years" | "yearsSentence" | "placements" | "network" | "partners" | "resumes" | "interviews";
 
 export const FACTS: Record<FactKey, string> = {
   years: "30",
@@ -14,4 +14,5 @@ export const FACTS: Record<FactKey, string> = {
   network: "1,600+",
   partners: "1,600",
   resumes: "4.3M+",
+  interviews: "18K+",
 };

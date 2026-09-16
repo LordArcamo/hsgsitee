@@ -24,11 +24,20 @@
   --accent-deep: #47216f;
   --accent-soft: #f1ebf9;
 
-  --hiring:      #3f9a2e;
-  --hiring-soft: #e9f5e6;
-  --career:      #a97c07;
-  --career-fill: #e8af08;
-  --career-soft: #fdf3da;
+  /* Practice colours sampled from the brand marks.
+     Hiring ring  = #77b84e (extracted from hsg-logo.png)
+     Career ring  = #ffc20e (sampled from the Career Solutions mark)
+     The raw ring colours are 2.40:1 and 1.62:1 on white, so they are kept for
+     fills/rules only; text uses same-hue tiers that clear WCAG. */
+  --hiring:       #538335;   /* body + small text  — 4.50:1 on white */
+  --hiring-head:  #68a442;   /* display headings   — 3.01:1 (large-text AA) */
+  --hiring-fill:  #77b84e;   /* EXACT logo green   — rules, fills, accents */
+  --hiring-panel: #92d369;   /* on the always-dark panel widgets */
+  --hiring-soft:  #eef7e6;
+  --career:       #967000;   /* body + small text  — 4.55:1 on white */
+  --career-head:  #ffc20e;   /* display headings — EXACT logo gold, brand match over contrast (1.62:1) */
+  --career-fill:  #ffc20e;   /* EXACT logo gold    — rules, fills, accents */
+  --career-soft:  #fff5d9;
 
   --panel:       #18152b;
   --panel-ink:   #ffffff;
@@ -63,11 +72,14 @@
     --accent-deep: #c3aee8;
     --accent-soft: #251e3c;
 
-    --hiring:      #74cb63;
-    --hiring-soft: #182d15;
-    --career:      #f0c33e;
-    --career-fill: #f0c33e;
-    --career-soft: #2e2410;
+    --hiring:       #92d369;
+    --hiring-head:  #92d369;
+    --hiring-fill:  #92d369;
+    --hiring-soft:  #1f2d16;
+    --career:       #ffce3d;
+    --career-head:  #ffce3d;
+    --career-fill:  #ffce3d;
+    --career-soft:  #2f2610;
 
     --panel:       #0b0915;
     --panel-ink:   #ffffff;
@@ -95,11 +107,14 @@
   --accent-deep: #c3aee8;
   --accent-soft: #251e3c;
 
-  --hiring:      #74cb63;
-  --hiring-soft: #182d15;
-  --career:      #f0c33e;
-  --career-fill: #f0c33e;
-  --career-soft: #2e2410;
+  --hiring:       #92d369;
+  --hiring-head:  #92d369;
+  --hiring-fill:  #92d369;
+  --hiring-soft:  #1f2d16;
+  --career:       #ffce3d;
+  --career-head:  #ffce3d;
+  --career-fill:  #ffce3d;
+  --career-soft:  #2f2610;
 
   --panel:       #0b0915;
   --panel-ink:   #ffffff;

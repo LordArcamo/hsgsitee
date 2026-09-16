@@ -13,6 +13,8 @@ export function initAudienceBar(): void {
   window.addEventListener(
     "scroll",
     () => {
+      // an open intake form outranks the scroll rule: never yank it away
+      if (audbar.classList.contains("menu-open")) return;
       const past = window.scrollY > (heroEl ? heroEl.offsetHeight * 0.75 : 500);
       const atEnd =
         window.scrollY + window.innerHeight > document.body.scrollHeight - 240;

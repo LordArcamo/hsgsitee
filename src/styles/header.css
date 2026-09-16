@@ -7,7 +7,7 @@
 .hdr::after {
   content: ""; display: block; height: 3px;
   background: linear-gradient(90deg,
-    var(--accent) 0 40%, var(--hiring) 40% 70%, var(--career-fill) 70% 100%);
+    var(--accent) 0 40%, var(--hiring-fill) 40% 70%, var(--career-fill) 70% 100%);
 }
 .hdr-in {
   max-width: var(--wrap); margin-inline: auto; padding: 12px var(--gut);

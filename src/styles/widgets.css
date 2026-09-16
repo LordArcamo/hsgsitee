@@ -65,12 +65,12 @@
 .pv-row .mid { color: var(--panel-ink-2); }
 .pv-row--weak { border-style: dashed; }
 .pv-row--weak .out { color: var(--panel-ink-2); }
-.pv-row--strong { border-color: color-mix(in srgb, var(--hiring) 55%, var(--panel-rule)); }
-.pv-row--strong .out { color: var(--hiring); }
+.pv-row--strong { border-color: color-mix(in srgb, var(--hiring-panel) 55%, var(--panel-rule)); }
+.pv-row--strong .out { color: var(--hiring-panel); }
 .pv-brandline {
   margin-top: 20px; font-family: var(--display); font-weight: 800;
   font-size: clamp(17px, 1.9vw, 22px); letter-spacing: -.022em; line-height: 1.32;
-  color: var(--panel-ink); border-left: 4px solid var(--hiring);
+  color: var(--panel-ink); border-left: 4px solid var(--hiring-panel);
   border-radius: 2px; padding-left: 18px;
 }
 @media (max-width: 620px) {
@@ -285,7 +285,7 @@
 .cand-meta { font-size: 12px; color: var(--ink-3); line-height: 1.4; }
 .crit { display: flex; gap: 3px; margin-top: 3px; }
 .crit i { flex: 1; height: 5px; border-radius: 3px; background: var(--rule); }
-.crit i[data-v="2"] { background: var(--hiring); }
+.crit i[data-v="2"] { background: var(--hiring-fill); }
 .crit i[data-v="1"] { background: var(--career-fill); }
 
 .cand-detail { display: none; border-top: 1px solid var(--rule); padding-top: 9px; margin-top: 2px; gap: 7px; }
@@ -310,7 +310,7 @@
 
 .finalists { display: grid; grid-template-columns: repeat(3, 1fr); gap: 13px; }
 .fin {
-  border: 1px solid var(--rule); border-top: 4px solid var(--hiring); border-radius: 15px;
+  border: 1px solid var(--rule); border-top: 4px solid var(--hiring-fill); border-radius: 15px;
   background: var(--surface); padding: 20px 18px; display: grid; gap: 9px;
   align-content: start; box-shadow: var(--shadow);
 }
@@ -362,3 +362,122 @@
   .pool-view:not(.is-static) .pool-track { animation: none; }
 }
 
+
+/* ============================================================
+   AUDIENCE BAR — "For Companies" role intake dropdown
+   ============================================================ */
+.aud-menu { position: relative; display: inline-flex; }
+
+/* the trigger wears the same pill as the sibling jump links */
+.audbar .aud-trigger {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: var(--body); font-size: 13.5px; font-weight: 700;
+  border-radius: 999px; padding: 8px 14px 8px 16px; min-height: 38px;
+  border: 1px solid var(--ac); color: var(--ac); background: var(--aw);
+  cursor: pointer; white-space: nowrap;
+  transition: transform .2s var(--ease);
+}
+.audbar .aud-trigger:hover { transform: translateY(-1px); }
+.aud-chev { transition: transform .25s var(--ease); }
+.aud-menu.is-open .aud-chev { transform: rotate(180deg); }
+
+/* ---------- the panel ---------- */
+.aud-panel {
+  position: absolute; top: calc(100% + 10px); left: 0; z-index: 70;
+  width: min(340px, calc(100vw - 2 * var(--gut)));
+  background: var(--surface); border: 1px solid var(--rule); border-radius: 16px;
+  box-shadow: var(--shadow-lg); padding: 18px;
+  opacity: 0; transform: translateY(-8px);
+  transition: opacity .22s var(--ease), transform .22s var(--ease);
+}
+.aud-menu.is-open .aud-panel { opacity: 1; transform: none; }
+.aud-panel[hidden] { display: none; }
+/* a hidden step or button must stay hidden despite its display rule */
+.aud-panel [hidden] { display: none !important; }
+
+/* ---------- head + progress ---------- */
+.aud-title { font-family: var(--display); font-size: 16px; font-weight: 800; letter-spacing: -.02em; color: var(--ink); }
+.aud-sub { font-size: 12.5px; color: var(--ink-2); margin-top: 3px; line-height: 1.45; }
+.aud-prog { height: 3px; border-radius: 2px; background: var(--rule-soft); margin-top: 12px; overflow: hidden; }
+.aud-prog i { display: block; height: 100%; width: 50%; background: var(--ac, var(--accent)); transition: width .3s var(--ease); }
+.aud-count { font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-3); margin-top: 7px; }
+
+/* ---------- fields ---------- */
+.aud-step { display: grid; gap: 12px; margin-top: 15px; }
+.aud-field { display: grid; gap: 5px; border: 0; padding: 0; margin: 0; min-width: 0; }
+.aud-lbl { font-size: 12px; font-weight: 700; color: var(--ink-2); padding: 0; }
+.aud-field input[type="text"],
+.aud-field select {
+  font-family: var(--body); font-size: 13.5px; color: var(--ink);
+  background: var(--ground); border: 1px solid var(--rule); border-radius: 9px;
+  padding: 9px 11px; min-height: 40px; width: 100%;
+  transition: border-color .2s ease, box-shadow .2s ease;
+}
+.aud-field input[type="text"]::placeholder { color: var(--ink-3); }
+.aud-field input[type="text"]:focus-visible,
+.aud-field select:focus-visible {
+  outline: none; border-color: var(--ac, var(--accent));
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--ac, var(--accent)) 18%, transparent);
+}
+
+/* segmented radio groups */
+.aud-seg { display: flex; flex-wrap: wrap; gap: 6px; }
+.aud-seg label { position: relative; }
+.aud-seg input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+.aud-seg span {
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 12.5px; font-weight: 700; color: var(--ink-2);
+  border: 1px solid var(--rule); border-radius: 999px;
+  padding: 7px 13px; min-height: 36px; cursor: pointer;
+  transition: border-color .18s ease, color .18s ease, background .18s ease;
+}
+.aud-seg label:hover span { border-color: var(--ac, var(--accent)); color: var(--ac, var(--accent)); }
+.aud-seg input:checked + span {
+  border-color: var(--ac, var(--accent)); color: var(--ac, var(--accent));
+  background: var(--aw, var(--accent-soft));
+}
+.aud-seg input:focus-visible + span { box-shadow: 0 0 0 3px color-mix(in srgb, var(--ac, var(--accent)) 22%, transparent); }
+
+/* ---------- error + actions ---------- */
+.aud-err { font-size: 12.5px; font-weight: 600; color: #b3261e; margin-top: 10px; }
+:root[data-theme="dark"] .aud-err { color: #ff8a80; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .aud-err { color: #ff8a80; } }
+
+.aud-actions { display: flex; gap: 8px; margin-top: 15px; }
+.aud-actions .aud-btn { flex: 1; min-height: 42px; padding: 0 16px; font-size: 13.5px; box-shadow: none; }
+
+/* .audbar a is a pill; this one is a plain text link, so undo the pill */
+.audbar .aud-jump {
+  display: block; margin-top: 12px; font-size: 12.5px; font-weight: 700;
+  color: var(--ac, var(--accent)); text-decoration: none;
+  border: 0; background: none; border-radius: 0;
+  padding: 0; min-height: 0;
+}
+.audbar .aud-jump:hover { text-decoration: underline; transform: none; }
+
+/* ---------- confirmation ---------- */
+.aud-done { justify-items: start; }
+.aud-check {
+  display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%;
+  background: var(--aw, var(--accent-soft)); color: var(--ac, var(--accent));
+}
+.aud-done-t { font-family: var(--display); font-size: 15.5px; font-weight: 800; letter-spacing: -.02em; color: var(--ink); }
+.aud-done-s { font-size: 12.5px; color: var(--ink-2); line-height: 1.5; margin-top: -4px; }
+.aud-recap {
+  display: grid; grid-template-columns: auto 1fr; gap: 4px 14px; width: 100%;
+  margin-top: 6px; padding-top: 12px; border-top: 1px solid var(--rule-soft);
+}
+.aud-recap dt { font-size: 11.5px; font-weight: 700; color: var(--ink-3); white-space: nowrap; }
+.aud-recap dd { font-size: 12.5px; font-weight: 600; color: var(--ink); margin: 0; }
+
+/* ---------- narrow screens ---------- */
+@media (max-width: 560px) {
+  .aud-menu { flex: 1; }
+  .audbar .aud-trigger { width: 100%; justify-content: center; padding: 8px 10px; }
+  .aud-panel { left: 50%; transform: translate(-50%, -8px); width: calc(100vw - 2 * var(--gut)); }
+  .aud-menu.is-open .aud-panel { transform: translate(-50%, 0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .aud-panel, .aud-chev, .aud-prog i { transition: none; }
+}
