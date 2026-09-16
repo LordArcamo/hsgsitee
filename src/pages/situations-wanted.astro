@@ -22,6 +22,7 @@ import ComparisonTable from "../components/situations/ComparisonTable.astro";
 import DiscussCta from "../components/situations/DiscussCta.astro";
 
 import { EXAMPLE_SEARCH, pluralizeTitle } from "../data/situations";
+import { url } from "../lib/url";
 
 const criteria = EXAMPLE_SEARCH;
 const plural = pluralizeTitle(criteria.title);
@@ -38,7 +39,7 @@ const plural = pluralizeTitle(criteria.title);
     demonstrate the HSG Situations Wanted experience.
   </div>
 
-  <Header home="/" />
+  <Header home={url("/")} />
   <AudienceBar />
 
   <main id="main">
@@ -48,7 +49,7 @@ const plural = pluralizeTitle(criteria.title);
     <DiscussCta />
   </main>
 
-  <Footer home="/" />
+  <Footer home={url("/")} />
 </BaseLayout>
 
 <script>

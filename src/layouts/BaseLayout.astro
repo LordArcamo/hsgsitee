@@ -1,5 +1,6 @@
 ---
 import { SITE } from "../data/site";
+import { url } from "../lib/url";
 // Self-hosted Inter, the first family in the design's font stack. These
 // packages register the family as exactly "Inter", so the stack in
 // tokens.css picks them up with no CSS change. Weights are the ones the
@@ -31,8 +32,17 @@ const {
   noindex = false,
 } = Astro.props;
 
-const canonical = new URL(path, Astro.site ?? SITE.url).href;
-const ogImage = new URL(SITE.ogImage, Astro.site ?? SITE.url).href;
+const canonical = new URL(url(path), Astro.site ?? SITE.url).href;
+const ogImage = new URL(url(SITE.ogImage), Astro.site ?? SITE.url).href;
+
+/*
+ * The GitHub Pages deployment is a preview of a client site that also exists
+ * on its real domain. Letting a public copy get indexed would put it in
+ * competition with the client's own pages, so the whole preview is noindexed
+ * — not just the pages that ask for it.
+ */
+const isPreviewDeploy = Boolean(process.env.PAGES_BASE);
+const blockIndexing = noindex || isPreviewDeploy;
 
 /*
  * EmploymentAgency is the LocalBusiness subtype that fits an executive
@@ -82,11 +92,11 @@ const structuredData = {
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
-    {noindex && <meta name="robots" content="noindex, nofollow" />}
+    {blockIndexing && <meta name="robots" content="noindex, nofollow" />}
     <link rel="canonical" href={canonical} />
-    <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
-    <link rel="icon" href="/favicon-192.png" sizes="192x192" type="image/png" />
-    <link rel="apple-touch-icon" href="/favicon-180.png" />
+    <link rel="icon" href={url("/favicon-32.png")} sizes="32x32" type="image/png" />
+    <link rel="icon" href={url("/favicon-192.png")} sizes="192x192" type="image/png" />
+    <link rel="apple-touch-icon" href={url("/favicon-180.png")} />
     <meta name="theme-color" content="#5a2d91" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content="#100e1c" media="(prefers-color-scheme: dark)" />
 

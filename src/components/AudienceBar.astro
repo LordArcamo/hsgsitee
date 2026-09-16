@@ -1,3 +1,7 @@
+---
+import { url } from "../lib/url";
+---
+
 <!-- Audience jump bar: appears once the hero scrolls away, so professional
      visitors can reach Career Solutions without travelling the employer path.
 
@@ -22,7 +26,7 @@
            string. Without it the form finishes on its own recap, which is
            what the professional panel below still does. -->
       <div class="aud-panel" id="aud-panel-hire" hidden>
-        <form class="aud-form" data-aud-form data-aud-results="/situations-wanted/" novalidate>
+        <form class="aud-form" data-aud-form data-aud-results={url("/situations-wanted/")} novalidate>
           <div class="aud-head">
             <p class="aud-title">Start a search</p>
             <p class="aud-sub" data-aud-sub></p>

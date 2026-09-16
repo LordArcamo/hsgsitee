@@ -11,7 +11,15 @@ const NOINDEX_PATHS = ["/situations-wanted/"];
 export default defineConfig({
   // Drives canonical URLs, Open Graph tags and the generated sitemap.
   // TODO: confirm the production domain before launch (see src/data/site.ts).
-  site: SITE.url,
+  /*
+   * Production (Vercel) serves from the domain root with the real domain.
+   * The GitHub Pages preview sets PAGES_SITE/PAGES_BASE in the workflow so
+   * it can serve the same build from lordarcamo.github.io/hsgsitee/ without
+   * changing anything the production build sees.
+   */
+  site: process.env.PAGES_SITE ?? SITE.url,
+  base: process.env.PAGES_BASE,
+
   integrations: [
     sitemap({
       // Pages that carry demonstration data are noindexed in BaseLayout;

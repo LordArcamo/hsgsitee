@@ -3,6 +3,7 @@
  * Closing CTA. Sits on the --panel surface, like the homepage's final CTA,
  * so the results page ends on the same note the rest of the site does.
  */
+import { url } from "../../lib/url";
 ---
 
 <section class="sec sec--tight" id="discuss">
@@ -15,7 +16,7 @@
           the next step.
         </p>
       </div>
-      <a class="btn" href="/#close">
+      <a class="btn" href={`${url("/")}#close`}>
         Discuss These Professionals With HSG
         <span class="arrow" aria-hidden="true">→</span>
       </a>

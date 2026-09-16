@@ -1,0 +1,66 @@
+# Publishes a review copy of the site to GitHub Pages at
+# https://lordarcamo.github.io/hsgsitee/
+#
+# This is a PREVIEW, not production. Production is Vercel, deployed from
+# `main` at hsgsitee.vercel.app — this workflow never touches it.
+#
+# PAGES_BASE makes Astro emit /hsgsitee/-prefixed URLs (see src/lib/url.ts)
+# and makes BaseLayout noindex every page, so this public copy of a client
+# site cannot compete with the client's real domain in search.
+#
+# One-time setup: repo Settings > Pages > Build and deployment >
+# Source: "GitHub Actions". Until that is set, this workflow fails at the
+# deploy step with "Pages is not enabled".
+name: Preview on GitHub Pages
+
+on:
+  push:
+    branches: [situations-wanted]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Never let two deploys race; queue rather than cancel so the last push wins.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Typecheck
+        run: npm run check
+
+      - name: Build
+        run: npm run build
+        env:
+          PAGES_SITE: https://lordarcamo.github.io
+          PAGES_BASE: /hsgsitee
+
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
