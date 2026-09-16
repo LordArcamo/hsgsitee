@@ -112,19 +112,26 @@ function setupSteps(form: HTMLFormElement, dismiss: () => void): void {
   const jump = form.querySelector<HTMLElement>("[data-aud-jump]");
   if (!nextBtn || !backBtn || !sendBtn || !err || !bar || !count) return;
 
-  const LABELS: Record<string, string> = {
-    title: "Title",
-    location: "Location",
-    years: "Years of experience",
-    opening: "New or replacement",
-    path: "Career path",
-    salary: "Salary range",
-  };
-  const COPY: Record<number, string> = {
-    1: "Tell us about the role — two quick steps.",
-    2: "Now the shape of the search.",
-    3: "",
-  };
+  /* Labels and step copy come from the markup, so the employer and the
+     professional panel share this one engine and neither owns a copy deck
+     in here. A field's label is the .aud-lbl beside it; a step's subtext is
+     its data-aud-copy. Recap order follows the DOM. */
+  const LABELS: Record<string, string> = {};
+  const ORDER: string[] = [];
+  for (const el of Array.from(
+    form.querySelectorAll<HTMLInputElement | HTMLSelectElement>("input, select"),
+  )) {
+    if (!el.name || LABELS[el.name] !== undefined) continue;
+    const label = el
+      .closest(".aud-field")
+      ?.querySelector<HTMLElement>(".aud-lbl")
+      ?.textContent?.trim();
+    LABELS[el.name] = label || el.name;
+    ORDER.push(el.name);
+  }
+
+  const copyFor = (step: number) =>
+    steps.find((s) => s.dataset.audStep === String(step))?.dataset.audCopy ?? "";
 
   let current = 1;
 
@@ -148,7 +155,7 @@ function setupSteps(form: HTMLFormElement, dismiss: () => void): void {
     if (jump) jump.hidden = done;
     bar.style.width = done ? "100%" : current === 1 ? "50%" : "100%";
     count.textContent = done ? "Complete" : `Step ${current} of 2`;
-    if (sub) sub.textContent = COPY[current] ?? "";
+    if (sub) sub.textContent = copyFor(current);
     if (sub) sub.hidden = done;
     clearError();
   };
@@ -178,6 +185,14 @@ function setupSteps(form: HTMLFormElement, dismiss: () => void): void {
     el?.focus();
   };
 
+  /* whichever field happens to come first on that step */
+  const focusFirstOn = (step: number) => {
+    steps
+      .find((s) => s.dataset.audStep === String(step))
+      ?.querySelector<HTMLElement>("input, select")
+      ?.focus();
+  };
+
   nextBtn.addEventListener("click", () => {
     const missing = missingOn(1);
     if (missing) {
@@ -187,13 +202,13 @@ function setupSteps(form: HTMLFormElement, dismiss: () => void): void {
     }
     current = 2;
     render();
-    focusField("opening");
+    focusFirstOn(2);
   });
 
   backBtn.addEventListener("click", () => {
     current = 1;
     render();
-    focusField("title");
+    focusFirstOn(1);
   });
 
   form.addEventListener("submit", (e) => {
@@ -207,7 +222,7 @@ function setupSteps(form: HTMLFormElement, dismiss: () => void): void {
     if (recap) {
       const data = new FormData(form);
       recap.innerHTML = "";
-      for (const key of Object.keys(LABELS)) {
+      for (const key of ORDER) {
         const val = String(data.get(key) ?? "").trim();
         if (!val) continue;
         const dt = document.createElement("dt");

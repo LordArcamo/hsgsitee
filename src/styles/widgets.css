@@ -391,6 +391,9 @@
   transition: opacity .22s var(--ease), transform .22s var(--ease);
 }
 .aud-menu.is-open .aud-panel { opacity: 1; transform: none; }
+/* the professionals menu sits at the right edge of the bar, so its panel
+   hangs left instead of running off the viewport */
+.aud-menu--right .aud-panel { left: auto; right: 0; }
 .aud-panel[hidden] { display: none; }
 /* a hidden step or button must stay hidden despite its display rule */
 .aud-panel [hidden] { display: none !important; }
@@ -444,7 +447,10 @@
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .aud-err { color: #ff8a80; } }
 
 .aud-actions { display: flex; gap: 8px; margin-top: 15px; }
-.aud-actions .aud-btn { flex: 1; min-height: 42px; padding: 0 16px; font-size: 13.5px; box-shadow: none; }
+.aud-actions .aud-btn { flex: 1; min-height: 42px; padding: 0 16px; font-size: 13.5px; box-shadow: none; white-space: nowrap; }
+/* Back is two short words; let it shrink so a longer submit label
+   ("Connect with HSG") keeps one line */
+.aud-actions [data-aud-back] { flex: 0 1 auto; padding: 0 14px; }
 
 /* .audbar a is a pill; this one is a plain text link, so undo the pill */
 .audbar .aud-jump {
@@ -467,7 +473,7 @@
   display: grid; grid-template-columns: auto 1fr; gap: 4px 14px; width: 100%;
   margin-top: 6px; padding-top: 12px; border-top: 1px solid var(--rule-soft);
 }
-.aud-recap dt { font-size: 11.5px; font-weight: 700; color: var(--ink-3); white-space: nowrap; }
+.aud-recap dt { font-size: 11.5px; font-weight: 700; color: var(--ink-3); }
 .aud-recap dd { font-size: 12.5px; font-weight: 600; color: var(--ink); margin: 0; }
 
 /* ---------- narrow screens ---------- */

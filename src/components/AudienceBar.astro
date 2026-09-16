@@ -1,12 +1,14 @@
 <!-- Audience jump bar: appears once the hero scrolls away, so professional
      visitors can reach Career Solutions without travelling the employer path.
 
-     "For Companies" additionally opens a two-step role intake on hover, so an
-     employer can start a search from the bar instead of hunting for a form. -->
+     Both buttons open a two-step intake on hover, so a visitor can start the
+     conversation from the bar instead of hunting for a form. Labels, step
+     copy and the recap are all read from this markup by audience-menu.ts. -->
 <div class="audbar" id="audbar">
   <div class="audbar-in">
     <span class="lbl">Jump to</span>
 
+    <!-- ---------------- employers ---------------- -->
     <div class="aud-menu to-hire" data-aud-menu>
       <button class="aud-trigger" type="button"
               aria-expanded="false" aria-controls="aud-panel-hire" aria-haspopup="true">
@@ -19,12 +21,12 @@
         <form class="aud-form" data-aud-form novalidate>
           <div class="aud-head">
             <p class="aud-title">Start a search</p>
-            <p class="aud-sub" data-aud-sub>Tell us about the role — two quick steps.</p>
+            <p class="aud-sub" data-aud-sub></p>
             <div class="aud-prog"><i data-aud-bar></i></div>
-            <p class="aud-count" data-aud-count>Step 1 of 2</p>
+            <p class="aud-count" data-aud-count></p>
           </div>
 
-          <div class="aud-step" data-aud-step="1">
+          <div class="aud-step" data-aud-step="1" data-aud-copy="Tell us about the role — two quick steps.">
             <label class="aud-field">
               <span class="aud-lbl">Title</span>
               <input type="text" name="title" placeholder="e.g. Director of Operations" autocomplete="off" />
@@ -45,7 +47,7 @@
             </label>
           </div>
 
-          <div class="aud-step" data-aud-step="2" hidden>
+          <div class="aud-step" data-aud-step="2" data-aud-copy="Now the shape of the search." hidden>
             <fieldset class="aud-field">
               <legend class="aud-lbl">New or replacement?</legend>
               <div class="aud-seg">
@@ -89,10 +91,91 @@
       </div>
     </div>
 
-    <a class="to-career" href="#career">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 17l5.5-5.5 3.5 3.5L21 6"/><path d="M15.5 6H21v5.5"/><path d="M3 21h18"/></svg>
-      For Professionals
-    </a>
+    <!-- ---------------- professionals ---------------- -->
+    <div class="aud-menu aud-menu--right to-career" data-aud-menu>
+      <button class="aud-trigger" type="button"
+              aria-expanded="false" aria-controls="aud-panel-career" aria-haspopup="true">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 17l5.5-5.5 3.5 3.5L21 6"/><path d="M15.5 6H21v5.5"/><path d="M3 21h18"/></svg>
+        For Professionals
+        <svg class="aud-chev" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+      </button>
+
+      <div class="aud-panel" id="aud-panel-career" hidden>
+        <form class="aud-form" data-aud-form novalidate>
+          <div class="aud-head">
+            <p class="aud-title">Explore your next move</p>
+            <p class="aud-sub" data-aud-sub></p>
+            <div class="aud-prog"><i data-aud-bar></i></div>
+            <p class="aud-count" data-aud-count></p>
+          </div>
+
+          <div class="aud-step" data-aud-step="1" data-aud-copy="Tell us what you’re looking for — two quick steps.">
+            <label class="aud-field">
+              <span class="aud-lbl">Current or most recent title</span>
+              <input type="text" name="title" placeholder="e.g. Director of Operations" autocomplete="off" />
+            </label>
+            <label class="aud-field">
+              <span class="aud-lbl">Preferred location</span>
+              <input type="text" name="location" placeholder="City, State or Remote" autocomplete="off" />
+            </label>
+            <label class="aud-field">
+              <span class="aud-lbl">Years of experience</span>
+              <select name="years">
+                <option value="">Select a range</option>
+                <option>0–2 years</option>
+                <option>3–5 years</option>
+                <option>6–10 years</option>
+                <option>10+ years</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="aud-step" data-aud-step="2" data-aud-copy="Help us understand where you want to go next." hidden>
+            <fieldset class="aud-field">
+              <legend class="aud-lbl">What are you looking for?</legend>
+              <div class="aud-seg">
+                <label><input type="radio" name="looking" value="New opportunity" /><span>New opportunity</span></label>
+                <label><input type="radio" name="looking" value="Career change" /><span>Career change</span></label>
+                <label><input type="radio" name="looking" value="Not sure yet" /><span>Not sure yet</span></label>
+              </div>
+            </fieldset>
+            <fieldset class="aud-field">
+              <legend class="aud-lbl">What level are you targeting?</legend>
+              <div class="aud-seg">
+                <label><input type="radio" name="level" value="Manager" /><span>Manager</span></label>
+                <label><input type="radio" name="level" value="Director" /><span>Director</span></label>
+                <label><input type="radio" name="level" value="VP" /><span>VP</span></label>
+                <label><input type="radio" name="level" value="C-Suite" /><span>C-Suite</span></label>
+                <label><input type="radio" name="level" value="Other" /><span>Other</span></label>
+              </div>
+            </fieldset>
+            <label class="aud-field">
+              <span class="aud-lbl">Desired salary range</span>
+              <input type="text" name="salary" placeholder="e.g. $120K – $150K" autocomplete="off" />
+            </label>
+          </div>
+
+          <div class="aud-step aud-done" data-aud-step="3" hidden>
+            <span class="aud-check" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+            </span>
+            <p class="aud-done-t">Thanks — that is enough to start.</p>
+            <p class="aud-done-s">An HSG advisor will follow up within one business day.</p>
+            <dl class="aud-recap" data-aud-recap></dl>
+          </div>
+
+          <p class="aud-err" data-aud-err role="alert" hidden></p>
+
+          <div class="aud-actions">
+            <button type="button" class="btn btn--ghost aud-btn" data-aud-back hidden>Back</button>
+            <button type="button" class="btn aud-btn" data-aud-next>Next <span class="arrow" aria-hidden="true">→</span></button>
+            <button type="submit" class="btn aud-btn" data-aud-send hidden>Connect with HSG</button>
+          </div>
+
+          <a class="aud-jump" href="#career" data-aud-jump>Or explore Career Solutions →</a>
+        </form>
+      </div>
+    </div>
   </div>
 </div>
 
