@@ -16,12 +16,19 @@ interface Props {
   description?: string;
   /** Path of this page, used for the canonical URL. */
   path?: string;
+  /**
+   * Keep this page out of search results. Set it on anything showing
+   * demonstration data; also exclude the path from the sitemap filter in
+   * astro.config.mjs, or the two will contradict each other.
+   */
+  noindex?: boolean;
 }
 
 const {
   title = SITE.title,
   description = SITE.description,
   path = "/",
+  noindex = false,
 } = Astro.props;
 
 const canonical = new URL(path, Astro.site ?? SITE.url).href;
@@ -75,6 +82,7 @@ const structuredData = {
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
     <link rel="canonical" href={canonical} />
     <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
     <link rel="icon" href="/favicon-192.png" sizes="192x192" type="image/png" />

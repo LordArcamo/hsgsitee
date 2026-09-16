@@ -18,4 +18,5 @@
 @import "./footer.css";
 @import "./widgets.css";     /* vetting graphic, career menu, jump bar, shortlist */
 @import "./imagery.css";    /* real photography and brand artwork              */
+@import "./situations.css";  /* Situations Wanted results page                 */
 @import "./mock-note.css";   /* delete with components/MockNote.astro at launch */

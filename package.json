@@ -12,7 +12,8 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "check": "astro check"
+    "check": "astro check",
+    "standalone": "node tools/make-standalone.mjs index hsg-homepage && node tools/make-standalone.mjs situations-wanted hsg-situations-wanted"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.3",

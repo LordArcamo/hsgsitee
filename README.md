@@ -12,7 +12,22 @@ npm run dev      # http://localhost:4321
 npm run build    # static output in dist/
 npm run preview  # serve the production build
 npx astro check  # typecheck .astro and .ts
+npm run standalone  # one self-contained .html per page, in standalone/
 ```
+
+`npm run build` output in `dist/` links its CSS, JS and images with absolute
+`/_astro/…` paths and loads the scripts as ES modules, so **opening
+`dist/…/index.html` from the file system gives you unstyled markup** — it has
+to be served (`npm run preview`). To send someone a page, or open one without a
+server, run `npm run standalone` after a build: `tools/make-standalone.mjs`
+inlines the stylesheet, the module scripts (resolving the chunks' relative
+imports into `data:` URLs), the woff2 subsets and every image, and writes
+`standalone/<name>-standalone.html`. The `.woff` fallbacks are deliberately
+left out — every browser that matters takes the inlined woff2.
+
+Output goes to `standalone/`, not `dist/`: **Astro wipes `dist/` on every
+build**, so anything hand-placed there is destroyed by the next `npm run
+build`.
 
 ## Layout
 
@@ -23,14 +38,18 @@ src/
     facts.ts       the headline statistics (30 years, 1,200+ placements, …)
     jobs.ts        opportunities board — DESIGN EXAMPLES, replace before launch
     candidates.ts  shortlist demonstration — all profiles fictional
+    situations.ts  Situations Wanted results — criteria + fictional profiles
   layouts/
     BaseLayout.astro   <head>, meta, Open Graph, JSON-LD, global CSS, reveals
   components/
     Header.astro  AudienceBar.astro  Footer.astro  MockNote.astro
-    sections/     one component per page section, in page order
+    sections/     one component per homepage section, in page order
+    situations/   the Situations Wanted page, in page order
   scripts/         client behaviour, one module per widget
   styles/          global.css imports the partials IN ORDER — keep that order
-pages/index.astro  composes the page from the section components
+pages/
+  index.astro              composes the homepage from the section components
+  situations-wanted.astro  employer-side results page
 ```
 
 ### Where things live
@@ -41,6 +60,7 @@ pages/index.astro  composes the page from the section components
 | Address, phone, email, domain | `src/data/site.ts` |
 | The rotating job listings | `src/data/jobs.ts` |
 | The shortlist demo profiles | `src/data/candidates.ts` |
+| The Situations Wanted profiles and statistics | `src/data/situations.ts` |
 | Copy or markup of a section | the matching `src/components/sections/*.astro` |
 | Visual design | `src/styles/*.css` |
 
@@ -130,6 +150,28 @@ at the weights the design uses (400/600/700/800/900). The design's font stack
 names Inter first but the mockup never loaded it, so it silently fell back on
 machines without Inter installed. Add an import if you introduce a new weight.
 
+**Situations Wanted is driven by the query string.** `/situations-wanted/` is
+the employer-side results page: the "For Companies" intake in the audience bar
+carries its six answers there as a query string, keyed by the form's own field
+names. This is a static build, so those answers are not available when the page
+renders — the markup ships carrying the spec's example search and
+`src/scripts/situations.ts` rewrites the heading and the criteria line in the
+browser. With no query string it resolves to that same example, so the page
+never flickers between two searches. Nothing about the search is hard-coded;
+`src/data/situations.ts` is the only place criteria, profiles and the four
+statistics are defined, and the cards and the comparison table are both
+generated from it.
+
+The seven profiles are fictional and are a fixed mechanical-engineering sample
+set — they do not vary by searched role, and the page says so when the searched
+title does not match them. The page is `noindex`ed and excluded from the
+sitemap (`NOINDEX_PATHS` in `astro.config.mjs`) until real, consented candidate
+data replaces them.
+
+**Header and Footer anchors take a `home` prop.** Empty on the homepage, where
+the links are same-page jumps; `"/"` on any other page, so they travel home
+first. A new page that uses either component must pass it.
+
 ## Before launch
 
 - [ ] Confirm the production domain in `src/data/site.ts` (`url`) — it drives
@@ -147,3 +189,8 @@ machines without Inter installed. Add an import if you introduce a new weight.
 - [ ] Resolve the two phone numbers — the footer uses 973-773-4473 while the
       Private Vetting section uses 347-665-7733, as specified in the copy doc.
 - [ ] Confirm the Representation wording (still flagged "pending review").
+- [ ] Replace `src/data/situations.ts` with a real, consented candidate feed,
+      then drop the page's `noindex` and its `NOINDEX_PATHS` entry.
+- [ ] Confirm the criteria wording in `situations.ts` that the copy doc does
+      not specify: "Replacement Position", "No Career Path" and "Career Path
+      Undecided", plus the "See Matching Professionals" submit button.

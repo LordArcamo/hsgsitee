@@ -1,0 +1,44 @@
+---
+/*
+ * Confirms the employer's search back to them before showing anyone.
+ *
+ * Nothing here is hard-coded: the title and every criterion come from the
+ * `criteria` prop, which the page fills from the example at build time and
+ * `scripts/situations.ts` refills from the query string at runtime.
+ */
+import { criteriaRow, pluralizeTitle, type SearchCriteria } from "../../data/situations";
+
+interface Props {
+  criteria: SearchCriteria;
+}
+
+const { criteria } = Astro.props;
+const row = criteriaRow(criteria);
+---
+
+<section class="sw-hero">
+  <div class="wrap">
+    <p class="eyebrow is-brand rv">Your Search</p>
+
+    <h1 class="rv" style="--d:1">
+      Situations Wanted for <span data-sw-title>{pluralizeTitle(criteria.title)}</span>
+    </h1>
+
+    <!-- One horizontal row on desktop, stacked on mobile. The label inside
+         each item is for screen readers: sighted readers get the values
+         dot-separated, as specified. -->
+    <p class="sw-criteria rv" style="--d:2">
+      {
+        row.map((item, i) => (
+          <>
+            {i > 0 && <span class="sw-dot" aria-hidden="true">·</span>}
+            <span class="sw-crit">
+              <span class="sw-vh">{item.label}: </span>
+              <span data-sw-crit={item.key}>{item.value}</span>
+            </span>
+          </>
+        ))
+      }
+    </p>
+  </div>
+</section>

@@ -219,6 +219,22 @@ function setupSteps(form: HTMLFormElement, dismiss: () => void): void {
       focusField(missing);
       return;
     }
+
+    /* A form with data-aud-results hands its answers to a results page
+       instead of finishing on the recap — the employer intake goes to
+       Situations Wanted. The field names are the query keys; they are
+       matched by name in src/data/situations.ts. */
+    const results = form.dataset.audResults;
+    if (results) {
+      const url = new URL(results, window.location.origin);
+      for (const [key, value] of new FormData(form).entries()) {
+        const v = String(value).trim();
+        if (v) url.searchParams.set(key, v);
+      }
+      window.location.assign(url.href);
+      return;
+    }
+
     if (recap) {
       const data = new FormData(form);
       recap.innerHTML = "";

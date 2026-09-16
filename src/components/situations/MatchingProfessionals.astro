@@ -1,0 +1,66 @@
+---
+/*
+ * The seven profile cards. Every card carries the same four statistics in
+ * the same order, because both the labels and the order come from STATS —
+ * the single definition the comparison table also renders from.
+ */
+import {
+  PROFESSIONALS,
+  STATS,
+  pluralizeTitle,
+  type SearchCriteria,
+} from "../../data/situations";
+
+interface Props {
+  criteria: SearchCriteria;
+}
+
+const { criteria } = Astro.props;
+---
+
+<section class="sec sec--soft" id="professionals">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <h2>
+        {PROFESSIONALS.length}
+        <span data-sw-title>{pluralizeTitle(criteria.title)}</span> Matching Your Search
+      </h2>
+    </div>
+
+    <div class="sw-grid">
+      {
+        PROFESSIONALS.map((p, i) => (
+          <article class="sw-card rv" style={`--d:${i % 3}`}>
+            <header class="sw-card-head">
+              <span class="sw-mono" aria-hidden="true">{p.name.charAt(0)}</span>
+              <div class="sw-card-id">
+                <h3>{p.name}</h3>
+                <p class="sw-role">{p.role}</p>
+              </div>
+            </header>
+
+            <p class="sw-sum">{p.summary}</p>
+
+            <dl class="sw-stats">
+              {STATS.map((s) => (
+                <div class:list={["sw-stat", { "sw-stat--wide": !s.numeric }]}>
+                  <dt>{s.label}</dt>
+                  <dd>{s.value(p)}</dd>
+                </div>
+              ))}
+            </dl>
+          </article>
+        ))
+      }
+    </div>
+
+    <p class="sw-fine rv">
+      Candidate profiles shown are fictional examples created to demonstrate the
+      HSG Situations Wanted experience.
+      <span data-sw-rolenote hidden>
+        The demonstration pool does not yet vary by role, so these mechanical
+        engineering examples are shown for every search.
+      </span>
+    </p>
+  </div>
+</section>

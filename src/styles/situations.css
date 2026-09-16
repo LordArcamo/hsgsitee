@@ -1,0 +1,163 @@
+/* ============================================================
+   SITUATIONS WANTED — employer-side results page
+
+   Same system as the rest of the site: white ground, rounded cards,
+   thin --rule borders, soft shadows, purple for action, Hiring green
+   as the restrained practice accent. No scoring, no photography, no
+   red/green verdicts — the four statistics are stated, not judged.
+   ============================================================ */
+
+/* screen-reader-only label inside the criteria line */
+.sw-vh {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap;
+}
+
+/* ---------- 1. search confirmation ---------- */
+.sw-hero {
+  position: relative; isolation: isolate; overflow: hidden;
+  padding-block: clamp(42px, 5.4vw, 74px) clamp(38px, 4.6vw, 62px);
+  border-bottom: 1px solid var(--rule);
+  background:
+    radial-gradient(58% 58% at 88% 8%, var(--accent-soft), transparent 70%),
+    radial-gradient(44% 46% at 4% 92%, var(--hiring-soft), transparent 72%),
+    var(--ground);
+}
+.sw-hero h1 {
+  font-size: clamp(30px, 4.1vw, 52px); line-height: 1.07; letter-spacing: -.03em;
+  margin-top: 16px; max-width: 20ch;
+}
+
+.sw-criteria {
+  margin-top: 22px;
+  display: flex; align-items: center; flex-wrap: wrap; gap: 10px 12px;
+}
+.sw-crit {
+  display: inline-flex; align-items: center;
+  font-size: 14.5px; font-weight: 700; color: var(--ink);
+  background: var(--surface); border: 1px solid var(--rule);
+  border-radius: 999px; padding: 8px 16px; box-shadow: var(--shadow-sm);
+}
+.sw-dot { color: var(--ink-3); font-weight: 700; user-select: none; }
+
+/* ---------- 2. matching professionals ---------- */
+.sw-grid {
+  margin-top: clamp(30px, 3.8vw, 46px);
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: clamp(16px, 1.9vw, 24px);
+}
+
+.sw-card {
+  background: var(--surface); border: 1px solid var(--rule);
+  border-top: 3px solid var(--hiring-fill); border-radius: 18px;
+  box-shadow: var(--shadow-sm); padding: 24px 24px 13px;
+  /* name · summary · statistics — the summary takes the slack, so the four
+     statistics sit on the same line across a row however long the summaries
+     above them run. That is what makes them comparable card to card. */
+  display: grid; grid-template-rows: auto 1fr auto; gap: 14px;
+  transition: transform .28s var(--ease), box-shadow .28s var(--ease),
+              border-color .28s var(--ease);
+}
+.sw-card:hover { transform: translateY(-3px); box-shadow: var(--shadow); }
+
+.sw-card-head { display: flex; align-items: center; gap: 14px; }
+.sw-mono {
+  flex: none; width: 46px; height: 46px; border-radius: 50%;
+  display: grid; place-items: center;
+  background: var(--accent-soft); color: var(--accent);
+  font-family: var(--display); font-size: 19px; font-weight: 800; letter-spacing: -.02em;
+}
+.sw-card-id { min-width: 0; }
+.sw-card-id h3 { font-size: 21px; letter-spacing: -.026em; }
+.sw-role { font-size: 13.5px; font-weight: 700; color: var(--hiring); margin-top: 3px; }
+
+.sw-sum { font-size: 14.5px; line-height: 1.6; color: var(--ink-2); }
+
+/* the four statistics — same four, same order, on every card */
+.sw-stats { display: grid; margin: 0; }
+.sw-stat {
+  display: grid; grid-template-columns: 1fr auto; gap: 4px 16px;
+  align-items: baseline; padding: 11px 0;
+  border-top: 1px solid var(--rule-soft);
+}
+.sw-stat dt { font-size: 13px; color: var(--ink-2); line-height: 1.4; }
+.sw-stat dd {
+  margin: 0; font-size: 14.5px; font-weight: 800; color: var(--ink);
+  text-align: right; font-variant-numeric: tabular-nums; letter-spacing: -.01em;
+}
+/* the credential is prose, not a figure: it gets the full column width and
+   reads left-to-right rather than being ragged against the right edge */
+.sw-stat--wide { grid-template-columns: 1fr; }
+.sw-stat--wide dd { text-align: left; font-size: 14px; line-height: 1.45; }
+
+.sw-fine {
+  margin-top: clamp(22px, 2.6vw, 30px);
+  font-size: 12.5px; line-height: 1.6; color: var(--ink-3); max-width: 78ch;
+}
+
+/* ---------- 3. comparison table ---------- */
+.sw-table-wrap {
+  margin-top: clamp(26px, 3.2vw, 40px);
+  border: 1px solid var(--rule); border-radius: 18px;
+  background: var(--surface); box-shadow: var(--shadow-sm);
+  overflow-x: auto; -webkit-overflow-scrolling: touch;
+}
+.sw-table {
+  width: 100%; border-collapse: collapse;
+  /* wide enough that the text never has to shrink to fit a phone —
+     the wrapper scrolls instead */
+  min-width: 760px;
+}
+.sw-table th, .sw-table td {
+  text-align: left; padding: 15px 20px; vertical-align: top;
+}
+.sw-table thead th {
+  background: var(--soft); color: var(--ink-2);
+  font-family: var(--body); font-size: 11.5px; font-weight: 800;
+  letter-spacing: .12em; text-transform: uppercase; line-height: 1.4;
+  border-bottom: 1px solid var(--rule); white-space: nowrap;
+}
+.sw-table tbody th {
+  font-family: var(--display); font-size: 16px; font-weight: 800;
+  letter-spacing: -.024em; color: var(--ink); white-space: nowrap;
+}
+.sw-table tbody td { font-size: 14.5px; color: var(--ink-2); }
+.sw-table tbody tr + tr th, .sw-table tbody tr + tr td {
+  border-top: 1px solid var(--rule-soft);
+}
+.sw-table tbody tr:nth-child(even) th,
+.sw-table tbody tr:nth-child(even) td { background: var(--soft); }
+.sw-table .is-num { text-align: right; font-variant-numeric: tabular-nums; }
+.sw-table tbody td.is-num { font-weight: 700; color: var(--ink); }
+.sw-table-wrap:focus-visible { outline-offset: 2px; }
+
+/* ---------- 4. closing CTA ---------- */
+.sw-cta {
+  background: var(--panel); color: var(--panel-ink);
+  border-radius: 22px; padding: clamp(28px, 3.6vw, 46px);
+  display: flex; align-items: center; justify-content: space-between;
+  gap: clamp(20px, 3vw, 40px); flex-wrap: wrap;
+}
+.sw-cta-copy { flex: 1 1 420px; max-width: 56ch; display: grid; gap: 12px; }
+.sw-cta h2 { color: var(--panel-ink); font-size: clamp(23px, 2.8vw, 34px); }
+.sw-cta p { color: var(--panel-ink-2); font-size: 16px; }
+.sw-cta .btn { flex: none; }
+
+/* ---------- responsive ---------- */
+@media (max-width: 1080px) {
+  /* tablet: two cards per row */
+  .sw-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 680px) {
+  /* phone: one card per row, criteria stacked */
+  .sw-grid { grid-template-columns: 1fr; }
+  .sw-criteria { flex-direction: column; align-items: flex-start; gap: 8px; }
+  .sw-dot { display: none; }
+  .sw-crit { width: 100%; }
+  .sw-cta { display: grid; }
+  .sw-cta .btn { justify-self: start; }
+  /* tighter cells so less of the table sits off-screen — the type size is
+     left alone, which is the point of scrolling it rather than shrinking it */
+  .sw-table { min-width: 680px; }
+  .sw-table th, .sw-table td { padding: 13px 14px; }
+}

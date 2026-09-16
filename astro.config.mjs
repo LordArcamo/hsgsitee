@@ -4,12 +4,21 @@ import sitemap from "@astrojs/sitemap";
 
 import { SITE } from "./src/data/site";
 
+/** Paths rendered with `noindex` in BaseLayout — kept out of the sitemap. */
+const NOINDEX_PATHS = ["/situations-wanted/"];
+
 // https://astro.build/config
 export default defineConfig({
   // Drives canonical URLs, Open Graph tags and the generated sitemap.
   // TODO: confirm the production domain before launch (see src/data/site.ts).
   site: SITE.url,
-  integrations: [sitemap()],
+  integrations: [
+    sitemap({
+      // Pages that carry demonstration data are noindexed in BaseLayout;
+      // keep them out of the sitemap too, so the two never disagree.
+      filter: (page) => !NOINDEX_PATHS.some((p) => page.endsWith(p)),
+    }),
+  ],
 
   // The mockup relies on whitespace between inline elements to separate words
   // (e.g. body copy followed by a <span>). Astro's HTML compressor strips it,

@@ -1,13 +1,23 @@
 ---
 import { SITE } from "../data/site";
 import Logo from "./Logo.astro";
+
+interface Props {
+  /**
+   * Prefix for the in-page anchors — empty on the homepage, "/" elsewhere.
+   * See components/Header.astro.
+   */
+  home?: string;
+}
+
+const { home = "" } = Astro.props;
 ---
 
 <footer class="ftr">
   <div class="wrap ftr-in">
     <div class="ftr-top">
       <div class="ftr-brand">
-        <a class="logo" href="#">
+        <a class="logo" href={home || "#"}>
           <Logo variant="full" height={72} onPanel />
         </a>
         <address>
@@ -21,36 +31,36 @@ import Logo from "./Logo.astro";
       <div>
         <h5>Hiring</h5>
         <ul>
-          <li><a href="#hiring">Hiring Solutions</a></li>
-          <li><a href="#hiring">Executive Recruiting</a></li>
-          <li><a href="#collaborative">Collaborative Search<sup>®</sup></a></li>
-          <li><a href="#hiring">Candidate Assessment</a></li>
-          <li><a href="#vetting">Private Vetting</a></li>
-          <li><a href="#forensic">Interviewing</a></li>
+          <li><a href={`${home}#hiring`}>Hiring Solutions</a></li>
+          <li><a href={`${home}#hiring`}>Executive Recruiting</a></li>
+          <li><a href={`${home}#collaborative`}>Collaborative Search<sup>®</sup></a></li>
+          <li><a href={`${home}#hiring`}>Candidate Assessment</a></li>
+          <li><a href={`${home}#vetting`}>Private Vetting</a></li>
+          <li><a href={`${home}#forensic`}>Interviewing</a></li>
         </ul>
       </div>
 
       <div>
         <h5>Career</h5>
         <ul>
-          <li><a href="#career">Career Solutions</a></li>
-          <li><a href="#career">Career Assessment</a></li>
-          <li><a href="#career">Executive Career Strategy</a></li>
-          <li><a href="#career">Interview Preparation</a></li>
-          <li><a href="#jobs">Current Jobs</a></li>
-          <li><a href="#jobs">Submit Resume</a></li>
+          <li><a href={`${home}#career`}>Career Solutions</a></li>
+          <li><a href={`${home}#career`}>Career Assessment</a></li>
+          <li><a href={`${home}#career`}>Executive Career Strategy</a></li>
+          <li><a href={`${home}#career`}>Interview Preparation</a></li>
+          <li><a href={`${home}#jobs`}>Current Jobs</a></li>
+          <li><a href={`${home}#jobs`}>Submit Resume</a></li>
         </ul>
       </div>
 
       <div>
         <h5>Company</h5>
         <ul>
-          <li><a href="#michael">About</a></li>
-          <li><a href="#michael">Michael Schlager</a></li>
-          <li><a href="#story">Success Stories</a></li>
-          <li><a href="#insights">Insights</a></li>
+          <li><a href={`${home}#michael`}>About</a></li>
+          <li><a href={`${home}#michael`}>Michael Schlager</a></li>
+          <li><a href={`${home}#story`}>Success Stories</a></li>
+          <li><a href={`${home}#insights`}>Insights</a></li>
           <li><a href="#">Industries</a></li>
-          <li><a href="#close">Contact</a></li>
+          <li><a href={`${home}#close`}>Contact</a></li>
         </ul>
       </div>
 

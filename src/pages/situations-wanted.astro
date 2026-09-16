@@ -1,0 +1,57 @@
+---
+/*
+ * SITUATIONS WANTED — the employer-side results page.
+ *
+ * Reached from the "For Companies" intake in the audience bar, which sends
+ * its answers here as a query string. This is a static build, so the page is
+ * rendered with the spec's example search and scripts/situations.ts rewrites
+ * the heading and the criteria line from the query string on load.
+ *
+ * The profiles are fictional demonstration data — see src/data/situations.ts.
+ * Until they are replaced with a real, consented feed the page is noindexed
+ * and kept out of the sitemap.
+ */
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Header from "../components/Header.astro";
+import AudienceBar from "../components/AudienceBar.astro";
+import Footer from "../components/Footer.astro";
+
+import SearchSummary from "../components/situations/SearchSummary.astro";
+import MatchingProfessionals from "../components/situations/MatchingProfessionals.astro";
+import ComparisonTable from "../components/situations/ComparisonTable.astro";
+import DiscussCta from "../components/situations/DiscussCta.astro";
+
+import { EXAMPLE_SEARCH, pluralizeTitle } from "../data/situations";
+
+const criteria = EXAMPLE_SEARCH;
+const plural = pluralizeTitle(criteria.title);
+---
+
+<BaseLayout
+  title={`Situations Wanted for ${plural} — Hiring Solutions Group`}
+  description="Professionals matching your search, with the same four statistics for each and a side-by-side comparison."
+  path="/situations-wanted/"
+  noindex
+>
+  <div class="mock-note">
+    <b>Prototype</b> — candidate profiles shown are fictional examples created to
+    demonstrate the HSG Situations Wanted experience.
+  </div>
+
+  <Header home="/" />
+  <AudienceBar />
+
+  <main id="main">
+    <SearchSummary criteria={criteria} />
+    <MatchingProfessionals criteria={criteria} />
+    <ComparisonTable />
+    <DiscussCta />
+  </main>
+
+  <Footer home="/" />
+</BaseLayout>
+
+<script>
+  import { initSituations } from "../scripts/situations";
+  initSituations();
+</script>

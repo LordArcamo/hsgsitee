@@ -17,8 +17,12 @@
         <svg class="aud-chev" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
       </button>
 
+      <!-- data-aud-results sends the completed employer intake to the
+           Situations Wanted results page, with the answers as a query
+           string. Without it the form finishes on its own recap, which is
+           what the professional panel below still does. -->
       <div class="aud-panel" id="aud-panel-hire" hidden>
-        <form class="aud-form" data-aud-form novalidate>
+        <form class="aud-form" data-aud-form data-aud-results="/situations-wanted/" novalidate>
           <div class="aud-head">
             <p class="aud-title">Start a search</p>
             <p class="aud-sub" data-aud-sub></p>
@@ -83,7 +87,7 @@
           <div class="aud-actions">
             <button type="button" class="btn btn--ghost aud-btn" data-aud-back hidden>Back</button>
             <button type="button" class="btn aud-btn" data-aud-next>Next <span class="arrow" aria-hidden="true">→</span></button>
-            <button type="submit" class="btn aud-btn" data-aud-send hidden>Send to HSG</button>
+            <button type="submit" class="btn aud-btn" data-aud-send hidden>See Matching Professionals <span class="arrow" aria-hidden="true">→</span></button>
           </div>
 
           <a class="aud-jump" href="#hiring" data-aud-jump>Or explore Hiring Solutions →</a>

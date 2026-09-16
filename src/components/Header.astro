@@ -1,27 +1,38 @@
 ---
 import Logo from "./Logo.astro";
+
+interface Props {
+  /**
+   * Prefix for the in-page anchors. Empty on the homepage, where every link
+   * here is a same-page jump; "/" on any other page, so the links travel
+   * home first and still land on the right section.
+   */
+  home?: string;
+}
+
+const { home = "" } = Astro.props;
 ---
 
 <header class="hdr" id="hdr">
   <div class="hdr-in">
-    <a class="logo" href="#">
+    <a class="logo" href={home || "#"}>
       <Logo height={44} />
     </a>
 
     <nav class="nav" aria-label="Primary">
-      <a href="#hiring">Hiring Solutions</a>
-      <a href="#career">Career Solutions</a>
-      <a href="#jobs">Jobs</a>
+      <a href={`${home}#hiring`}>Hiring Solutions</a>
+      <a href={`${home}#career`}>Career Solutions</a>
+      <a href={`${home}#jobs`}>Jobs</a>
       <a href="#">Industries</a>
-      <a href="#story">Success Stories</a>
-      <a href="#insights">Insights</a>
-      <a href="#michael">About</a>
-      <a href="#close">Contact</a>
+      <a href={`${home}#story`}>Success Stories</a>
+      <a href={`${home}#insights`}>Insights</a>
+      <a href={`${home}#michael`}>About</a>
+      <a href={`${home}#close`}>Contact</a>
     </nav>
 
     <div class="hdr-cta">
-      <a class="btn btn--ghost" href="#jobs">Find a Job</a>
-      <a class="btn" href="#close">Find Talent</a>
+      <a class="btn btn--ghost" href={`${home}#jobs`}>Find a Job</a>
+      <a class="btn" href={`${home}#close`}>Find Talent</a>
       <button class="burger" id="burger" type="button" aria-expanded="false" aria-controls="mobilenav" aria-label="Open menu">
         <span aria-hidden="true"></span>
       </button>
@@ -30,18 +41,18 @@ import Logo from "./Logo.astro";
 
   <div class="mobile-nav" id="mobilenav">
     <ul>
-      <li><a href="#hiring">Hiring Solutions</a></li>
-      <li><a href="#career">Career Solutions</a></li>
-      <li><a href="#jobs">Jobs</a></li>
+      <li><a href={`${home}#hiring`}>Hiring Solutions</a></li>
+      <li><a href={`${home}#career`}>Career Solutions</a></li>
+      <li><a href={`${home}#jobs`}>Jobs</a></li>
       <li><a href="#">Industries</a></li>
-      <li><a href="#story">Success Stories</a></li>
-      <li><a href="#insights">Insights</a></li>
-      <li><a href="#michael">About</a></li>
-      <li><a href="#close">Contact</a></li>
+      <li><a href={`${home}#story`}>Success Stories</a></li>
+      <li><a href={`${home}#insights`}>Insights</a></li>
+      <li><a href={`${home}#michael`}>About</a></li>
+      <li><a href={`${home}#close`}>Contact</a></li>
     </ul>
     <div class="m-actions">
-      <a class="btn" href="#close">Find Talent</a>
-      <a class="btn btn--ghost" href="#jobs">Find a Job</a>
+      <a class="btn" href={`${home}#close`}>Find Talent</a>
+      <a class="btn btn--ghost" href={`${home}#jobs`}>Find a Job</a>
     </div>
   </div>
 </header>

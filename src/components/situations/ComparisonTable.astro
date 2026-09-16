@@ -1,0 +1,54 @@
+---
+/*
+ * The same seven profiles and the same four statistics as the cards above,
+ * rendered from the same PROFESSIONALS × STATS data — side by side, so HR
+ * can compare without scrolling back up through the cards.
+ *
+ * The scroll container is focusable so the table can be scrolled from the
+ * keyboard on narrow screens; its text is never shrunk to make it fit.
+ */
+import { PROFESSIONALS, STATS } from "../../data/situations";
+---
+
+<section class="sec" id="compare">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <h2>Compare the Professionals</h2>
+    </div>
+
+    <div
+      class="sw-table-wrap rv"
+      style="--d:1"
+      tabindex="0"
+      role="region"
+      aria-label="Comparison of the matching professionals"
+    >
+      <table class="sw-table">
+        <thead>
+          <tr>
+            <th scope="col">Professional</th>
+            {
+              STATS.map((s) => (
+                <th scope="col" class:list={[{ "is-num": s.numeric }]}>
+                  {s.label}
+                </th>
+              ))
+            }
+          </tr>
+        </thead>
+        <tbody>
+          {
+            PROFESSIONALS.map((p) => (
+              <tr>
+                <th scope="row">{p.name}</th>
+                {STATS.map((s) => (
+                  <td class:list={[{ "is-num": s.numeric }]}>{s.value(p)}</td>
+                ))}
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
