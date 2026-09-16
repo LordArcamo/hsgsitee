@@ -15,15 +15,18 @@ const { home = "" } = Astro.props;
 
 /*
  * Four things at the top level, one call to action. The site is built around
- * two audiences, so the nav is too: each audience gets a small menu of its
- * own sections, Insights stands alone, and About gathers the founder and the
- * ways to get in touch. "Industries" is left out until it has a page — a link
- * to "#" scrolls to the top and reads as broken.
+ * two service lines, so the nav is too: Hiring and Careers each get a small
+ * menu of their sections — the same two headings the footer uses — Insights
+ * stands alone, and About gathers the founder and the ways to get in touch.
+ * The audience bar beneath the header already says "For Companies" and
+ * "For Professionals"; these menus deliberately use different words so the
+ * two rows do not read as one repeated menu. "Industries" is left out until
+ * it has a page — a link to "#" scrolls to the top and reads as broken.
  */
 const menus = [
   {
-    id: "companies",
-    label: "For Companies",
+    id: "hiring",
+    label: "Hiring",
     items: [
       { href: `${home}#hiring`, label: "Hiring Solutions" },
       { href: `${home}#collaborative`, label: "Collaborative Search®" },
@@ -31,8 +34,8 @@ const menus = [
     ],
   },
   {
-    id: "professionals",
-    label: "For Professionals",
+    id: "careers",
+    label: "Careers",
     items: [
       { href: `${home}#career`, label: "Career Solutions" },
       { href: `${home}#jobs`, label: "Current Jobs" },
@@ -125,7 +128,6 @@ const insights = { href: `${home}#insights`, label: "Insights" };
     </div>
     <div class="m-actions">
       <a class="btn" href={`${home}#close`}>Find Talent</a>
-      <a class="btn btn--ghost" href={`${home}#jobs`}>Find a Job</a>
       <a class="btn btn--ghost" href={`tel:${SITE.phoneHref}`}>Call {SITE.phone}</a>
     </div>
   </div>

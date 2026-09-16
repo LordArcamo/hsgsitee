@@ -89,8 +89,8 @@ onto three. The nav is now built around the site's two audiences:
 
 | Top level | Opens to |
 | --- | --- |
-| For Companies ▾ | Hiring Solutions · Collaborative Search® · Success Stories |
-| For Professionals ▾ | Career Solutions · Current Jobs |
+| Hiring ▾ | Hiring Solutions · Collaborative Search® · Success Stories |
+| Careers ▾ | Career Solutions · Current Jobs |
 | Insights | — |
 | About ▾ | Meet Michael · Contact |
 
@@ -98,6 +98,24 @@ plus a `tel:` phone CTA and Find Talent. The groups live in one array at the
 top of `src/components/Header.astro`; the mobile menu renders the same array
 flat, with a heading per group. "Industries" is deliberately left out until
 it has a page — a link to `#` scrolls to the top and reads as broken.
+
+**The menus are called Hiring and Careers, not "For Companies" and "For
+Professionals", on purpose.** The audience jump bar directly beneath the
+header owns those two phrases. An earlier draft used them for the nav menus
+too, and the two rows — same words, same chevrons, stacked — read as one
+repeated, broken menu. Hiring and Careers are the footer's own column
+headings, so the wording is consistent site-wide without echoing the bar.
+
+**Mobile menu.** The drawer hangs off the sticky header (`position: absolute;
+top: 100%`) instead of sitting in the page flow, so opening it no longer makes
+the header 800px tall and shoves the hero down; it scrolls on its own past
+`100dvh` and `header.ts` locks page scroll behind it. Two mockup bugs were
+fixed along the way: the burger's "open" rule set the same box-shadow as
+closed, so it never became an ✕ (the bars are now pseudo-elements that fold
+into one); and `.mobile-nav a` matched the `<a class="btn">` CTAs as well as
+the list links, stripping their padding and centring — it is now scoped to
+`.mobile-nav ul a`. The drawer's actions are Find Talent and a tap-to-call
+link; "Find a Job" is the Current Jobs row just above them.
 
 Menu behaviour is in `src/scripts/nav-menus.ts`: hover-open with a short
 close delay on pointer devices, click and Enter/Space toggle everywhere,

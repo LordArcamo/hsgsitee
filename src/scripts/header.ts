@@ -26,6 +26,7 @@ export function initHeader(): void {
   /* ---------- mobile menu ---------- */
   const closeMenu = () => {
     mobilenav.classList.remove("open");
+    document.documentElement.classList.remove("nav-open");
     burger.setAttribute("aria-expanded", "false");
     burger.setAttribute("aria-label", "Open menu");
   };
@@ -36,6 +37,7 @@ export function initHeader(): void {
       closeMenu();
     } else {
       mobilenav.classList.add("open");
+      document.documentElement.classList.add("nav-open");
       burger.setAttribute("aria-expanded", "true");
       burger.setAttribute("aria-label", "Close menu");
     }

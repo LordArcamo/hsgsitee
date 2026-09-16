@@ -80,28 +80,63 @@
 .burger {
   display: none; width: 46px; height: 46px; border-radius: 10px;
   border: 1px solid var(--rule); background: var(--surface); color: var(--ink);
-  cursor: pointer; place-items: center;
+  cursor: pointer; place-items: center; position: relative;
 }
-.burger span { display: block; width: 20px; height: 2px; background: currentColor; box-shadow: 0 -6px 0 currentColor, 0 6px 0 currentColor; }
-.burger[aria-expanded="true"] span { box-shadow: 0 -6px 0 currentColor, 0 6px 0 currentColor; }
+/* three bars: the middle one is the span, the outer two are pseudo-elements,
+   so all three can move independently and fold into an X when open */
+.burger span,
+.burger span::before,
+.burger span::after {
+  display: block; width: 20px; height: 2px; background: currentColor; border-radius: 2px;
+  transition: transform .28s var(--ease), opacity .2s ease;
+}
+.burger span { position: relative; }
+.burger span::before,
+.burger span::after { content: ""; position: absolute; left: 0; }
+.burger span::before { top: -6px; }
+.burger span::after  { top: 6px; }
+.burger[aria-expanded="true"] span { background: transparent; }
+.burger[aria-expanded="true"] span::before { transform: translateY(6px) rotate(45deg); }
+.burger[aria-expanded="true"] span::after  { transform: translateY(-6px) rotate(-45deg); }
 
+/* The drawer hangs off the sticky header rather than sitting in the page
+   flow, so opening it no longer makes the header 800px tall and shoves the
+   hero down. It scrolls on its own if the list outgrows the screen, and
+   header.ts locks page scroll behind it while it is open. */
 .mobile-nav {
-  display: none; border-top: 1px solid var(--rule); background: var(--surface);
-  padding: 16px var(--gut) 26px;
+  display: none; position: absolute; top: 100%; left: 0; right: 0; z-index: 65;
+  max-height: calc(100dvh - var(--hdr-h, 73px)); overflow-y: auto;
+  background: var(--surface); border-top: 1px solid var(--rule);
+  box-shadow: 0 30px 60px rgba(24,21,43,.14);
+  padding: 8px var(--gut) 24px;
 }
 .mobile-nav.open { display: block; }
-.mobile-nav ul { display: grid; gap: 2px; }
-.mobile-nav a {
-  display: block; padding: 13px 0; font-size: 16px; font-weight: 700;
-  color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--rule-soft);
-}
-.m-group + .m-group { margin-top: 18px; }
+
+.m-group + .m-group { margin-top: 10px; }
 .m-heading {
-  margin: 0 0 4px; font-size: 11.5px; font-weight: 800; letter-spacing: .14em;
+  margin: 14px 0 2px; font-size: 11px; font-weight: 800; letter-spacing: .14em;
   text-transform: uppercase; color: var(--ink-3);
 }
-.mobile-nav .m-actions { display: grid; gap: 10px; margin-top: 18px; }
-.mobile-nav .btn { width: 100%; }
+.mobile-nav ul { display: grid; gap: 0; }
+/* scoped to the list — an unscoped `.mobile-nav a` also matched the CTA
+   buttons below and stripped their padding and centring */
+.mobile-nav ul a {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 0; font-size: 15.5px; font-weight: 700;
+  color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--rule-soft);
+}
+.mobile-nav ul a::after {
+  content: ""; width: 7px; height: 7px; flex: none;
+  border-right: 2px solid var(--ink-3); border-bottom: 2px solid var(--ink-3);
+  transform: rotate(-45deg); opacity: .55;
+}
+.mobile-nav ul li:last-child a { border-bottom: 0; }
+
+.m-actions { display: grid; gap: 10px; margin-top: 22px; }
+.m-actions .btn { width: 100%; min-height: 50px; }
+
+/* page scroll is locked while the drawer is open */
+html.nav-open { overflow: hidden; }
 
 /* ------------------------------------------------------------
    Header fit
