@@ -2,7 +2,11 @@
  * Sticky header: drop shadow on scroll, mobile menu, and publishing the
  * header height as `--hdr-h` so the audience jump bar can sit beneath it.
  */
+import { initNavMenus } from "./nav-menus";
+
 export function initHeader(): void {
+  initNavMenus();
+
   const hdr = document.getElementById("hdr");
   const burger = document.getElementById("burger");
   const mobilenav = document.getElementById("mobilenav");

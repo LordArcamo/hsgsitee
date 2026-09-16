@@ -2,22 +2,25 @@
 import { url } from "../lib/url";
 ---
 
-<!-- Audience jump bar: appears once the hero scrolls away, so professional
-     visitors can reach Career Solutions without travelling the employer path.
+<!-- Audience bar: appears once the hero scrolls away. Its two buttons open
+     intake forms, so they are labelled by the action they start rather than
+     by audience — the nav directly above already splits the site into
+     "For Companies" and "For Professionals", and repeating those words here
+     with the same chevron made two rows look like one broken menu.
 
      Both buttons open a two-step intake on hover, so a visitor can start the
      conversation from the bar instead of hunting for a form. Labels, step
      copy and the recap are all read from this markup by audience-menu.ts. -->
 <div class="audbar" id="audbar">
   <div class="audbar-in">
-    <span class="lbl">Jump to</span>
+    <span class="lbl">Start here</span>
 
     <!-- ---------------- employers ---------------- -->
     <div class="aud-menu to-hire" data-aud-menu>
       <button class="aud-trigger" type="button"
               aria-expanded="false" aria-controls="aud-panel-hire" aria-haspopup="true">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 20v-1.6A3.4 3.4 0 0 0 12.6 15H6.4A3.4 3.4 0 0 0 3 18.4V20"/><circle cx="9.5" cy="7.5" r="3.5"/><path d="M17 11l2 2 4-4"/></svg>
-        For Companies
+        Start a search
         <svg class="aud-chev" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
       </button>
 
@@ -104,7 +107,7 @@ import { url } from "../lib/url";
       <button class="aud-trigger" type="button"
               aria-expanded="false" aria-controls="aud-panel-career" aria-haspopup="true">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 17l5.5-5.5 3.5 3.5L21 6"/><path d="M15.5 6H21v5.5"/><path d="M3 21h18"/></svg>
-        For Professionals
+        Explore your next move
         <svg class="aud-chev" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
       </button>
 

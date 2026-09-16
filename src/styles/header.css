@@ -17,21 +17,65 @@
 .logo img { transition: opacity .25s var(--ease); }
 .logo:hover img { opacity: .82; }
 
-.nav { display: flex; align-items: center; gap: 24px; }
-.nav a {
-  position: relative; padding: 4px 0; font-size: 14.5px; font-weight: 700;
-  color: var(--ink-2); text-decoration: none; white-space: nowrap; transition: color .18s ease;
+.nav { display: flex; align-items: center; gap: 26px; }
+
+/* A top-level link and a menu trigger look identical: same weight, same
+   underline that draws in from the left on hover. */
+.nav-link,
+.nav-trigger {
+  position: relative; display: inline-flex; align-items: center; gap: 6px;
+  padding: 4px 0; font-family: inherit; font-size: 14.5px; font-weight: 700;
+  /* buttons default to line-height: normal, which sits them 4px off the links */
+  line-height: inherit;
+  color: var(--ink-2); text-decoration: none; white-space: nowrap;
+  background: none; border: 0; cursor: pointer; transition: color .18s ease;
 }
-.nav a::after {
+.nav-link::after,
+.nav-trigger::after {
   content: ""; position: absolute; left: 0; right: 100%; bottom: -3px; height: 2px;
   background: var(--accent); transition: right .3s var(--ease);
 }
-.nav a:hover { color: var(--accent); }
-.nav a:hover::after { right: 0; }
+.nav-link:hover, .nav-trigger:hover,
+.nav-trigger[aria-expanded="true"] { color: var(--accent); }
+.nav-link:hover::after, .nav-trigger:hover::after,
+.nav-trigger[aria-expanded="true"]::after { right: 0; }
+.nav-link:focus-visible, .nav-trigger:focus-visible {
+  outline: 2px solid var(--accent); outline-offset: 4px; border-radius: 4px;
+}
+
+.nav-chev { flex: none; opacity: .7; transition: transform .25s var(--ease); }
+.nav-trigger[aria-expanded="true"] .nav-chev { transform: rotate(180deg); }
+
+/* ---- dropdown ---- */
+.nav-item { position: relative; }
+.nav-menu {
+  position: absolute; top: calc(100% + 14px); left: -14px; z-index: 70;
+  min-width: 220px; padding: 8px;
+  background: var(--surface); border: 1px solid var(--rule); border-radius: 14px;
+  box-shadow: var(--shadow-lg);
+  opacity: 0; transform: translateY(-6px);
+  transition: opacity .2s var(--ease), transform .2s var(--ease);
+}
+.nav-menu[hidden] { display: none; }
+.nav-item.is-open .nav-menu { opacity: 1; transform: none; }
+/* invisible bridge so the pointer can travel from trigger to menu */
+.nav-menu::before { content: ""; position: absolute; left: 0; right: 0; top: -14px; height: 14px; }
+
+.nav-menu a {
+  display: block; padding: 10px 12px; border-radius: 9px;
+  font-size: 14px; font-weight: 600; color: var(--ink); text-decoration: none;
+  white-space: nowrap; transition: background .15s ease, color .15s ease;
+}
+.nav-menu a:hover, .nav-menu a:focus-visible {
+  background: var(--accent-soft); color: var(--accent); outline: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-menu, .nav-chev { transition: none; }
+}
 
 .hdr-cta { display: flex; align-items: center; gap: 12px; }
 .hdr-cta .btn { min-height: 44px; padding: 0 20px; font-size: 14px; box-shadow: 0 10px 22px rgba(90,45,145,.18); }
-.hdr-cta .btn--ghost { box-shadow: none; }
 
 .burger {
   display: none; width: 46px; height: 46px; border-radius: 10px;
@@ -50,6 +94,11 @@
 .mobile-nav a {
   display: block; padding: 13px 0; font-size: 16px; font-weight: 700;
   color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--rule-soft);
+}
+.m-group + .m-group { margin-top: 18px; }
+.m-heading {
+  margin: 0 0 4px; font-size: 11.5px; font-weight: 800; letter-spacing: .14em;
+  text-transform: uppercase; color: var(--ink-3);
 }
 .mobile-nav .m-actions { display: grid; gap: 10px; margin-top: 18px; }
 .mobile-nav .btn { width: 100%; }
@@ -82,27 +131,20 @@
    Search® Works" is wider than a phone. */
 .hdr .btn { white-space: nowrap; }
 
-/* ---- full nav ----
-   The real logo lockup is ~185px wide at 44px tall, against 269px for the
-   placeholder wordmark it replaced. That 85px buys back the nav's designed
-   14.5px/24px on a normal desktop; it steps down once before collapsing. */
-@media (max-width: 1279px) {
-  .nav { gap: 18px; }
-  .nav a { font-size: 13.5px; }
-}
-
-@media (min-width: 1180px) {
-  /* "Find a Job" is one click away via the Jobs link that is now on show */
-  .hdr-cta .btn--ghost { display: none; }
-}
-
-/* ---- burger ---- */
-@media (max-width: 1179px) {
+/* ---- full nav / burger ----
+   Four top-level items measure ~461px at the design's 14.5px/24px. With the
+   185px logo, the 117px CTA and the two 22px gaps that is ~807px, which the
+   wrap's content box clears from a 960px viewport up. Below that the burger
+   takes over. No intermediate size step is needed any more. */
+@media (max-width: 959px) {
   .nav { display: none; }
   .burger { display: grid; }
 }
 
-/* Below this the brand plus two buttons plus the burger stop fitting. */
-@media (max-width: 1040px) { .hdr-cta .btn--ghost { display: none; } }
+/* The phone CTA adds ~165px. It has room from ~1100px up; below that the
+   nav keeps its space and the number moves into the burger menu, where a
+   tap-to-call link is more useful anyway. */
+.hdr-phone { gap: 8px; }
+@media (max-width: 1099px) { .hdr-phone { display: none; } }
 
 @media (max-width: 560px) { .hdr-cta .btn { display: none; } }

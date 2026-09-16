@@ -82,30 +82,39 @@ and renders in standards mode, which is correct — but it means wrapped text in
 narrow columns sits ~3px per line taller than the original mockup did. Verified:
 the original *with* a doctype added matches this port exactly.
 
-**The header was fixed, not ported as-is.** The mockup gave the brand, eight
-nav links and two buttons a 1260px wrap to share. Measured, they want ~1450px,
-so the browser shrank whatever could shrink: the wordmark broke onto four lines
-and "Find a Job" onto three, at every desktop width. The live mockup has the
-same bug.
+**The nav is four items and two menus.** The mockup had eight flat links and
+two buttons in the header, which need ~1450px inside a 1260px wrap and never
+fit at any screen size — the wordmark broke onto four lines and "Find a Job"
+onto three. The nav is now built around the site's two audiences:
 
-The wrap's content box tops out at **1148px** and stops growing past a 1260px
-viewport, so the nav at its full 14.5px/24px needs 775px and cannot fit beside
-the brand and two buttons on *any* screen. So:
+| Top level | Opens to |
+| --- | --- |
+| For Companies ▾ | Hiring Solutions · Collaborative Search® · Success Stories |
+| For Professionals ▾ | Career Solutions · Current Jobs |
+| Insights | — |
+| About ▾ | Meet Michael · Contact |
 
-- nothing in the header may flex-shrink — an item allowed to shrink below its
-  content silently overflows, which is how the nav ended up sitting on top of
-  the buttons. Everything is `flex: none`, so a bad fit shows as overflow
-  rather than as overlap.
-- the nav runs one step down (18px gaps, 13.5px) whenever it is shown
-- the header carries one primary CTA while the full nav is up; "Find a Job"
-  returns between 1040–1199px and lives in the burger menu below that
-- the strapline is dropped only between 1200–1259px, where the nav needs it
-- below 1200px the nav becomes the burger menu
+plus a `tel:` phone CTA and Find Talent. The groups live in one array at the
+top of `src/components/Header.astro`; the mobile menu renders the same array
+flat, with a heading per group. "Industries" is deliberately left out until
+it has a page — a link to `#` scrolls to the top and reads as broken.
 
-Verified 390px–1600px: one row of links, 27–37px clearance between the last
-link and the CTA, no wrapping, and no horizontal overflow. When changing header
-content, check the gap between the **last nav link** and the CTA — not the nav
-box edge, which stays plausible even while the links overflow it.
+Menu behaviour is in `src/scripts/nav-menus.ts`: hover-open with a short
+close delay on pointer devices, click and Enter/Space toggle everywhere,
+ArrowDown enters the menu, Escape returns focus to the trigger, and focus or
+a click landing outside closes it. One menu is open at a time.
+
+Nothing in the header may flex-shrink — an item allowed to shrink below its
+content silently overflows, which is how an earlier version ended up with the
+nav sitting on top of the buttons. Everything is `flex: none`, so a bad fit
+shows as overflow rather than overlap. Breakpoints: full nav from 960px; the
+phone CTA needs ~165px more and shows from 1100px, dropping into the burger
+menu below that, where a tap-to-call link is more useful anyway. Verified
+390px–1440px with the last top-level item's edge measured against the CTA,
+not the nav box edge, which stays plausible even while its contents overflow.
+
+The `<button>` triggers need `line-height: inherit` — the UA default of
+`normal` sits them 4px off the plain links beside them.
 
 **The palette is pinned to light.** `src/layouts/BaseLayout.astro` sets
 `data-theme="light"` on `<html>`, so the site is the white ground on every
