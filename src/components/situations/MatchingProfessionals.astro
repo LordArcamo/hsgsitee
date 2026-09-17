@@ -1,8 +1,14 @@
 ---
 /*
- * The seven profile cards. Every card carries the same four statistics in
- * the same order, because both the labels and the order come from STATS —
- * the single definition the comparison table also renders from.
+ * Six profile cards on the left, the quick comparison panel on the right.
+ *
+ * Each card runs the summary and the statistics side by side rather than
+ * stacking them, which is what keeps six candidates from pushing the
+ * comparison far down the page — the v2 brief's main complaint about v1.
+ *
+ * Every card carries the same four statistics in the same order because
+ * both the labels and the order come from STATS, the one definition the
+ * quick panel and the full table also read from.
  */
 import {
   PROFESSIONALS,
@@ -10,6 +16,7 @@ import {
   pluralizeTitle,
   type SearchCriteria,
 } from "../../data/situations";
+import QuickCompare from "./QuickCompare.astro";
 
 interface Props {
   criteria: SearchCriteria;
@@ -18,7 +25,7 @@ interface Props {
 const { criteria } = Astro.props;
 ---
 
-<section class="sec sec--soft" id="professionals">
+<section class="sec sec--soft sw-results" id="professionals">
   <div class="wrap">
     <div class="sec-head rv">
       <h2>
@@ -27,31 +34,45 @@ const { criteria } = Astro.props;
       </h2>
     </div>
 
-    <div class="sw-grid">
-      {
-        PROFESSIONALS.map((p, i) => (
-          <article class="sw-card rv" style={`--d:${i % 3}`}>
-            <header class="sw-card-head">
-              <span class="sw-mono" aria-hidden="true">{p.name.charAt(0)}</span>
-              <div class="sw-card-id">
-                <h3>{p.name}</h3>
-                <p class="sw-role">{p.role}</p>
+    <div class="sw-layout">
+      <QuickCompare />
+
+      <div class="sw-cards">
+        {
+          PROFESSIONALS.map((p, i) => (
+            <article class="sw-card rv" style={`--d:${Math.min(i, 2)}`}>
+              <div class="sw-card-main">
+                <header class="sw-card-head">
+                  <span class="sw-mono" aria-hidden="true">
+                    {p.name.charAt(0)}
+                  </span>
+                  <div class="sw-card-id">
+                    <h3>{p.name}</h3>
+                    <p class="sw-role">{p.role}</p>
+                  </div>
+                </header>
+
+                <p class="sw-sum">{p.summary}</p>
+
+                <ul class="sw-tools" aria-label={`Software used by ${p.name}`}>
+                  {p.software.map((tool) => (
+                    <li>{tool}</li>
+                  ))}
+                </ul>
               </div>
-            </header>
 
-            <p class="sw-sum">{p.summary}</p>
-
-            <dl class="sw-stats">
-              {STATS.map((s) => (
-                <div class:list={["sw-stat", { "sw-stat--wide": !s.numeric }]}>
-                  <dt>{s.label}</dt>
-                  <dd>{s.value(p)}</dd>
-                </div>
-              ))}
-            </dl>
-          </article>
-        ))
-      }
+              <dl class="sw-stats">
+                {STATS.map((s) => (
+                  <div class:list={["sw-stat", { "sw-stat--wide": !s.numeric }]}>
+                    <dt>{s.label}</dt>
+                    <dd>{s.value(p)}</dd>
+                  </div>
+                ))}
+              </dl>
+            </article>
+          ))
+        }
+      </div>
     </div>
 
     <p class="sw-fine rv">

@@ -1,0 +1,52 @@
+---
+/*
+ * The comparison, put in front of HR before they have scrolled past the
+ * first candidate — the whole point of the v2 layout. It is a preview of
+ * the full table, not a replacement for it: the complete spreadsheet still
+ * sits at the bottom of the page, and this links down to it with a real
+ * anchor so it works without JavaScript and stays keyboard-reachable.
+ *
+ * Sticky beside the cards on desktop; above them on tablet and mobile,
+ * where there is no second column to sit in.
+ */
+import { PROFESSIONALS, QUICK_STATS, header } from "../../data/situations";
+---
+
+<aside class="sw-quick" aria-labelledby="quick-compare-h">
+  <div class="sw-quick-in">
+    <h3 id="quick-compare-h">Quick Comparison</h3>
+    <p class="sw-quick-sub">See the professionals side by side.</p>
+
+    <table class="sw-qtable">
+      <thead>
+        <tr>
+          <th scope="col">Name</th>
+          {
+            QUICK_STATS.map((s) => (
+              <th scope="col" class="is-num">
+                {header(s)}
+              </th>
+            ))
+          }
+        </tr>
+      </thead>
+      <tbody>
+        {
+          PROFESSIONALS.map((p) => (
+            <tr>
+              <th scope="row">{p.name}</th>
+              {QUICK_STATS.map((s) => (
+                <td class="is-num">{s.value(p)}</td>
+              ))}
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+
+    <a class="btn btn--ghost sw-quick-btn" href="#full-comparison">
+      View Full Comparison
+      <span class="arrow arrow--down" aria-hidden="true">↓</span>
+    </a>
+  </div>
+</aside>

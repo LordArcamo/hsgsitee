@@ -1,16 +1,20 @@
 ---
 /*
- * The same seven profiles and the same four statistics as the cards above,
- * rendered from the same PROFESSIONALS × STATS data — side by side, so HR
- * can compare without scrolling back up through the cards.
+ * The complete spreadsheet. Same six profiles as the cards above and the
+ * quick panel beside them, rendered from the same data through FULL_STATS —
+ * the four card statistics plus Software / Tools, which is the column that
+ * makes the six profiles tell themselves apart at a glance.
+ *
+ * It stays on the page whatever the quick panel does: the panel links here,
+ * it does not replace this.
  *
  * The scroll container is focusable so the table can be scrolled from the
  * keyboard on narrow screens; its text is never shrunk to make it fit.
  */
-import { PROFESSIONALS, STATS } from "../../data/situations";
+import { PROFESSIONALS, FULL_STATS, header } from "../../data/situations";
 ---
 
-<section class="sec" id="compare">
+<section class="sec" id="full-comparison">
   <div class="wrap">
     <div class="sec-head rv">
       <h2>Compare the Professionals</h2>
@@ -21,16 +25,16 @@ import { PROFESSIONALS, STATS } from "../../data/situations";
       style="--d:1"
       tabindex="0"
       role="region"
-      aria-label="Comparison of the matching professionals"
+      aria-label="Full comparison of the matching professionals"
     >
       <table class="sw-table">
         <thead>
           <tr>
             <th scope="col">Professional</th>
             {
-              STATS.map((s) => (
+              FULL_STATS.map((s) => (
                 <th scope="col" class:list={[{ "is-num": s.numeric }]}>
-                  {s.label}
+                  {header(s)}
                 </th>
               ))
             }
@@ -41,7 +45,7 @@ import { PROFESSIONALS, STATS } from "../../data/situations";
             PROFESSIONALS.map((p) => (
               <tr>
                 <th scope="row">{p.name}</th>
-                {STATS.map((s) => (
+                {FULL_STATS.map((s) => (
                   <td class:list={[{ "is-num": s.numeric }]}>{s.value(p)}</td>
                 ))}
               </tr>
