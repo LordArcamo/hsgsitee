@@ -95,6 +95,111 @@ function experienceLabel(raw: string): string {
   return range ? `${range} Years Experience` : "";
 }
 
+/* ============================================================
+   Tidying what was typed
+
+   Three free-text fields reach this page straight from the form, and
+   whatever is in them becomes a 46px heading. Typed as-is they read as
+   broken: "mechanical engineer" gives "Situations Wanted for mechanical
+   engineers", "newark, nj" gives "Newark, Nj", and a salary of "100"
+   gives a criteria chip that just says 100.
+
+   None of this validates the search — it only presents it. An unknown
+   word is still shown, because it is what the employer asked for.
+   ============================================================ */
+
+/** Nothing pasted into a form field should be able to eat the heading. */
+const MAX_LENGTH = { title: 60, location: 60, salary: 40 };
+
+const clean = (raw: string, max: number) =>
+  raw.replace(/\s+/g, " ").trim().slice(0, max);
+
+/** Small words that stay lowercase anywhere but the first position. */
+const MINOR_WORDS = new Set([
+  "a", "an", "and", "at", "for", "in", "of", "or", "the", "to",
+]);
+
+/** Job-title acronyms people type in lower case. */
+const ACRONYMS = new Set([
+  "cfo", "ceo", "coo", "cto", "cio", "cmo", "chro", "vp", "svp", "evp",
+  "hr", "it", "qa", "ux", "ui", "pm", "gm", "ehs", "erp", "sap",
+]);
+
+function capitalizePart(part: string): string {
+  if (!part) return part;
+  if (ACRONYMS.has(part.toLowerCase())) return part.toUpperCase();
+  // Something already carrying a capital was typed deliberately — "CFO",
+  // "McKinsey", "iOS" — so it is left exactly as it came in.
+  if (/[A-Z]/.test(part)) return part;
+  return part.charAt(0).toUpperCase() + part.slice(1);
+}
+
+/** Title-case a word, including each half of a hyphenated one. */
+const capitalizeWord = (word: string) =>
+  word.split("-").map(capitalizePart).join("-");
+
+export function titleCase(value: string): string {
+  return value
+    .split(" ")
+    .map((word, i) =>
+      i > 0 && MINOR_WORDS.has(word.toLowerCase())
+        ? word.toLowerCase()
+        : capitalizeWord(word),
+    )
+    .join(" ");
+}
+
+/** As titleCase, but a two-letter token is a state code, not a word. */
+export function formatLocation(value: string): string {
+  return titleCase(value)
+    .split(" ")
+    .map((word) => {
+      const bare = word.replace(/[^A-Za-z]/g, "");
+      return bare.length === 2 ? word.toUpperCase() : word;
+    })
+    .join(" ");
+}
+
+/**
+ * Money, from a field with no format and only a placeholder to guide it.
+ *
+ * Anything already carrying a currency symbol is trusted and left alone.
+ * A bare figure is read as thousands — "100" and "100k" and "100000" all
+ * become "$100K" — because this field is a salary on an executive search
+ * form, where 100 never means one hundred dollars. A figure that is not a
+ * round number of thousands keeps its precision ("95500" → "$95,500"),
+ * and anything containing words is left exactly as typed.
+ *
+ * NOTE: the thousands reading is an assumption about intent. It is the one
+ * judgement call in here and is easy to drop if HSG would rather see the
+ * raw entry.
+ */
+export function formatSalary(value: string): string {
+  if (!value) return "";
+  if (/[$£€]/.test(value)) return value;
+  // Leave anything with words in it alone — "DOE", "negotiable", "per hour" —
+  // but "to" and "and" are how people write a range, not words about money.
+  const bare = value.replace(/k/gi, "").replace(/\b(?:to|and)\b/gi, "");
+  if (/[a-z]/i.test(bare)) return value;
+
+  const figures = value.match(/\d[\d,]*(?:\.\d+)?k?/gi);
+  if (!figures) return value;
+
+  const money = (figure: string) => {
+    const hasK = /k$/i.test(figure);
+    const n = Number(figure.replace(/[,k]/gi, ""));
+    if (!Number.isFinite(n) || n <= 0) return null;
+    const dollars = hasK || n < 1000 ? n * 1000 : n;
+    return dollars % 1000 === 0
+      ? `$${dollars / 1000}K`
+      : `$${dollars.toLocaleString("en-US")}`;
+  };
+
+  const parts = figures.map(money);
+  if (parts.some((p) => p === null)) return value;
+  return parts.join(" – ");
+}
+
 /**
  * Resolve the criteria to display. Every field falls back to the example,
  * so a visitor who reaches this page with no query string — or with a
@@ -109,8 +214,14 @@ export function criteriaFromQuery(params: URLSearchParams): SearchCriteria {
   const path = raw(QUERY_KEYS.path);
 
   return {
-    title: pick(raw(QUERY_KEYS.title), EXAMPLE_SEARCH.title),
-    location: pick(raw(QUERY_KEYS.location), EXAMPLE_SEARCH.location),
+    title: pick(
+      titleCase(clean(raw(QUERY_KEYS.title), MAX_LENGTH.title)),
+      EXAMPLE_SEARCH.title,
+    ),
+    location: pick(
+      formatLocation(clean(raw(QUERY_KEYS.location), MAX_LENGTH.location)),
+      EXAMPLE_SEARCH.location,
+    ),
     experienceRange: pick(experienceLabel(years), EXAMPLE_SEARCH.experienceRange),
     positionType: pick(
       opening ? (POSITION_LABELS[opening] ?? opening) : "",
@@ -120,7 +231,10 @@ export function criteriaFromQuery(params: URLSearchParams): SearchCriteria {
       path ? (CAREER_PATH_LABELS[path] ?? path) : "",
       EXAMPLE_SEARCH.careerPath,
     ),
-    salaryRange: pick(raw(QUERY_KEYS.salary), EXAMPLE_SEARCH.salaryRange),
+    salaryRange: pick(
+      formatSalary(clean(raw(QUERY_KEYS.salary), MAX_LENGTH.salary)),
+      EXAMPLE_SEARCH.salaryRange,
+    ),
   };
 }
 
