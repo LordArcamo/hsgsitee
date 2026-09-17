@@ -28,9 +28,20 @@
     radial-gradient(44% 46% at 4% 92%, var(--hiring-soft), transparent 72%),
     var(--ground);
 }
+/*
+ * No measure cap on either results heading: both are meant to read as one
+ * line — "Situations Wanted for Mechanical Engineers" and "6 Mechanical
+ * Engineers Matching Your Search" — and a 20ch/68ch limit broke each of
+ * them across two lines well before the column ran out of room.
+ *
+ * They are not forced onto one line with `nowrap`, because the role comes
+ * from the search box and can be much longer than the example. At these
+ * sizes the example holds one line down to roughly a 600px viewport, and
+ * anything longer or narrower wraps on its own rather than overflowing.
+ */
 .sw-hero h1 {
   font-size: clamp(28px, 3.6vw, 46px); line-height: 1.08; letter-spacing: -.03em;
-  margin-top: 14px; max-width: 20ch;
+  margin-top: 14px; max-width: none;
 }
 
 .sw-criteria {
@@ -47,6 +58,9 @@
 
 /* ---------- 2. results: cards left, comparison right ---------- */
 .sw-results { padding-block: clamp(42px, 5vw, 68px); }
+/* "6 Mechanical Engineers Matching Your Search" on one line — the shared
+   .sec-head measure is sized for body copy and wrapped it in half. */
+.sw-results .sec-head { max-width: none; }
 
 .sw-layout {
   margin-top: clamp(22px, 2.8vw, 34px);
