@@ -1,0 +1,226 @@
+/* ============================================================
+   HEADER
+   ============================================================ */
+.hdr { position: sticky; top: 0; z-index: 60; background: var(--surface); transition: box-shadow .3s ease; }
+.hdr.scrolled { box-shadow: 0 6px 26px rgba(24,21,43,.07); }
+/* three-segment rule: brand · hiring · career */
+.hdr::after {
+  content: ""; display: block; height: 3px;
+  background: linear-gradient(90deg,
+    var(--accent) 0 40%, var(--hiring-fill) 40% 70%, var(--career-fill) 70% 100%);
+}
+.hdr-in {
+  max-width: var(--wrap); margin-inline: auto; padding: 12px var(--gut);
+  display: flex; align-items: center; justify-content: space-between; gap: 22px;
+}
+.logo { display: inline-flex; align-items: center; gap: 12px; text-decoration: none; }
+.logo img { transition: opacity .25s var(--ease); }
+.logo:hover img { opacity: .82; }
+
+.nav { display: flex; align-items: center; gap: 26px; }
+
+/* A top-level link and a menu trigger look identical: same weight, same
+   underline that draws in from the left on hover. */
+.nav-link,
+.nav-trigger {
+  position: relative; display: inline-flex; align-items: center; gap: 6px;
+  padding: 4px 0; font-family: inherit; font-size: 14.5px; font-weight: 700;
+  /* buttons default to line-height: normal, which sits them 4px off the links */
+  line-height: inherit;
+  color: var(--ink-2); text-decoration: none; white-space: nowrap;
+  background: none; border: 0; cursor: pointer; transition: color .18s ease;
+}
+.nav-link::after,
+.nav-trigger::after {
+  content: ""; position: absolute; left: 0; right: 100%; bottom: -3px; height: 2px;
+  background: var(--accent); transition: right .3s var(--ease);
+}
+.nav-link:hover, .nav-trigger:hover,
+.nav-trigger[aria-expanded="true"] { color: var(--accent); }
+.nav-link:hover::after, .nav-trigger:hover::after,
+.nav-trigger[aria-expanded="true"]::after { right: 0; }
+.nav-link:focus-visible, .nav-trigger:focus-visible {
+  outline: 2px solid var(--accent); outline-offset: 4px; border-radius: 4px;
+}
+
+/* ---- practice colours ----
+   Hiring is green and Careers is gold, the same two accents the header
+   stripe, the section eyebrows and the candidate cards already use. Only
+   these two are coloured: Insights and About are not practices, so they
+   stay in the default ink and the colour keeps meaning something.
+
+   Careers uses --career-head, the exact logo gold, so the nav matches the
+   hero's own "Career Solutions" — the client asked for that specific gold
+   after seeing the darker one in place. It is 1.62:1 on white, well under
+   the 4.5:1 that 14.5px text wants, and that is a deliberate brand-match
+   decision rather than an oversight. Swap it to --career (#967000, 4.55:1)
+   to put legibility first.
+
+   Hiring stays on --hiring (4.50:1), which is what was asked for and reads
+   cleanly. Its hero counterpart is the lighter --hiring-head #68a442 if the
+   two should be matched as a pair.
+
+   Hover and open state keep the practice colour rather than turning purple
+   like the other two; the underline sliding in is the feedback. */
+.nav-item.is-hiring .nav-trigger,
+.nav-item.is-hiring .nav-trigger:hover,
+.nav-item.is-hiring .nav-trigger[aria-expanded="true"] { color: var(--hiring); }
+.nav-item.is-careers .nav-trigger,
+.nav-item.is-careers .nav-trigger:hover,
+.nav-item.is-careers .nav-trigger[aria-expanded="true"] { color: var(--career-head); }
+
+.nav-item.is-hiring .nav-trigger::after { background: var(--hiring-fill); }
+.nav-item.is-careers .nav-trigger::after { background: var(--career-fill); }
+
+.nav-item.is-hiring .nav-trigger:focus-visible { outline-color: var(--hiring); }
+.nav-item.is-careers .nav-trigger:focus-visible { outline-color: var(--career); }
+
+.nav-chev { flex: none; opacity: .7; transition: transform .25s var(--ease); }
+.nav-trigger[aria-expanded="true"] .nav-chev { transform: rotate(180deg); }
+
+/* ---- dropdown ---- */
+.nav-item { position: relative; }
+.nav-menu {
+  position: absolute; top: calc(100% + 14px); left: -14px; z-index: 70;
+  min-width: 220px; padding: 8px;
+  background: var(--surface); border: 1px solid var(--rule); border-radius: 14px;
+  box-shadow: var(--shadow-lg);
+  opacity: 0; transform: translateY(-6px);
+  transition: opacity .2s var(--ease), transform .2s var(--ease);
+}
+.nav-menu[hidden] { display: none; }
+.nav-item.is-open .nav-menu { opacity: 1; transform: none; }
+/* invisible bridge so the pointer can travel from trigger to menu */
+.nav-menu::before { content: ""; position: absolute; left: 0; right: 0; top: -14px; height: 14px; }
+
+.nav-menu a {
+  display: block; padding: 10px 12px; border-radius: 9px;
+  font-size: 14px; font-weight: 600; color: var(--ink); text-decoration: none;
+  white-space: nowrap; transition: background .15s ease, color .15s ease;
+}
+.nav-menu a:hover, .nav-menu a:focus-visible {
+  background: var(--accent-soft); color: var(--accent); outline: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-menu, .nav-chev { transition: none; }
+}
+
+.hdr-cta { display: flex; align-items: center; gap: 12px; }
+.hdr-cta .btn { min-height: 44px; padding: 0 20px; font-size: 14px; box-shadow: 0 10px 22px rgba(90,45,145,.18); }
+
+.burger {
+  display: none; width: 46px; height: 46px; border-radius: 10px;
+  border: 1px solid var(--rule); background: var(--surface); color: var(--ink);
+  cursor: pointer; place-items: center; position: relative;
+}
+/* three bars: the middle one is the span, the outer two are pseudo-elements,
+   so all three can move independently and fold into an X when open */
+.burger span,
+.burger span::before,
+.burger span::after {
+  display: block; width: 20px; height: 2px; background: currentColor; border-radius: 2px;
+  transition: transform .28s var(--ease), opacity .2s ease;
+}
+.burger span { position: relative; }
+.burger span::before,
+.burger span::after { content: ""; position: absolute; left: 0; }
+.burger span::before { top: -6px; }
+.burger span::after  { top: 6px; }
+.burger[aria-expanded="true"] span { background: transparent; }
+.burger[aria-expanded="true"] span::before { transform: translateY(6px) rotate(45deg); }
+.burger[aria-expanded="true"] span::after  { transform: translateY(-6px) rotate(-45deg); }
+
+/* The drawer hangs off the sticky header rather than sitting in the page
+   flow, so opening it no longer makes the header 800px tall and shoves the
+   hero down. It scrolls on its own if the list outgrows the screen, and
+   header.ts locks page scroll behind it while it is open. */
+.mobile-nav {
+  display: none; position: absolute; top: 100%; left: 0; right: 0; z-index: 65;
+  max-height: calc(100dvh - var(--hdr-h, 73px)); overflow-y: auto;
+  background: var(--surface); border-top: 1px solid var(--rule);
+  box-shadow: 0 30px 60px rgba(24,21,43,.14);
+  padding: 8px var(--gut) 24px;
+}
+.mobile-nav.open { display: block; }
+
+.m-group + .m-group { margin-top: 10px; }
+.m-heading {
+  margin: 14px 0 2px; font-size: 11px; font-weight: 800; letter-spacing: .14em;
+  text-transform: uppercase; color: var(--ink-3);
+}
+/* The same two practice colours on the phone, where these are headings
+   rather than links — Michael reviews on his phone, and a green nav that
+   turns grey in the drawer would read as two different navigations. */
+.m-group.is-hiring .m-heading { color: var(--hiring); }
+/* The same logo gold as the desktop trigger. This one is 11px uppercase,
+   so it is the most affected by that colour's 1.62:1 — set it back to
+   --career if the drawer heading needs to be readable over the match. */
+.m-group.is-careers .m-heading { color: var(--career-head); }
+
+.mobile-nav ul { display: grid; gap: 0; }
+/* scoped to the list — an unscoped `.mobile-nav a` also matched the CTA
+   buttons below and stripped their padding and centring */
+.mobile-nav ul a {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 0; font-size: 15.5px; font-weight: 700;
+  color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--rule-soft);
+}
+.mobile-nav ul a::after {
+  content: ""; width: 7px; height: 7px; flex: none;
+  border-right: 2px solid var(--ink-3); border-bottom: 2px solid var(--ink-3);
+  transform: rotate(-45deg); opacity: .55;
+}
+.mobile-nav ul li:last-child a { border-bottom: 0; }
+
+.m-actions { display: grid; gap: 10px; margin-top: 22px; }
+.m-actions .btn { width: 100%; min-height: 50px; }
+
+/* page scroll is locked while the drawer is open */
+html.nav-open { overflow: hidden; }
+
+/* ------------------------------------------------------------
+   Header fit
+
+   The mockup gave the brand, eight nav links and two buttons a 1260px
+   wrap to share. Measured, they want ~1450px, so the browser shrank
+   whatever could shrink: the wordmark broke onto four lines and
+   "Find a Job" onto three, at every desktop width.
+
+   The wrap's content box tops out at 1148px (1260 minus two 56px
+   gutters) and does not grow past a 1260px viewport, so the nav at its
+   full 14.5px/24px needs 775px and never fits beside the brand and the
+   buttons — on any screen. It therefore runs one step down whenever it
+   is shown, and the header carries one primary call to action while the
+   full nav is up.
+
+   Nothing here may flex-shrink: an item allowed to shrink below its
+   content silently overflows (overflow is visible on the header), which
+   is how the nav ended up sitting on top of the buttons. Everything is
+   flex: none so that a bad fit shows up as overflow instead of overlap.
+   ------------------------------------------------------------ */
+.hdr .logo,
+.hdr .hdr-cta,
+.hdr .nav { flex: none; }
+/* Header CTAs are two or three short words and must stay on one line.
+   Body CTAs keep the default and are free to wrap — "See How Collaborative
+   Search® Works" is wider than a phone. */
+.hdr .btn { white-space: nowrap; }
+
+/* ---- full nav / burger ----
+   Four top-level items measure ~461px at the design's 14.5px/24px. With the
+   185px logo, the 117px CTA and the two 22px gaps that is ~807px, which the
+   wrap's content box clears from a 960px viewport up. Below that the burger
+   takes over. No intermediate size step is needed any more. */
+@media (max-width: 959px) {
+  .nav { display: none; }
+  .burger { display: grid; }
+}
+
+/* The phone CTA adds ~165px. It has room from ~1100px up; below that the
+   nav keeps its space and the number moves into the burger menu, where a
+   tap-to-call link is more useful anyway. */
+.hdr-phone { gap: 8px; }
+@media (max-width: 1099px) { .hdr-phone { display: none; } }
+
+@media (max-width: 560px) { .hdr-cta .btn { display: none; } }

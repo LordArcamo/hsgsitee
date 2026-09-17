@@ -1,0 +1,26 @@
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.ftr { background: var(--panel); color: var(--panel-ink-2); border-top: 1px solid var(--panel-rule); }
+.ftr-in { padding-block: clamp(44px, 5vw, 68px) 26px; display: grid; gap: 40px; }
+.ftr-top { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr 1fr; gap: 30px; }
+.ftr h5 { font-family: var(--body); font-size: 11.5px; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; color: var(--panel-ink); margin: 0 0 14px; }
+.ftr ul { display: grid; gap: 9px; }
+.ftr a { color: var(--panel-ink-2); text-decoration: none; font-size: 14.5px; }
+.ftr a:hover { color: var(--panel-ink); text-decoration: underline; }
+.ftr address { font-style: normal; font-size: 14.5px; line-height: 1.75; }
+.ftr-brand { display: grid; gap: 14px; align-content: start; }
+.ftr-related {
+  margin-top: 18px; font-size: 13.5px; line-height: 1.6;
+  border-top: 1px solid var(--panel-rule); padding-top: 16px;
+}
+.ftr-bot { border-top: 1px solid var(--panel-rule); padding-top: 22px; display: flex; justify-content: space-between; gap: 18px; flex-wrap: wrap; font-size: 13.5px; }
+@media (max-width: 1000px) { .ftr-top { grid-template-columns: 1fr 1fr 1fr; } }
+@media (max-width: 640px) {
+  .ftr-top { grid-template-columns: 1fr 1fr; }
+  /* The contact email cannot break, so it sets a min-content floor wider
+     than half the row. Give the brand its own row rather than let that
+     floor push the whole grid past the gutter. */
+  .ftr-brand { grid-column: 1 / -1; }
+}
+

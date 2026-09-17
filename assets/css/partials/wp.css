@@ -1,0 +1,54 @@
+/* WordPress-only additions that have no design counterpart. */
+/* Licence credit for the hero photograph (CC BY needs attribution): read from the image's caption in the Media Library. */
+.hero-credit { position: absolute; left: 12px; bottom: 10px; z-index: 2; font-size: 9.5px; line-height: 1.3; letter-spacing: .02em; color: #fff; opacity: .72; text-shadow: 0 1px 2px rgba(0,0,0,.6); pointer-events: none; max-width: 60%; }
+
+/* 1 — Careers: the logo gold clashed (client review 17 Sep 2026); use the darker gold that also passes contrast. */
+.nav-item.is-careers .nav-trigger, .nav-item.is-careers .nav-trigger:hover, .nav-item.is-careers .nav-trigger[aria-expanded="true"], .m-group.is-careers .m-heading { color: var(--career); }
+.nav-item.is-careers .nav-trigger::after { background: var(--career); }
+.hero h1 .t-career { color: var(--career); }
+/* 2 — photos on the two audience cards */
+.acard-photo { position: relative; margin: 0 0 18px; border-radius: 12px; overflow: hidden; aspect-ratio: 16 / 9; background: var(--soft); }
+.acard-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.img-credit { position: absolute; right: 8px; bottom: 6px; font-size: 9px; line-height: 1.2; color: #fff; opacity: .75; text-shadow: 0 1px 2px rgba(0,0,0,.6); pointer-events: none; }
+/* 6 — the shortlist, simplified: one example role, six stages, no controls */
+.slx { display: grid; grid-template-columns: minmax(250px, 1fr) minmax(0, 1.65fr); gap: clamp(18px, 2.4vw, 32px); margin-top: clamp(22px, 2.8vw, 34px); align-items: start; }
+.slx-role, .slx-steps { background: var(--surface); border: 1px solid var(--rule); border-radius: 16px; box-shadow: var(--shadow-sm); padding: 22px 24px; }
+.slx-role { border-top: 3px solid var(--accent); }
+.slx-role h3 { font-size: 22px; letter-spacing: -.025em; margin-top: 10px; }
+.slx-role .meta { font-size: 13px; color: var(--ink-3); margin-top: 4px; }
+.slx-role h4, .slx-steps > h4 { font-size: 10.5px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-3); margin: 18px 0 10px; }
+.slx-steps > h4 { margin-top: 0; }
+.slx-req { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; }
+.slx-req li { display: flex; gap: 10px; align-items: center; font-size: 14px; font-weight: 600; color: var(--ink); background: var(--soft); border: 1px solid var(--rule-soft); border-radius: 10px; padding: 9px 12px; }
+.slx-req li::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); flex: none; }
+.slx-steps ol { list-style: none; margin: 0; padding: 0; }
+.slx-step { display: grid; grid-template-columns: 96px 1fr; gap: 16px; padding: 15px 0; border-top: 1px solid var(--rule-soft); align-items: start; }
+.slx-step:first-child { border-top: 0; padding-top: 0; }
+.slx-count { font-family: var(--display); font-size: 26px; font-weight: 800; color: var(--accent); letter-spacing: -.03em; line-height: 1; }
+.slx-count small { display: block; font-size: 9.5px; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-3); font-weight: 700; margin-top: 5px; }
+.slx-step h5 { font-size: 16px; letter-spacing: -.015em; }
+.slx-step p { font-size: 14px; color: var(--ink-2); margin-top: 3px; line-height: 1.55; }
+.slx-fine { margin-top: 14px; font-size: 12.5px; color: var(--ink-3); line-height: 1.55; }
+@media (max-width: 900px) { .slx { grid-template-columns: 1fr; } }
+/* 8 — journal intro */
+.ins-intro { margin-top: 10px; font-size: 15.5px; line-height: 1.6; color: var(--ink-2); max-width: 60ch; }
+/* 9 — success story: what HSG did, as a list rather than button-shaped chips */
+.story-did { list-style: none; margin: 0; padding: 0; display: grid; gap: 9px; }
+.story-did li { display: flex; gap: 10px; align-items: flex-start; font-size: 13.5px; font-weight: 600; color: var(--ink-2); line-height: 1.4; }
+.story-did svg { flex: none; color: var(--hiring); margin-top: 2px; }
+/* 13 — portrait beside a quotation, when one is supplied */
+.bigquote-who { display: flex; align-items: center; gap: 12px; margin-top: 16px; }
+.bigquote-who img { width: 54px; height: 54px; border-radius: 50%; object-fit: cover; flex: none; }
+/* 15 — FAQ page */
+.faq-group { margin-top: clamp(26px, 3.2vw, 40px); }
+.faq-group:first-child { margin-top: 0; }
+.faq-group h2 { font-size: clamp(21px, 2.4vw, 28px); letter-spacing: -.025em; margin-bottom: 12px; }
+.faq-item { border: 1px solid var(--rule); border-radius: 14px; background: var(--surface); box-shadow: var(--shadow-sm); margin-top: 10px; }
+.faq-item summary { cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; padding: 16px 20px; font-family: var(--display); font-weight: 800; font-size: 16.5px; line-height: 1.35; letter-spacing: -.02em; color: var(--ink); }
+.faq-item summary::-webkit-details-marker { display: none; }
+.faq-item summary::after { content: "+"; color: var(--accent); font-size: 22px; line-height: 1; flex: none; font-weight: 700; }
+.faq-item[open] summary::after { content: "–"; }
+.faq-a { padding: 0 20px 18px; font-size: 15px; line-height: 1.65; color: var(--ink-2); }
+.faq-a p + p { margin-top: 10px; }
+.faq-a a { color: var(--accent); font-weight: 700; }
+.faq-intro a { color: var(--accent); font-weight: 700; }

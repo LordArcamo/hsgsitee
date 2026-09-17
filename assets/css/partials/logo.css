@@ -1,0 +1,30 @@
+/* ============================================================
+   BRAND LOGO
+
+   Light and dark artwork, swapped on the same three-state rule the
+   colour tokens use: system preference, plus an explicit data-theme
+   override in either direction.
+
+   Every variant rule is written as `.logo-img img.logo-img--x` so it
+   outranks the `.logo-img img` base rule below — a bare
+   `.logo-img--dark { display: none }` loses to it on specificity and
+   both logos end up rendering side by side.
+   ============================================================ */
+.logo-img { display: inline-flex; align-items: center; flex: none; }
+.logo-img img { display: block; width: auto; max-width: 100%; }
+
+/* default: light artwork */
+.logo-img img.logo-img--dark { display: none; }
+
+/* system dark, unless the page is pinned to light */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .logo-img img.logo-img--light { display: none; }
+  :root:not([data-theme="light"]) .logo-img img.logo-img--dark { display: block; }
+}
+
+/* explicit overrides win in both directions */
+:root[data-theme="dark"] .logo-img img.logo-img--light { display: none; }
+:root[data-theme="dark"] .logo-img img.logo-img--dark { display: block; }
+
+:root[data-theme="light"] .logo-img img.logo-img--light { display: block; }
+:root[data-theme="light"] .logo-img img.logo-img--dark { display: none; }
