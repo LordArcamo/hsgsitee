@@ -67,7 +67,7 @@ const insights = { href: `${home}#insights`, label: "Insights" };
           {i === menus.length && (
             <a class="nav-link" href={insights.href}>{insights.label}</a>
           )}
-          <div class="nav-item" data-nav-menu>
+          <div class:list={["nav-item", `is-${m.id}`]} data-nav-menu>
             <button
               class="nav-trigger"
               type="button"
@@ -104,7 +104,7 @@ const insights = { href: `${home}#insights`, label: "Insights" };
        cleanly than nested accordions. -->
   <div class="mobile-nav" id="mobilenav">
     {menus.map((m) => (
-      <div class="m-group">
+      <div class:list={["m-group", `is-${m.id}`]}>
         <p class="m-heading">{m.label}</p>
         <ul>
           {m.items.map((it) => (

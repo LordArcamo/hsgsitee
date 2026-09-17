@@ -43,6 +43,32 @@
   outline: 2px solid var(--accent); outline-offset: 4px; border-radius: 4px;
 }
 
+/* ---- practice colours ----
+   Hiring is green and Careers is gold, the same two accents the header
+   stripe, the section eyebrows and the candidate cards already use. Only
+   these two are coloured: Insights and About are not practices, so they
+   stay in the default ink and the colour keeps meaning something.
+
+   These are the --hiring / --career tokens, which are the brand green and
+   gold tuned for small text (4.50:1 and 4.55:1 on white). The exact logo
+   gold, --career-fill #ffc20e, is 1.62:1 — fine as a rule or a fill, which
+   is where the underline below uses it, but not legible as 14.5px text.
+
+   Hover and open state keep the practice colour rather than turning purple
+   like the other two; the underline sliding in is the feedback. */
+.nav-item.is-hiring .nav-trigger,
+.nav-item.is-hiring .nav-trigger:hover,
+.nav-item.is-hiring .nav-trigger[aria-expanded="true"] { color: var(--hiring); }
+.nav-item.is-careers .nav-trigger,
+.nav-item.is-careers .nav-trigger:hover,
+.nav-item.is-careers .nav-trigger[aria-expanded="true"] { color: var(--career); }
+
+.nav-item.is-hiring .nav-trigger::after { background: var(--hiring-fill); }
+.nav-item.is-careers .nav-trigger::after { background: var(--career-fill); }
+
+.nav-item.is-hiring .nav-trigger:focus-visible { outline-color: var(--hiring); }
+.nav-item.is-careers .nav-trigger:focus-visible { outline-color: var(--career); }
+
 .nav-chev { flex: none; opacity: .7; transition: transform .25s var(--ease); }
 .nav-trigger[aria-expanded="true"] .nav-chev { transform: rotate(180deg); }
 
@@ -117,6 +143,12 @@
   margin: 14px 0 2px; font-size: 11px; font-weight: 800; letter-spacing: .14em;
   text-transform: uppercase; color: var(--ink-3);
 }
+/* The same two practice colours on the phone, where these are headings
+   rather than links — Michael reviews on his phone, and a green nav that
+   turns grey in the drawer would read as two different navigations. */
+.m-group.is-hiring .m-heading { color: var(--hiring); }
+.m-group.is-careers .m-heading { color: var(--career); }
+
 .mobile-nav ul { display: grid; gap: 0; }
 /* scoped to the list — an unscoped `.mobile-nav a` also matched the CTA
    buttons below and stripped their padding and centring */
