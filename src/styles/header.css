@@ -49,10 +49,16 @@
    these two are coloured: Insights and About are not practices, so they
    stay in the default ink and the colour keeps meaning something.
 
-   These are the --hiring / --career tokens, which are the brand green and
-   gold tuned for small text (4.50:1 and 4.55:1 on white). The exact logo
-   gold, --career-fill #ffc20e, is 1.62:1 — fine as a rule or a fill, which
-   is where the underline below uses it, but not legible as 14.5px text.
+   Careers uses --career-head, the exact logo gold, so the nav matches the
+   hero's own "Career Solutions" — the client asked for that specific gold
+   after seeing the darker one in place. It is 1.62:1 on white, well under
+   the 4.5:1 that 14.5px text wants, and that is a deliberate brand-match
+   decision rather than an oversight. Swap it to --career (#967000, 4.55:1)
+   to put legibility first.
+
+   Hiring stays on --hiring (4.50:1), which is what was asked for and reads
+   cleanly. Its hero counterpart is the lighter --hiring-head #68a442 if the
+   two should be matched as a pair.
 
    Hover and open state keep the practice colour rather than turning purple
    like the other two; the underline sliding in is the feedback. */
@@ -61,7 +67,7 @@
 .nav-item.is-hiring .nav-trigger[aria-expanded="true"] { color: var(--hiring); }
 .nav-item.is-careers .nav-trigger,
 .nav-item.is-careers .nav-trigger:hover,
-.nav-item.is-careers .nav-trigger[aria-expanded="true"] { color: var(--career); }
+.nav-item.is-careers .nav-trigger[aria-expanded="true"] { color: var(--career-head); }
 
 .nav-item.is-hiring .nav-trigger::after { background: var(--hiring-fill); }
 .nav-item.is-careers .nav-trigger::after { background: var(--career-fill); }
@@ -147,7 +153,10 @@
    rather than links — Michael reviews on his phone, and a green nav that
    turns grey in the drawer would read as two different navigations. */
 .m-group.is-hiring .m-heading { color: var(--hiring); }
-.m-group.is-careers .m-heading { color: var(--career); }
+/* The same logo gold as the desktop trigger. This one is 11px uppercase,
+   so it is the most affected by that colour's 1.62:1 — set it back to
+   --career if the drawer heading needs to be readable over the match. */
+.m-group.is-careers .m-heading { color: var(--career-head); }
 
 .mobile-nav ul { display: grid; gap: 0; }
 /* scoped to the list — an unscoped `.mobile-nav a` also matched the CTA
