@@ -1,0 +1,107 @@
+---
+/*
+ * SITUATIONS WANTED — the employer-side results page, one per role group.
+ *
+ * Reached from the "For Companies" intake in the audience bar. The role the
+ * employer picked is the URL SEGMENT, not a query parameter: each of the ten
+ * groups is prerendered with its own six candidates, so the right people are
+ * in the HTML that arrives. Nothing on this page can show candidates from
+ * another profession, because no other profession's data is on it.
+ *
+ * That is the deliberate difference from the spec's suggested
+ * `?role=operations`. With a single page plus a query string, a static build
+ * has to ship one group's candidates and swap them in the browser, which
+ * means a phone on a slow connection shows six of the wrong people first.
+ * A role outside the ten never reaches here at all — the form sends it to
+ * the Custom Search state instead.
+ *
+ * The rest of the search still arrives as a query string, and
+ * scripts/situations.ts writes it onto the criteria line on load.
+ *
+ * The profiles are fictional demonstration data — see src/data/role-groups.ts.
+ * Until they are replaced with a real, consented feed the page is noindexed
+ * and kept out of the sitemap. When that day comes, note that prerendering
+ * puts every candidate in a public file: a real feed needs SSR or an
+ * endpoint behind auth, not this.
+ */
+import type { GetStaticPaths } from "astro";
+
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Header from "../../components/Header.astro";
+import AudienceBar from "../../components/AudienceBar.astro";
+import Footer from "../../components/Footer.astro";
+
+import SearchSummary from "../../components/situations/SearchSummary.astro";
+import MatchingProfessionals from "../../components/situations/MatchingProfessionals.astro";
+import ComparisonTable from "../../components/situations/ComparisonTable.astro";
+import DiscussCta from "../../components/situations/DiscussCta.astro";
+
+import { ROLE_GROUP_LIST } from "../../data/role-groups";
+import { EXAMPLE_CRITERIA } from "../../data/situations";
+import { url } from "../../lib/url";
+
+export const getStaticPaths = (() =>
+  ROLE_GROUP_LIST.map((group) => ({
+    params: { role: group.key },
+    props: { group },
+  }))) satisfies GetStaticPaths;
+
+const { group } = Astro.props;
+
+/*
+ * There is no query string at build time, so the criteria line ships with
+ * the spec's worked example. On a real search the line is held invisible
+ * (see the inline script below) until the script rewrites it, so this
+ * example is never shown in place of what the employer actually asked for.
+ */
+const criteria = EXAMPLE_CRITERIA;
+
+/*
+ * THE one result array. The cards, the quick comparison and the full table
+ * are all handed this same array — there is no second copy of anyone, so
+ * the three cannot disagree about who is on the page or in what order.
+ *
+ * At build time it is simply the group's six, because ranking depends on a
+ * query string that does not exist yet. scripts/situations.ts re-orders the
+ * three renderings together, from one ranking, once the search arrives.
+ */
+const matchedCandidates = group.candidates;
+---
+
+<BaseLayout
+  title={`Situations Wanted for ${group.resultTitle} — Hiring Solutions Group`}
+  description={`${group.resultTitle} matching your search, with the same four statistics for each and a side-by-side comparison.`}
+  path={`/situations-wanted/${group.key}/`}
+  noindex
+>
+  <!-- Runs while the document is still parsing, so the criteria chips are
+       already hidden by the time they would first paint. Only a load that
+       carries a search needs it; a cold visit shows the example as-is. -->
+  <script is:inline>
+    if (window.location.search) {
+      document.documentElement.setAttribute("data-sw-pending", "");
+    }
+  </script>
+
+  <div class="mock-note">
+    <b>Prototype</b> — candidate profiles shown are fictional examples created to
+    demonstrate the HSG Situations Wanted experience.
+  </div>
+
+  <Header home={url("/")} />
+  <AudienceBar />
+
+  <main id="main">
+    <SearchSummary criteria={criteria} group={group} />
+    <MatchingProfessionals group={group} candidates={matchedCandidates} />
+    <ComparisonTable candidates={matchedCandidates} />
+    <DiscussCta />
+  </main>
+
+  <Footer home={url("/")} />
+</BaseLayout>
+
+<script>
+  import { initSituations } from "../../scripts/situations";
+  initSituations();
+</script>

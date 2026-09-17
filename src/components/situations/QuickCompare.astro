@@ -8,8 +8,17 @@
  *
  * Sticky beside the cards on desktop; above them on tablet and mobile,
  * where there is no second column to sit in.
+ *
+ * Same `group.candidates` as the cards and the full table.
  */
-import { PROFESSIONALS, QUICK_STATS, header } from "../../data/situations";
+import { QUICK_STATS, header } from "../../data/situations";
+import type { Professional } from "../../data/role-groups";
+
+interface Props {
+  candidates: Professional[];
+}
+
+const { candidates } = Astro.props;
 ---
 
 <aside class="sw-quick" aria-labelledby="quick-compare-h">
@@ -30,10 +39,10 @@ import { PROFESSIONALS, QUICK_STATS, header } from "../../data/situations";
           }
         </tr>
       </thead>
-      <tbody>
+      <tbody data-sw-order>
         {
-          PROFESSIONALS.map((p) => (
-            <tr>
+          candidates.map((p) => (
+            <tr data-sw-id={p.id}>
               <th scope="row">{p.name}</th>
               {QUICK_STATS.map((s) => (
                 <td class="is-num">{s.value(p)}</td>

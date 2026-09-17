@@ -1,135 +1,108 @@
 /* ============================================================
-   SITUATIONS WANTED — employer-side results data
+   SITUATIONS WANTED — the employer's search, and the stat columns
 
-   Built to HSG_Situations_Wanted_Claude_Code_Spec_v2.md.
+   The candidates themselves live in data/role-groups.ts. This file is
+   only about the search that produced them and the columns they are
+   displayed through.
 
-   Two separate things live here:
+   Per HSG_For_Companies_and_Situations_Wanted_Update.md the role is no
+   longer free text: the employer picks one of ten role groups, and that
+   choice is the page they land on. Everything else on the criteria line
+   is still theirs — location, experience band, new/replacement, career
+   path and salary range — and arrives as a query string.
 
-   1. SEARCH CRITERIA — whatever the employer typed into the
-      "For Companies" form. Nothing about it is hard-coded: the page
-      renders EXAMPLE_SEARCH as its default and `criteriaFromQuery`
-      replaces it with the real answers at runtime.
-
-   2. THE DEMONSTRATION POOL — six fictional profiles. ALL PROFILES
-      ARE FICTIONAL: no real candidate names, employers, resumes or
-      contact details. They are a mechanical-engineering sample set and
-      do not vary by searched role; replace `PROFESSIONALS` with the
-      real, consented HSG feed before this page shows live candidates.
-
-   The cards, the quick comparison panel and the full comparison table are
-   all generated from `PROFESSIONALS` through the column definitions at the
-   bottom of this file — there is no second copy of any figure.
-
-   Summaries deliberately do NOT restate years, tenure or salary: those are
-   the four statistics beside them, and per the copy doc the paragraph is
-   there to add what the statistics cannot — software, specialty, and the
-   kind of company the person is actually looking for.
+   Four of those five are controlled vocabularies, so they are round-
+   tripped as short tokens ("15-20", "replacement") and read back through
+   the tables below. Only location and salary are typed freely.
    ============================================================ */
 
 /* ============================================================
-   1. Search criteria
+   1. The controlled answers
    ============================================================ */
-
-export interface SearchCriteria {
-  /** Role searched for, singular, as the employer typed it. */
-  title: string;
-  location: string;
-  /** Display-ready, e.g. "4–7 Years Experience". */
-  experienceRange: string;
-  /** Display-ready, e.g. "New Position". */
-  positionType: string;
-  /** Display-ready, e.g. "Career Path". */
-  careerPath: string;
-  /** As typed, e.g. "$90K–$120K". */
-  salaryRange: string;
-}
-
-/**
- * The prototype example from the spec. This is the DEFAULT the page is
- * built with — it is not a hard-coded search. Any query string from the
- * "For Companies" form overrides every field of it.
- */
-export const EXAMPLE_SEARCH: SearchCriteria = {
-  title: "Mechanical Engineer",
-  location: "Newark, NJ",
-  experienceRange: "4–7 Years Experience",
-  positionType: "New Position",
-  careerPath: "Career Path",
-  salaryRange: "$90K–$120K",
-};
 
 /**
  * Query keys, matched to the `name` attributes on the "For Companies"
  * form in components/AudienceBar.astro. Changing one means changing both.
+ * `role` is not here: it is the URL segment, not a parameter.
  */
 export const QUERY_KEYS = {
-  title: "title",
   location: "location",
-  years: "years",
-  opening: "opening",
-  path: "path",
+  experience: "experience",
+  position: "position",
+  careerPath: "careerPath",
   salary: "salary",
 } as const;
 
-/*
- * The form stores short answers ("New role", "Not sure"); the results line
- * states them back the way an employer would read them. Only "New Position"
- * and "Career Path" are given in the copy doc — the other three are
- * mechanical parallels and are PENDING CLIENT WORDING.
- */
-const POSITION_LABELS: Record<string, string> = {
-  "New role": "New Position",
-  "New Position": "New Position",
-  Replacement: "Replacement Position",
-};
-
-const CAREER_PATH_LABELS: Record<string, string> = {
-  Yes: "Career Path",
-  No: "No Career Path",
-  "Not sure": "Career Path Undecided",
-};
-
-/** "3–5 years" and "4–7 Years" both read back as "… Years Experience". */
-function experienceLabel(raw: string): string {
-  const range = raw.trim().replace(/\s*years?\s*$/i, "");
-  return range ? `${range} Years Experience` : "";
+export interface Option {
+  /** What travels in the URL. */
+  value: string;
+  /** What the form shows. */
+  label: string;
+  /** What the results page prints on the criteria line. */
+  display: string;
 }
 
+/**
+ * Leadership-level experience bands. The form shows `label`, the criteria
+ * line shows `display`.
+ *
+ * `display` states the answer back rather than interpreting it: an employer
+ * who said "Flexible / Not Sure" is told their experience range is flexible,
+ * not given a reading of what that implies.
+ */
+export const EXPERIENCE_OPTIONS: Option[] = [
+  { value: "5-8", label: "5–8 Years", display: "5–8 Years Experience" },
+  { value: "8-12", label: "8–12 Years", display: "8–12 Years Experience" },
+  { value: "12-15", label: "12–15 Years", display: "12–15 Years Experience" },
+  { value: "15-20", label: "15–20 Years", display: "15–20 Years Experience" },
+  { value: "20+", label: "20+ Years", display: "20+ Years Experience" },
+  { value: "flexible", label: "Flexible / Not Sure", display: "Experience: Flexible" },
+];
+
+/** New or replacement. "New Position" and "Replacement Position" per spec. */
+export const POSITION_OPTIONS: Option[] = [
+  { value: "new", label: "New Role", display: "New Position" },
+  { value: "replacement", label: "Replacement", display: "Replacement Position" },
+];
+
+/**
+ * Career path. The criteria line repeats the employer's own answer — "No"
+ * means they answered no, which is not the same claim as "No Career Path",
+ * and "Not Sure" is not a verdict that the path is undecided.
+ */
+export const CAREER_PATH_OPTIONS: Option[] = [
+  { value: "yes", label: "Yes", display: "Career Path: Yes" },
+  { value: "no", label: "No", display: "Career Path: No" },
+  { value: "not-sure", label: "Not Sure", display: "Career Path: Not Sure" },
+];
+
+const displayFor = (options: Option[], value: string): string =>
+  options.find((o) => o.value === value)?.display ?? "";
+
 /* ============================================================
-   Tidying what was typed
+   2. The two free-text answers
 
-   Three free-text fields reach this page straight from the form, and
-   whatever is in them becomes a 46px heading. Typed as-is they read as
-   broken: "mechanical engineer" gives "Situations Wanted for mechanical
-   engineers", "newark, nj" gives "Newark, Nj", and a salary of "100"
-   gives a criteria chip that just says 100.
+   Location and salary reach this page as the employer typed them, and
+   whatever is in them lands on the criteria line. Typed as-is they read
+   as broken: "newark, nj" gives "Newark, Nj", and a salary of "180"
+   gives a chip that just says 180.
 
-   None of this validates the search — it only presents it. An unknown
-   word is still shown, because it is what the employer asked for.
+   None of this validates the search — it only presents it.
    ============================================================ */
 
-/** Nothing pasted into a form field should be able to eat the heading. */
-const MAX_LENGTH = { title: 60, location: 60, salary: 40 };
+/** Nothing pasted into a form field should be able to eat the layout. */
+export const MAX_LENGTH = { location: 60, salary: 40 };
 
-const clean = (raw: string, max: number) =>
+export const clean = (raw: string, max: number) =>
   raw.replace(/\s+/g, " ").trim().slice(0, max);
 
 /** Small words that stay lowercase anywhere but the first position. */
-const MINOR_WORDS = new Set([
-  "a", "an", "and", "at", "for", "in", "of", "or", "the", "to",
-]);
-
-/** Job-title acronyms people type in lower case. */
-const ACRONYMS = new Set([
-  "cfo", "ceo", "coo", "cto", "cio", "cmo", "chro", "vp", "svp", "evp",
-  "hr", "it", "qa", "ux", "ui", "pm", "gm", "ehs", "erp", "sap",
-]);
+const MINOR_WORDS = new Set(["a", "an", "and", "at", "for", "in", "of", "or", "the", "to"]);
 
 function capitalizePart(part: string): string {
   if (!part) return part;
-  if (ACRONYMS.has(part.toLowerCase())) return part.toUpperCase();
-  // Something already carrying a capital was typed deliberately — "CFO",
-  // "McKinsey", "iOS" — so it is left exactly as it came in.
+  // Something already carrying a capital was typed deliberately — "NYC",
+  // "McKinsey" — so it is left exactly as it came in.
   if (/[A-Z]/.test(part)) return part;
   return part.charAt(0).toUpperCase() + part.slice(1);
 }
@@ -138,7 +111,7 @@ function capitalizePart(part: string): string {
 const capitalizeWord = (word: string) =>
   word.split("-").map(capitalizePart).join("-");
 
-export function titleCase(value: string): string {
+function titleCase(value: string): string {
   return value
     .split(" ")
     .map((word, i) =>
@@ -160,83 +133,111 @@ export function formatLocation(value: string): string {
     .join(" ");
 }
 
+/* ---------- salary, in both directions ---------- */
+
 /**
- * Money, from a field with no format and only a placeholder to guide it.
- *
- * Anything already carrying a currency symbol is trusted and left alone.
- * A bare figure is read as thousands — "100" and "100k" and "100000" all
- * become "$100K" — because this field is a salary on an executive search
- * form, where 100 never means one hundred dollars. A figure that is not a
- * round number of thousands keeps its precision ("95500" → "$95,500"),
- * and anything containing words is left exactly as typed.
- *
- * NOTE: the thousands reading is an assumption about intent. It is the one
- * judgement call in here and is easy to drop if HSG would rather see the
- * raw entry.
+ * Read the figures out of a typed salary range as whole thousands.
+ * "$180K – $225K", "180-225", "180000 to 225000" all give [180, 225].
+ * Anything with words in it ("DOE", "negotiable") gives null, and is then
+ * carried through as typed rather than mangled into a number.
  */
-export function formatSalary(value: string): string {
-  if (!value) return "";
-  if (/[$£€]/.test(value)) return value;
-  // Leave anything with words in it alone — "DOE", "negotiable", "per hour" —
-  // but "to" and "and" are how people write a range, not words about money.
-  const bare = value.replace(/k/gi, "").replace(/\b(?:to|and)\b/gi, "");
-  if (/[a-z]/i.test(bare)) return value;
+function salaryFigures(value: string): number[] | null {
+  if (!value) return null;
+  // "to" and "and" are how people write a range, not words about money.
+  const words = value
+    .replace(/[$£€,]/g, "")
+    .replace(/k/gi, "")
+    .replace(/\b(?:to|and)\b/gi, "");
+  if (/[a-z]/i.test(words)) return null;
 
   const figures = value.match(/\d[\d,]*(?:\.\d+)?k?/gi);
-  if (!figures) return value;
+  if (!figures) return null;
 
-  const money = (figure: string) => {
+  const thousands = figures.map((figure) => {
     const hasK = /k$/i.test(figure);
     const n = Number(figure.replace(/[,k]/gi, ""));
     if (!Number.isFinite(n) || n <= 0) return null;
+    // A salary field on an executive search form: 180 never means $180.
     const dollars = hasK || n < 1000 ? n * 1000 : n;
-    return dollars % 1000 === 0
-      ? `$${dollars / 1000}K`
-      : `$${dollars.toLocaleString("en-US")}`;
-  };
+    return dollars / 1000;
+  });
 
-  const parts = figures.map(money);
-  if (parts.some((p) => p === null)) return value;
-  return parts.join(" – ");
+  return thousands.some((n) => n === null) ? null : (thousands as number[]);
 }
 
 /**
- * Resolve the criteria to display. Every field falls back to the example,
- * so a visitor who reaches this page with no query string — or with a
- * half-filled one — still sees a coherent search rather than a gap.
+ * Typed salary to the URL token the spec uses: "$180K – $225K" → "180-225".
+ * Anything that is not a plain range travels as typed.
+ */
+export function encodeSalary(value: string): string {
+  const figures = salaryFigures(value);
+  if (!figures || figures.length === 0 || figures.length > 2) return value.trim();
+  return figures.map((n) => String(Math.round(n))).join("-");
+}
+
+/** "180-225" → "$180K–$225K". Anything else is presented as it arrived. */
+export function decodeSalary(value: string): string {
+  const raw = value.trim();
+  if (!raw) return "";
+  const figures = salaryFigures(raw);
+  if (!figures || figures.length === 0 || figures.length > 2) return raw;
+  return figures.map((n) => `$${Math.round(n)}K`).join("–");
+}
+
+/* ============================================================
+   3. Resolving the criteria
+   ============================================================ */
+
+export interface SearchCriteria {
+  location: string;
+  experienceRange: string;
+  positionType: string;
+  careerPath: string;
+  salaryRange: string;
+}
+
+/**
+ * The spec's worked example. Each role page is prerendered, so there is no
+ * query string at build time and this is what the criteria line carries
+ * until `scripts/situations.ts` replaces it with the real answers. On a
+ * search-driven load the line is held invisible until that happens, so
+ * this example is never shown in place of someone's actual search.
+ */
+export const EXAMPLE_CRITERIA: SearchCriteria = {
+  location: "Newark, NJ",
+  experienceRange: "15–20 Years Experience",
+  positionType: "Replacement Position",
+  careerPath: "Career Path: Yes",
+  salaryRange: "$180K–$225K",
+};
+
+/**
+ * Resolve the criteria to display from the query string.
+ *
+ * An answer that is absent or unrecognised resolves to an empty string and
+ * its chip is dropped, rather than being filled in with something the
+ * employer never said.
  */
 export function criteriaFromQuery(params: URLSearchParams): SearchCriteria {
   const raw = (key: string) => (params.get(key) ?? "").trim();
-  const pick = (value: string, fallback: string) => value || fallback;
-
-  const years = raw(QUERY_KEYS.years);
-  const opening = raw(QUERY_KEYS.opening);
-  const path = raw(QUERY_KEYS.path);
 
   return {
-    title: pick(
-      titleCase(clean(raw(QUERY_KEYS.title), MAX_LENGTH.title)),
-      EXAMPLE_SEARCH.title,
-    ),
-    location: pick(
-      formatLocation(clean(raw(QUERY_KEYS.location), MAX_LENGTH.location)),
-      EXAMPLE_SEARCH.location,
-    ),
-    experienceRange: pick(experienceLabel(years), EXAMPLE_SEARCH.experienceRange),
-    positionType: pick(
-      opening ? (POSITION_LABELS[opening] ?? opening) : "",
-      EXAMPLE_SEARCH.positionType,
-    ),
-    careerPath: pick(
-      path ? (CAREER_PATH_LABELS[path] ?? path) : "",
-      EXAMPLE_SEARCH.careerPath,
-    ),
-    salaryRange: pick(
-      formatSalary(clean(raw(QUERY_KEYS.salary), MAX_LENGTH.salary)),
-      EXAMPLE_SEARCH.salaryRange,
-    ),
+    location: formatLocation(clean(raw(QUERY_KEYS.location), MAX_LENGTH.location)),
+    experienceRange: displayFor(EXPERIENCE_OPTIONS, raw(QUERY_KEYS.experience)),
+    positionType: displayFor(POSITION_OPTIONS, raw(QUERY_KEYS.position)),
+    careerPath: displayFor(CAREER_PATH_OPTIONS, raw(QUERY_KEYS.careerPath)),
+    salaryRange: decodeSalary(clean(raw(QUERY_KEYS.salary), MAX_LENGTH.salary)),
   };
 }
+
+/**
+ * Some values now name themselves — "Career Path: Yes", "Experience:
+ * Flexible" — and a screen reader announcing the chip's own label in front
+ * of one reads "Career path: Career Path: Yes". Where the value already
+ * opens with its label, the label is dropped instead.
+ */
+const srLabel = (label: string, value: string) =>
+  value.toLowerCase().startsWith(label.toLowerCase()) ? "" : label;
 
 /** The criteria line, in the order the spec prints it. */
 export function criteriaRow(
@@ -248,158 +249,94 @@ export function criteriaRow(
     { key: "position", label: "Opening", value: c.positionType },
     { key: "careerPath", label: "Career path", value: c.careerPath },
     { key: "salary", label: "Salary range", value: c.salaryRange },
-  ];
-}
-
-/* ---------- pluralising the searched title ---------- */
-
-function pluralWord(word: string): string {
-  if (/[^aeiou]y$/i.test(word)) return `${word.slice(0, -1)}ies`;
-  if (/(s|x|z|ch|sh)$/i.test(word)) return `${word}es`;
-  return `${word}s`;
-}
-
-/**
- * "Mechanical Engineer" → "Mechanical Engineers", but
- * "Director of Operations" → "Directors of Operations": the head noun is
- * what pluralises, and in a title containing " of " that is the word in
- * front of it, not the last word. A head noun that is already plural
- * ("Sales", "Operations") is left alone.
- */
-export function pluralizeTitle(title: string): string {
-  const trimmed = title.trim();
-  if (!trimmed) return trimmed;
-
-  const of = trimmed.search(/\s+of\s+/i);
-  const head = of > -1 ? trimmed.slice(0, of) : trimmed;
-  const tail = of > -1 ? trimmed.slice(of) : "";
-
-  const words = head.split(/\s+/);
-  const last = words[words.length - 1] ?? "";
-  if (/s$/i.test(last) && !/ss$/i.test(last)) return trimmed;
-
-  words[words.length - 1] = pluralWord(last);
-  return words.join(" ") + tail;
+  ].map((item) => ({ ...item, label: srLabel(item.label, item.value) }));
 }
 
 /* ============================================================
-   2. The demonstration pool — ALL PROFILES FICTIONAL
+   3b. Ranking the six
+
+   The role is a hard requirement and is already settled before any of this
+   runs: the page the employer is on holds one profession's people and no
+   others, so ranking cannot reach across professions. All it does is
+   decide who is read first.
+
+   Experience is the strong factor and salary the secondary one, so the two
+   are put on one scale — a year of experience outside the requested band
+   weighs the same as SALARY_PER_YEAR thousand dollars outside the requested
+   range. Everyone inside both scores zero and keeps the order they were
+   written in.
+
+   None of this is shown. There is no percentage, no badge and no "97%
+   match"; the employer sees six professionals in a considered order.
+
+   Location, new/replacement and career path are deliberately NOT used. The
+   candidate records carry no location, no opening type and no career-path
+   field, so ranking on them would be theatre. They confirm the employer's
+   search at the top of the page and nothing more, until real candidate data
+   gives them something to match against.
    ============================================================ */
 
-export interface Professional {
+/** A year of experience off the band weighs this many $K off the range. */
+const SALARY_PER_YEAR = 50;
+
+const EXPERIENCE_BANDS: Record<string, [number, number]> = {
+  "5-8": [5, 8],
+  "8-12": [8, 12],
+  "12-15": [12, 15],
+  "15-20": [15, 20],
+  "20+": [20, Infinity],
+  // "flexible" is absent on purpose: it constrains nothing.
+};
+
+/** How far outside a range a figure sits. Inside it, zero. */
+const outside = (value: number, [lo, hi]: [number, number]) =>
+  value < lo ? lo - value : value > hi ? value - hi : 0;
+
+/**
+ * The only fields ranking needs. The cards carry them as data attributes,
+ * so the browser can rank the rendered six without the whole candidate
+ * dataset being shipped to it.
+ */
+export interface Rankable {
   id: number;
-  /** First name only, and an invented one. */
-  name: string;
-  role: string;
-  /**
-   * What the four statistics cannot say: software, specialty, and the kind
-   * of company they want. Must NOT restate tenure, total experience or
-   * salary — those sit beside it as statistics.
-   */
-  summary: string;
-  yearsCurrentCompany: number;
   totalExperience: number;
-  /** Whole dollars; formatted to "$110K" for display. */
   currentSalary: number;
-  credential: string;
-  /** One or two real tools — enough to tell the profiles apart, not a list. */
-  software: string[];
-  /**
-   * The kind of company they want. Not shown as its own field — it is the
-   * closing thought of the summary — but kept here so a real feed can be
-   * filtered on it.
-   */
-  workPreference: string;
 }
 
-export const PROFESSIONALS: Professional[] = [
-  {
-    id: 1,
-    name: "Tim",
-    role: "Mechanical Engineer",
-    summary:
-      "Product-focused mechanical engineer experienced with SOLIDWORKS and Ansys Mechanical, with strong exposure to component design, prototyping, and design validation. Interested in joining a smaller privately held company where engineering works closely with ownership and where he can take greater responsibility for products from concept through production.",
-    yearsCurrentCompany: 4,
-    totalExperience: 6,
-    currentSalary: 110000,
-    credential: "B.S. Mechanical Engineering",
-    software: ["SOLIDWORKS", "Ansys Mechanical"],
-    workPreference: "Smaller privately held company",
-  },
-  {
-    id: 2,
-    name: "Larry",
-    role: "Mechanical Engineer",
-    summary:
-      "Mechanical design engineer who works primarily with PTC Creo and has experience supporting complex assemblies, design revisions, and manufacturing handoffs. Looking for an established company with a clear advancement path and a team where he can grow into greater technical and project leadership responsibility.",
-    yearsCurrentCompany: 5,
-    totalExperience: 6,
-    currentSalary: 105000,
-    credential: "B.S. Mechanical Engineering",
-    software: ["PTC Creo"],
-    workPreference: "Established company with advancement path",
-  },
-  {
-    id: 3,
-    name: "Peter",
-    role: "Mechanical Engineer",
-    summary:
-      "Hands-on mechanical engineer using Autodesk Inventor and AutoCAD Mechanical for machine components, production drawings, and manufacturing support. Prefers a local manufacturing environment where engineers stay close to the shop floor and can see their designs move from drawing through fabrication and final use.",
-    yearsCurrentCompany: 3,
-    totalExperience: 6,
-    currentSalary: 95000,
-    credential: "B.S. Mechanical Engineering",
-    software: ["Autodesk Inventor", "AutoCAD Mechanical"],
-    workPreference: "Local hands-on manufacturing environment",
-  },
-  {
-    id: 4,
-    name: "David",
-    role: "Mechanical Engineer",
-    summary:
-      "Design engineer with experience working in Siemens NX on larger assemblies and technically complex products. Interested in becoming part of a larger engineering team where he can collaborate with specialists, contribute to more complex programs, and continue developing within a structured engineering organization.",
-    yearsCurrentCompany: 4,
-    totalExperience: 7,
-    currentSalary: 112000,
-    credential: "B.S. Mechanical Engineering",
-    software: ["Siemens NX"],
-    workPreference: "Larger structured engineering team",
-  },
-  {
-    id: 5,
-    name: "Kevin",
-    role: "Mechanical Engineer",
-    summary:
-      "Product-development engineer comfortable in CATIA V5 and cross-functional design environments, with experience working alongside manufacturing, quality, and product teams. Looking for a growth-oriented organization where engineers have broad ownership and can contribute directly to new-product development rather than working in a narrowly defined role.",
-    yearsCurrentCompany: 3,
-    totalExperience: 5,
-    currentSalary: 98000,
-    credential: "M.S. Mechanical Engineering",
-    software: ["CATIA V5"],
-    workPreference: "Growth-oriented company with broad ownership",
-  },
-  {
-    id: 6,
-    name: "Robert",
-    role: "Mechanical Engineer",
-    summary:
-      "Mechanical engineer focused on design improvement and analysis, with experience using Autodesk Fusion and Inventor Nastran for modeling, iteration, and simulation work. Interested in a company where technical problem-solving is valued and where he can work with a collaborative engineering group while still owning meaningful projects.",
-    yearsCurrentCompany: 2,
-    totalExperience: 6,
-    currentSalary: 102000,
-    credential: "B.S. Mechanical Engineering / EIT",
-    software: ["Autodesk Fusion", "Inventor Nastran"],
-    workPreference: "Collaborative team with individual project ownership",
-  },
-];
+export function rankCandidates<T extends Rankable>(
+  candidates: T[],
+  params: URLSearchParams,
+): T[] {
+  const band = EXPERIENCE_BANDS[(params.get(QUERY_KEYS.experience) ?? "").trim()];
+  const figures = salaryFigures(
+    clean(params.get(QUERY_KEYS.salary) ?? "", MAX_LENGTH.salary),
+  );
+  const budget: [number, number] | undefined =
+    figures && figures.length > 0
+      ? [figures[0]!, figures[figures.length - 1]!]
+      : undefined;
+
+  /* Nothing to rank on — "Flexible / Not Sure" experience and a salary of
+     "DOE" — so leave the six as written rather than inventing an order. */
+  if (!band && !budget) return [...candidates];
+
+  const distance = (c: T) =>
+    (band ? outside(c.totalExperience, band) : 0) +
+    (budget ? outside(c.currentSalary / 1000, budget) / SALARY_PER_YEAR : 0);
+
+  // Stable: candidates that are equally close keep their original order.
+  return [...candidates].sort((a, b) => distance(a) - distance(b));
+}
 
 /* ============================================================
-   3. Columns — one definition, three renderings
+   4. Columns — one definition, three renderings
 
    The cards, the quick comparison panel and the full table all read from
    these. `label` is the long form the cards use; `short` is the column
-   header, because six full labels across one table row will not fit.
+   header, because full labels across one table row will not fit.
    ============================================================ */
+
+import type { Professional } from "./role-groups";
 
 const years = (n: number) => `${n} ${n === 1 ? "Year" : "Years"}`;
 const salary = (n: number) => `$${Math.round(n / 1000)}K`;
@@ -417,9 +354,7 @@ export interface Stat {
 /** Column header for a stat — `short` when it has one. */
 export const header = (s: Stat): string => s.short ?? s.label;
 
-/**
- * The four card statistics, in the one order they appear in on every card.
- */
+/** The four standardized card statistics, in the spec's order. */
 export const STATS: Stat[] = [
   {
     label: "Years at Current Company",
@@ -447,19 +382,26 @@ export const STATS: Stat[] = [
   },
 ];
 
-/** The software column — full table only; the cards carry it as chips. */
-const SOFTWARE: Stat = {
+/** Current title — full table only; the cards carry it under the name. */
+const CURRENT_ROLE: Stat = {
+  label: "Current Role",
+  value: (p) => p.role,
+  numeric: false,
+};
+
+/** The tools column — full table only; the cards carry it as chips. */
+const TOOLS: Stat = {
   label: "Software / Tools",
-  value: (p) => p.software.join(", "),
+  value: (p) => p.tools.join(", "),
   numeric: false,
 };
 
 /**
  * The compact panel that puts a comparison in front of HR before they have
- * scrolled past the first candidate. Deliberately only the two fields an
- * employer triages on — it is a preview, not a second table.
+ * scrolled past the first candidate. Deliberately only the two fields the
+ * spec names — it is a preview, not a second table.
  */
 export const QUICK_STATS: Stat[] = [STATS[1]!, STATS[2]!];
 
-/** The full spreadsheet at the bottom: the four statistics, plus software. */
-export const FULL_STATS: Stat[] = [...STATS, SOFTWARE];
+/** The full spreadsheet at the bottom, in the spec's column order. */
+export const FULL_STATS: Stat[] = [CURRENT_ROLE, ...STATS, TOOLS];

@@ -2,17 +2,26 @@
 /*
  * Confirms the employer's search back to them before showing anyone.
  *
- * Nothing here is hard-coded: the title and every criterion come from the
- * `criteria` prop, which the page fills from the example at build time and
- * `scripts/situations.ts` refills from the query string at runtime.
+ * The heading names the role group they picked, which is fixed for this
+ * page. The criteria line comes from the `criteria` prop — the spec's
+ * example at build time, the real query string once
+ * `scripts/situations.ts` has run.
+ *
+ * Each chip carries its own key so the script can fill it and, if that
+ * answer is missing, hide it. A value that names itself — "Career Path:
+ * Yes" — drops the screen-reader label rather than stuttering over it. The separating dot belongs to the chip that
+ * follows it and is revealed by CSS only when something visible precedes
+ * it, so a hidden chip can never strand a dot beside it.
  */
-import { criteriaRow, pluralizeTitle, type SearchCriteria } from "../../data/situations";
+import { criteriaRow, type SearchCriteria } from "../../data/situations";
+import type { RoleGroup } from "../../data/role-groups";
 
 interface Props {
   criteria: SearchCriteria;
+  group: RoleGroup;
 }
 
-const { criteria } = Astro.props;
+const { criteria, group } = Astro.props;
 const row = criteriaRow(criteria);
 ---
 
@@ -21,7 +30,7 @@ const row = criteriaRow(criteria);
     <p class="eyebrow is-brand rv">Your Search</p>
 
     <h1 class="rv" style="--d:1">
-      Situations Wanted for <span data-sw-title>{pluralizeTitle(criteria.title)}</span>
+      Situations Wanted for <span data-sw-title>{group.resultTitle}</span>
     </h1>
 
     <!-- One horizontal row on desktop, stacked on mobile. The label inside
@@ -29,14 +38,16 @@ const row = criteriaRow(criteria);
          dot-separated, as specified. -->
     <p class="sw-criteria rv" style="--d:2">
       {
-        row.map((item, i) => (
-          <>
-            {i > 0 && <span class="sw-dot" aria-hidden="true">·</span>}
+        row.map((item) => (
+          <span class="sw-crit-wrap" data-sw-chip={item.key}>
+            <span class="sw-dot" aria-hidden="true">·</span>
             <span class="sw-crit">
-              <span class="sw-vh">{item.label}: </span>
+              <span class="sw-vh" data-sw-lbl={item.key} hidden={!item.label}>
+                {item.label}:{" "}
+              </span>
               <span data-sw-crit={item.key}>{item.value}</span>
             </span>
-          </>
+          </span>
         ))
       }
     </p>

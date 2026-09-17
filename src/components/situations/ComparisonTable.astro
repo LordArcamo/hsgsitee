@@ -1,9 +1,9 @@
 ---
 /*
- * The complete spreadsheet. Same six profiles as the cards above and the
- * quick panel beside them, rendered from the same data through FULL_STATS —
- * the four card statistics plus Software / Tools, which is the column that
- * makes the six profiles tell themselves apart at a glance.
+ * The complete spreadsheet. Same six professionals as the cards above and
+ * the quick panel beside them, from the same `group.candidates`, rendered
+ * through FULL_STATS — current role, the four card statistics, and the
+ * software column that makes the six tell themselves apart at a glance.
  *
  * It stays on the page whatever the quick panel does: the panel links here,
  * it does not replace this.
@@ -11,7 +11,14 @@
  * The scroll container is focusable so the table can be scrolled from the
  * keyboard on narrow screens; its text is never shrunk to make it fit.
  */
-import { PROFESSIONALS, FULL_STATS, header } from "../../data/situations";
+import { FULL_STATS, header } from "../../data/situations";
+import type { Professional } from "../../data/role-groups";
+
+interface Props {
+  candidates: Professional[];
+}
+
+const { candidates } = Astro.props;
 ---
 
 <section class="sec" id="full-comparison">
@@ -40,10 +47,10 @@ import { PROFESSIONALS, FULL_STATS, header } from "../../data/situations";
             }
           </tr>
         </thead>
-        <tbody>
+        <tbody data-sw-order>
           {
-            PROFESSIONALS.map((p) => (
-              <tr>
+            candidates.map((p) => (
+              <tr data-sw-id={p.id}>
                 <th scope="row">{p.name}</th>
                 {FULL_STATS.map((s) => (
                   <td class:list={[{ "is-num": s.numeric }]}>{s.value(p)}</td>

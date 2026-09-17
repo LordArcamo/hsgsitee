@@ -1,0 +1,95 @@
+---
+/*
+ * /situations-wanted/ — the role index.
+ *
+ * Two jobs, neither of them showing candidates:
+ *
+ * 1. It honours the URL pattern in the spec. Anything arriving at
+ *    /situations-wanted/?role=operations is forwarded to that group's own
+ *    prerendered page before the browser paints, so a link written to the
+ *    spec's pattern still lands in the right place.
+ *
+ * 2. With no role, it lists the ten groups. That is not part of the brief —
+ *    it exists so the prototype can be reviewed without re-filling the form
+ *    for every dataset — but it is also the honest answer to "show me
+ *    Situations Wanted" with no search behind it.
+ *
+ * It never guesses a role. An unknown one falls through to this list rather
+ * than being nudged into the nearest group.
+ */
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Header from "../../components/Header.astro";
+import AudienceBar from "../../components/AudienceBar.astro";
+import Footer from "../../components/Footer.astro";
+
+import { ROLE_GROUP_LIST } from "../../data/role-groups";
+import { url } from "../../lib/url";
+
+const roleKeys = ROLE_GROUP_LIST.map((g) => g.key);
+---
+
+<BaseLayout
+  title="Situations Wanted — Hiring Solutions Group"
+  description="Preview the professionals HSG is representing, by leadership role group."
+  path="/situations-wanted/"
+  noindex
+>
+  <!-- Forwards the spec's ?role= pattern to the prerendered page for that
+       group. Inline and first, so it runs before anything is painted. -->
+  <script is:inline define:vars={{ roleKeys }}>
+    (function () {
+      var params = new URLSearchParams(window.location.search);
+      var role = (params.get("role") || "").trim();
+      if (!role || roleKeys.indexOf(role) === -1) return;
+
+      params.delete("role");
+      var query = params.toString();
+      var here = window.location.pathname.replace(/\/?$/, "/");
+      window.location.replace(here + role + "/" + (query ? "?" + query : ""));
+    })();
+  </script>
+
+  <div class="mock-note">
+    <b>Prototype</b> — candidate profiles shown are fictional examples created to
+    demonstrate the HSG Situations Wanted experience.
+  </div>
+
+  <Header home={url("/")} />
+  <AudienceBar />
+
+  <main id="main">
+    <section class="sw-hero">
+      <div class="wrap">
+        <p class="eyebrow is-brand rv">Situations Wanted</p>
+        <h1 class="rv" style="--d:1">Professionals HSG Is Representing</h1>
+        <p class="sw-index-sub rv" style="--d:2">
+          Choose a leadership role group to see the professionals currently
+          available in it. To search on location, experience and compensation,
+          start from <b>For Companies</b> above.
+        </p>
+      </div>
+    </section>
+
+    <section class="sec sec--soft">
+      <div class="wrap">
+        <ul class="sw-index">
+          {
+            ROLE_GROUP_LIST.map((group, i) => (
+              <li class="rv" style={`--d:${Math.min(i, 3)}`}>
+                <a href={url(`/situations-wanted/${group.key}/`)}>
+                  <span class="sw-index-label">{group.label}</span>
+                  <span class="sw-index-meta">
+                    {group.candidates.length} {group.resultTitle}
+                  </span>
+                  <span class="arrow" aria-hidden="true">→</span>
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <Footer home={url("/")} />
+</BaseLayout>

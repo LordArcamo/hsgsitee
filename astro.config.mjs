@@ -4,8 +4,12 @@ import sitemap from "@astrojs/sitemap";
 
 import { SITE } from "./src/data/site";
 
-/** Paths rendered with `noindex` in BaseLayout — kept out of the sitemap. */
-const NOINDEX_PATHS = ["/situations-wanted/"];
+/**
+ * Path PREFIXES rendered with `noindex` in BaseLayout — kept out of the
+ * sitemap. A prefix, not an exact path: Situations Wanted is one prerendered
+ * page per role group, and every one of them carries demonstration data.
+ */
+const NOINDEX_PREFIXES = ["/situations-wanted/"];
 
 // https://astro.build/config
 export default defineConfig({
@@ -24,7 +28,7 @@ export default defineConfig({
     sitemap({
       // Pages that carry demonstration data are noindexed in BaseLayout;
       // keep them out of the sitemap too, so the two never disagree.
-      filter: (page) => !NOINDEX_PATHS.some((p) => page.endsWith(p)),
+      filter: (page) => !NOINDEX_PREFIXES.some((p) => page.includes(p)),
     }),
   ],
 

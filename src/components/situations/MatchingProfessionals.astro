@@ -2,45 +2,58 @@
 /*
  * Six profile cards on the left, the quick comparison panel on the right.
  *
+ * Every candidate on this page comes from `group.candidates` — the pool
+ * belonging to the role group the employer chose, and nothing else. The
+ * cards, the quick panel and the full table below are all handed that same
+ * array, so the three can never disagree about who is on the page.
+ *
  * Each card runs the summary and the statistics side by side rather than
  * stacking them, which is what keeps six candidates from pushing the
- * comparison far down the page — the v2 brief's main complaint about v1.
+ * comparison far down the page — Michael's main note on v1.
  *
  * Every card carries the same four statistics in the same order because
  * both the labels and the order come from STATS, the one definition the
  * quick panel and the full table also read from.
  */
-import {
-  PROFESSIONALS,
-  STATS,
-  pluralizeTitle,
-  type SearchCriteria,
-} from "../../data/situations";
+import { STATS } from "../../data/situations";
+import type { RoleGroup, Professional } from "../../data/role-groups";
 import QuickCompare from "./QuickCompare.astro";
 
 interface Props {
-  criteria: SearchCriteria;
+  /** Only for the heading — who is shown comes from `candidates`. */
+  group: RoleGroup;
+  candidates: Professional[];
 }
 
-const { criteria } = Astro.props;
+const { group, candidates } = Astro.props;
 ---
 
 <section class="sec sec--soft sw-results" id="professionals">
   <div class="wrap">
     <div class="sec-head rv">
       <h2>
-        {PROFESSIONALS.length}
-        <span data-sw-title>{pluralizeTitle(criteria.title)}</span> Matching Your Search
+        {candidates.length}
+        <span data-sw-title>{group.resultTitle}</span> Matching Your Search
       </h2>
     </div>
 
     <div class="sw-layout">
-      <QuickCompare />
+      <QuickCompare candidates={candidates} />
 
-      <div class="sw-cards">
+      <!-- data-sw-order marks a list the ranking re-orders; every child
+           carries the id that identifies it across all three renderings.
+           The two figures ranking reads are here too, so the browser can
+           rank the rendered six without being sent the whole dataset. -->
+      <div class="sw-cards" data-sw-order>
         {
-          PROFESSIONALS.map((p, i) => (
-            <article class="sw-card rv" style={`--d:${Math.min(i, 2)}`}>
+          candidates.map((p, i) => (
+            <article
+              class="sw-card rv"
+              style={`--d:${Math.min(i, 2)}`}
+              data-sw-id={p.id}
+              data-sw-exp={p.totalExperience}
+              data-sw-salary={p.currentSalary}
+            >
               <div class="sw-card-main">
                 <header class="sw-card-head">
                   <span class="sw-mono" aria-hidden="true">
@@ -54,8 +67,8 @@ const { criteria } = Astro.props;
 
                 <p class="sw-sum">{p.summary}</p>
 
-                <ul class="sw-tools" aria-label={`Software used by ${p.name}`}>
-                  {p.software.map((tool) => (
+                <ul class="sw-tools" aria-label={`Software and tools used by ${p.name}`}>
+                  {p.tools.map((tool) => (
                     <li>{tool}</li>
                   ))}
                 </ul>
@@ -78,10 +91,6 @@ const { criteria } = Astro.props;
     <p class="sw-fine rv">
       Candidate profiles shown are fictional examples created to demonstrate the
       HSG Situations Wanted experience.
-      <span data-sw-rolenote hidden>
-        The demonstration pool does not yet vary by role, so these mechanical
-        engineering examples are shown for every search.
-      </span>
     </p>
   </div>
 </section>

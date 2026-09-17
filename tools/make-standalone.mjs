@@ -2,7 +2,7 @@
  * Bundle a built page into ONE self-contained .html file.
  *
  *   node tools/make-standalone.mjs <route> <output-name>
- *   node tools/make-standalone.mjs situations-wanted hsg-situations-wanted
+ *   node tools/make-standalone.mjs situations-wanted/operations hsg-situations-wanted
  *
  * The normal build links its CSS, JS and images with absolute "/_astro/…"
  * paths and loads the scripts as ES modules — neither of which resolves over

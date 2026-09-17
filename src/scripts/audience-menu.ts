@@ -1,3 +1,6 @@
+import { encodeSalary } from "../data/situations";
+import { initRoleCombobox } from "./role-combobox";
+
 /**
  * "For Companies" hover dropdown: a two-step role intake in the audience bar.
  *
@@ -93,6 +96,7 @@ function setupMenu(menu: HTMLElement): void {
   menu.querySelector<HTMLAnchorElement>("[data-aud-jump]")
     ?.addEventListener("click", () => close(true));
 
+  initRoleCombobox(form);
   setupSteps(form, () => close(true));
 }
 
@@ -135,6 +139,13 @@ function setupSteps(form: HTMLFormElement, dismiss: () => void): void {
 
   let current = 1;
 
+  /*
+   * Step 3 is whichever ending the search earned. The employer form has two
+   * elements sharing that step — the recap and the Custom Search state —
+   * and only the one matching `finalKind` is ever shown.
+   */
+  let finalKind = "done";
+
   const showError = (msg: string) => {
     err.textContent = msg;
     err.hidden = false;
@@ -146,7 +157,9 @@ function setupSteps(form: HTMLFormElement, dismiss: () => void): void {
 
   const render = () => {
     steps.forEach((s) => {
-      s.hidden = s.dataset.audStep !== String(current);
+      const onStep = s.dataset.audStep === String(current);
+      const kind = s.dataset.audFinal;
+      s.hidden = !onStep || (kind !== undefined && kind !== finalKind);
     });
     const done = current === 3;
     backBtn.hidden = current !== 2;
@@ -167,6 +180,11 @@ function setupSteps(form: HTMLFormElement, dismiss: () => void): void {
     for (const el of Array.from(
       wrap.querySelectorAll<HTMLInputElement | HTMLSelectElement>("input, select"),
     )) {
+      // Controls without a name are not answers — the role combobox's
+      // search box is one of them. Reporting an unnamed control as the
+      // missing field returns an empty string, which reads as "nothing
+      // missing" and would wave the whole step through.
+      if (!el.name) continue;
       if (el.type === "radio") {
         const group = wrap.querySelectorAll<HTMLInputElement>(
           `input[name="${el.name}"]`,
@@ -181,8 +199,18 @@ function setupSteps(form: HTMLFormElement, dismiss: () => void): void {
   };
 
   const focusField = (name: string) => {
-    const el = form.querySelector<HTMLElement>(`[name="${name}"]`);
-    el?.focus();
+    const el = form.querySelector<HTMLInputElement>(`[name="${name}"]`);
+    if (!el) return;
+    // The role selector submits through a hidden input, which cannot take
+    // focus — send the visitor to the search box that fills it instead.
+    if (el.type === "hidden") {
+      el
+        .closest(".aud-field")
+        ?.querySelector<HTMLElement>("input:not([type='hidden']), select")
+        ?.focus();
+      return;
+    }
+    el.focus();
   };
 
   /* whichever field happens to come first on that step */
@@ -222,14 +250,46 @@ function setupSteps(form: HTMLFormElement, dismiss: () => void): void {
 
     /* A form with data-aud-results hands its answers to a results page
        instead of finishing on the recap — the employer intake goes to
-       Situations Wanted. The field names are the query keys; they are
-       matched by name in src/data/situations.ts. */
+       Situations Wanted. data-aud-results is the BASE of that path: the
+       chosen role group's key is appended to it, because each group has
+       its own prerendered page. The remaining field names are the query
+       keys, and they are read back in src/data/situations.ts. */
     const results = form.dataset.audResults;
     if (results) {
-      const url = new URL(results, window.location.origin);
-      for (const [key, value] of new FormData(form).entries()) {
+      const data = new FormData(form);
+      const role = String(data.get("role") ?? "").trim();
+
+      /* No role, no results path — "/situations-wanted//" is not a page.
+         Step 1 already refuses to advance without one, so this only
+         catches a form that was driven out of order, but the failure it
+         prevents is a 404 rather than a message. */
+      if (!role) {
+        current = 1;
+        render();
+        showError(`${LABELS["role"] ?? "Role / Position"} is still blank.`);
+        focusField("role");
+        return;
+      }
+
+      /* Custom Search has no candidates and no results page: an
+         unsupported role must never be answered with another profession's
+         people. It ends here, on the custom-search state. */
+      if (role === "custom") {
+        finalKind = "custom";
+        current = 3;
+        render();
+        return;
+      }
+
+      const base = results.endsWith("/") ? results : `${results}/`;
+      const url = new URL(`${base}${role}/`, window.location.origin);
+      for (const [key, value] of data.entries()) {
+        if (key === "role") continue;
         const v = String(value).trim();
-        if (v) url.searchParams.set(key, v);
+        if (!v) continue;
+        // Salary is the one answer typed freely; it travels as the spec's
+        // compact range ("180-225") whenever it can be read as one.
+        url.searchParams.set(key, key === "salary" ? encodeSalary(v) : v);
       }
       window.location.assign(url.href);
       return;
@@ -248,6 +308,7 @@ function setupSteps(form: HTMLFormElement, dismiss: () => void): void {
         recap.append(dt, dd);
       }
     }
+    finalKind = "done";
     current = 3;
     render();
     window.setTimeout(dismiss, 6000);

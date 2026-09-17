@@ -12,6 +12,24 @@
    below all six.
    ============================================================ */
 
+/*
+ * Every role page is a static file carrying the spec's example search, so
+ * a page reached from the form would flash that example before the script
+ * replaces it. An inline script in the page head sets this attribute while
+ * the document is still parsing whenever a search is present, and
+ * scripts/situations.ts clears it once the real criteria are in place.
+ *
+ * The three candidate lists are held the same way while the six are being
+ * put in order, so the cards and both tables are never seen shuffling.
+ * Their headings, column headers and the quick panel's chrome all stay
+ * visible throughout — only the rows wait.
+ *
+ * visibility, not display: every row keeps its box, so nothing jumps when
+ * the values arrive.
+ */
+:root[data-sw-pending] .sw-criteria,
+:root[data-sw-pending] [data-sw-order] { visibility: hidden; }
+
 /* screen-reader-only label inside the criteria line */
 .sw-vh {
   position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
@@ -44,17 +62,29 @@
   margin-top: 14px; max-width: none;
 }
 
+/*
+ * Each answer is a pill, and the dot in front of it belongs to the pill,
+ * not to the gap. That way an answer the employer did not give can be
+ * hidden outright without stranding a separator beside it: the dot only
+ * appears when a visible chip precedes it.
+ *
+ * While a search is being written onto the line the whole row is held
+ * invisible — see the [data-sw-pending] rule at the top of this file.
+ */
 .sw-criteria {
   margin-top: 18px;
   display: flex; align-items: center; flex-wrap: wrap; gap: 9px 11px;
 }
+.sw-crit-wrap { display: inline-flex; align-items: center; gap: 11px; min-width: 0; }
+.sw-crit-wrap[hidden] { display: none; }
 .sw-crit {
   display: inline-flex; align-items: center;
   font-size: 14px; font-weight: 700; color: var(--ink);
   background: var(--surface); border: 1px solid var(--rule);
   border-radius: 999px; padding: 7px 15px; box-shadow: var(--shadow-sm);
 }
-.sw-dot { color: var(--ink-3); font-weight: 700; user-select: none; }
+.sw-dot { display: none; color: var(--ink-3); font-weight: 700; user-select: none; }
+.sw-crit-wrap:not([hidden]) ~ .sw-crit-wrap:not([hidden]) .sw-dot { display: inline; }
 
 /* ---------- 2. results: cards left, comparison right ---------- */
 .sw-results { padding-block: clamp(42px, 5vw, 68px); }
@@ -170,9 +200,9 @@
 }
 .sw-table {
   width: 100%; border-collapse: collapse;
-  /* six columns at full type size — the wrapper scrolls rather than
+  /* seven columns at full type size — the wrapper scrolls rather than
      shrinking the text to fit a phone */
-  min-width: 980px;
+  min-width: 1120px;
 }
 .sw-table th, .sw-table td { text-align: left; padding: 14px 18px; vertical-align: top; }
 .sw-table thead th {
@@ -192,6 +222,33 @@
 .sw-table .is-num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
 .sw-table tbody td.is-num { font-weight: 700; color: var(--ink); }
 .sw-table-wrap:focus-visible { outline-offset: 2px; }
+
+/* ---------- 4b. the role index at /situations-wanted/ ---------- */
+.sw-index-sub {
+  margin-top: 14px; font-size: 15.5px; line-height: 1.6;
+  color: var(--ink-2); max-width: 62ch;
+}
+.sw-index { display: grid; gap: 10px; list-style: none; padding: 0; margin: 0; }
+.sw-index a {
+  display: flex; align-items: center; gap: 14px;
+  background: var(--surface); border: 1px solid var(--rule);
+  border-left: 3px solid var(--hiring-fill); border-radius: 14px;
+  padding: 16px 20px; text-decoration: none; box-shadow: var(--shadow-sm);
+  transition: transform .24s var(--ease), box-shadow .24s var(--ease), border-color .24s var(--ease);
+}
+.sw-index a:hover { transform: translateY(-2px); box-shadow: var(--shadow); border-left-color: var(--accent); }
+.sw-index-label {
+  flex: 1 1 auto; min-width: 0;
+  font-family: var(--display); font-size: 17px; font-weight: 800;
+  letter-spacing: -.024em; color: var(--ink);
+}
+.sw-index-meta { flex: none; font-size: 12.5px; font-weight: 700; color: var(--ink-3); }
+.sw-index .arrow { flex: none; color: var(--accent); }
+
+@media (max-width: 560px) {
+  .sw-index a { flex-wrap: wrap; gap: 6px 12px; padding: 15px 17px; }
+  .sw-index-label { flex: 1 1 100%; font-size: 16px; }
+}
 
 /* ---------- 5. closing CTA ---------- */
 .sw-cta {
@@ -223,7 +280,8 @@
 
 @media (max-width: 680px) {
   .sw-criteria { flex-direction: column; align-items: flex-start; gap: 8px; }
-  .sw-dot { display: none; }
+  .sw-crit-wrap { width: 100%; }
+  .sw-crit-wrap:not([hidden]) ~ .sw-crit-wrap:not([hidden]) .sw-dot { display: none; }
   .sw-crit { width: 100%; }
   /* stack the card's two halves; the rule moves from the side to the top */
   .sw-card { grid-template-columns: 1fr; gap: 15px; padding: 18px; }
@@ -237,7 +295,7 @@
   .sw-cta .btn { justify-self: start; }
   /* tighter cells so less of the table sits off-screen — the type size is
      left alone, which is the point of scrolling it rather than shrinking it */
-  .sw-table { min-width: 860px; }
+  .sw-table { min-width: 1000px; }
   .sw-table th, .sw-table td { padding: 12px 14px; }
 }
 

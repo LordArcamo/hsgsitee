@@ -38,7 +38,8 @@ src/
     facts.ts       the headline statistics (30 years, 1,200+ placements, …)
     jobs.ts        opportunities board — DESIGN EXAMPLES, replace before launch
     candidates.ts  shortlist demonstration — all profiles fictional
-    situations.ts  Situations Wanted results — criteria + fictional profiles
+    role-groups.ts the ten role groups and their fictional candidate pools
+    situations.ts  Situations Wanted — the search criteria and stat columns
   layouts/
     BaseLayout.astro   <head>, meta, Open Graph, JSON-LD, global CSS, reveals
   components/
@@ -49,7 +50,9 @@ src/
   styles/          global.css imports the partials IN ORDER — keep that order
 pages/
   index.astro              composes the homepage from the section components
-  situations-wanted.astro  employer-side results page
+  situations-wanted/
+    [role].astro           employer-side results page, one per role group
+    index.astro            role index; forwards ?role= to the right page
 ```
 
 ### Where things live
@@ -60,7 +63,9 @@ pages/
 | Address, phone, email, domain | `src/data/site.ts` |
 | The rotating job listings | `src/data/jobs.ts` |
 | The shortlist demo profiles | `src/data/candidates.ts` |
-| The Situations Wanted profiles and statistics | `src/data/situations.ts` |
+| The Situations Wanted candidate profiles | `src/data/role-groups.ts` |
+| The role selector's options and search aliases | `src/data/role-groups.ts` |
+| Situations Wanted criteria wording and stat columns | `src/data/situations.ts` |
 | Copy or markup of a section | the matching `src/components/sections/*.astro` |
 | Visual design | `src/styles/*.css` |
 
@@ -177,23 +182,65 @@ at the weights the design uses (400/600/700/800/900). The design's font stack
 names Inter first but the mockup never loaded it, so it silently fell back on
 machines without Inter installed. Add an import if you introduce a new weight.
 
-**Situations Wanted is driven by the query string.** `/situations-wanted/` is
-the employer-side results page: the "For Companies" intake in the audience bar
-carries its six answers there as a query string, keyed by the form's own field
-names. This is a static build, so those answers are not available when the page
-renders — the markup ships carrying the spec's example search and
-`src/scripts/situations.ts` rewrites the heading and the criteria line in the
-browser. With no query string it resolves to that same example, so the page
-never flickers between two searches. Nothing about the search is hard-coded;
-`src/data/situations.ts` is the only place criteria, profiles and the four
-statistics are defined, and the cards and the comparison table are both
-generated from it.
+**Situations Wanted is one page per role group.** The "For Companies" intake
+in the audience bar no longer takes a free-text job title: it offers a
+controlled list of ten HSG role groups plus Custom Search, defined in
+`src/data/role-groups.ts`. The group that was chosen becomes the URL segment —
+`/situations-wanted/operations/` — and every group is prerendered with its own
+six candidates. Nothing on a role page can show another profession's people,
+because no other profession's data is on it. A role outside the ten never
+reaches a results page at all: Custom Search ends inside the form, on a state
+that asks HSG to build the search instead.
 
-The seven profiles are fictional and are a fixed mechanical-engineering sample
-set — they do not vary by searched role, and the page says so when the searched
-title does not match them. The page is `noindex`ed and excluded from the
-sitemap (`NOINDEX_PATHS` in `astro.config.mjs`) until real, consented candidate
-data replaces them.
+That is a deliberate departure from the spec's suggested
+`/situations-wanted?role=operations`. On a static build, one page plus a query
+string has to ship one group's candidates and swap them in the browser, so a
+phone on a slow connection sees six of the wrong people first. The spec's URL
+still works — `/situations-wanted/` forwards `?role=` to the matching page
+before the browser paints.
+
+The rest of the search — location, experience band, new/replacement, career
+path and salary range — does travel as a query string, and
+`src/scripts/situations.ts` writes it onto the criteria line. Because each page
+is a static file it ships carrying the spec's worked example, so on a real
+search the criteria line is held invisible by `[data-sw-pending]` until the
+real answers are in place. Four of those five answers are controlled
+vocabularies round-tripped as short tokens (`experience=15-20`); only location
+and salary are typed freely.
+
+**The six are ranked, and the ranking is applied in one place.** The role is a
+hard requirement, and it is settled before ranking runs — the page holds one
+profession's people, so nothing can reach across professions. Within them,
+`rankCandidates` in `src/data/situations.ts` orders by how closely each person
+fits the submitted experience band and salary range: experience is the strong
+factor, salary secondary, put on one scale by `SALARY_PER_YEAR`. Nobody is
+shown a score — no percentage, no badge. With "Flexible / Not Sure" experience
+and a salary of "DOE" there is nothing to rank on, so the six keep the order
+they are written in.
+
+Location, new/replacement and career path are deliberately NOT ranked on. The
+candidate records have no location, opening type or career-path field, so
+ranking on them would be theatre; they confirm the employer's search and
+nothing more until real data gives them something to match.
+
+The criteria line repeats the employer's own answer rather than interpreting
+it — "Career Path: No" means they answered no, which is not the same claim as
+"No Career Path".
+
+**One array, three renderings.** `[role].astro` builds `matchedCandidates` and
+hands that same array to the cards, the quick comparison and the full table.
+Each rendering is marked `data-sw-order` and each of its rows carries
+`data-sw-id`, so when the browser ranks the six it re-orders all three from one
+id list — they cannot end up holding different people, or the same people in a
+different order. The cards also carry `data-sw-exp` and `data-sw-salary`, which
+is how ranking happens in the browser without the whole dataset being shipped
+to it.
+
+All sixty profiles are fictional. The pages are `noindex`ed and excluded from
+the sitemap (`NOINDEX_PREFIXES` in `astro.config.mjs`) until real, consented
+candidate data replaces them — and note that prerendering puts every candidate
+in a public file, so a real feed needs SSR or an endpoint behind auth, not
+this.
 
 **Header and Footer anchors take a `home` prop.** Empty on the homepage, where
 the links are same-page jumps; `"/"` on any other page, so they travel home
