@@ -27,11 +27,24 @@ function setupMenu(menu: HTMLElement): void {
   let pinned = false;
   let hoverOut: number | undefined;
 
+  /* ---------- fit to the screen (design 2026-09-19) ----------
+     The bar is fixed, so a tall panel could never be scrolled into view on a
+     short phone. Cap it at the room actually left below it and let it scroll
+     inside itself; widgets.css reads --aud-max-h. */
+  const fit = () => {
+    if (panel.hidden) return;
+    const top = panel.getBoundingClientRect().top;
+    const room = Math.max(180, Math.floor(window.innerHeight - top - 12));
+    panel.style.setProperty("--aud-max-h", `${room}px`);
+  };
+  window.addEventListener("resize", fit);
+
   /* ---------- open / close ---------- */
   const open = () => {
     window.clearTimeout(hoverOut);
     if (menu.classList.contains("is-open")) return;
     panel.hidden = false;
+    fit();
     // let the browser paint the hidden state before transitioning in
     requestAnimationFrame(() => menu.classList.add("is-open"));
     trigger.setAttribute("aria-expanded", "true");

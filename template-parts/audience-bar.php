@@ -11,7 +11,7 @@
 						<?php /* Role selector (design 2026-09-18, relaxed here): the ten HSG role groups are suggestions. Pick one → role = its key. Type anything else → role = "custom", title = the text. */ ?>
 						<div class="aud-field"><span class="aud-lbl" id="aud-role-lbl">Role / Position</span>
 							<div class="aud-combo" data-role-combo>
-								<input type="text" class="aud-combo-input" data-role-input id="aud-role-input" role="combobox" aria-expanded="false" aria-controls="aud-role-list" aria-autocomplete="list" aria-labelledby="aud-role-lbl" placeholder="Type a role — e.g. CFO, Plant Manager" autocomplete="off">
+								<input type="text" class="aud-combo-input" data-role-input id="aud-role-input" role="combobox" aria-expanded="false" aria-controls="aud-role-list" aria-autocomplete="list" aria-labelledby="aud-role-lbl" placeholder="e.g. CFO, Plant Manager" autocomplete="off">
 								<svg class="aud-combo-chev" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
 								<input type="hidden" name="role" data-role-value><input type="hidden" name="title" data-role-title data-optional data-recap-skip>
 								<ul class="aud-combo-list" id="aud-role-list" role="listbox" aria-labelledby="aud-role-lbl" hidden data-role-list>

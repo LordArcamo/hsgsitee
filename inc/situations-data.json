@@ -655,16 +655,14 @@
   ]
  },
  {
-  "key": "mechanical-engineering",
-  "label": "Mechanical / Design Engineering",
+  "key": "mechanical-engineer",
+  "label": "Mechanical Engineer",
   "resultTitle": "Mechanical Engineers",
   "aliases": [
-   "Mechanical Engineer",
+   "Mechanical Engineering",
    "Mechanical Design Engineer",
    "Design Engineer",
-   "Product Engineer",
-   "Project Engineer",
-   "ME"
+   "Product Development Engineer"
   ],
   "candidates": [
    {

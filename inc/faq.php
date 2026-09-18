@@ -35,14 +35,71 @@ function hsg_faq_parse( string $raw ): array {
 	if ( $cur['items'] ) { $groups[] = $cur; }
 	// Business Solutions Group content lives on bsg-edge.com now; its FAQ groups are not shown here.
 	$hidden = apply_filters( 'hsg_faq_hidden_groups', array( 'business solutions', 'coaching solutions' ) );
-	return array_values( array_filter( $groups, fn( $g ) => ! in_array( strtolower( trim( $g['title'] ) ), $hidden, true ) ) );
+	$norm = fn( $t ) => strtolower( trim( preg_replace( '/\s+/u', ' ', str_replace( "\xC2\xA0", ' ', html_entity_decode( $t, ENT_QUOTES ) ) ) ) );
+	$groups = array_values( array_filter( $groups, fn( $g ) => ! in_array( $norm( $g['title'] ), $hidden, true ) ) );
+	foreach ( $groups as &$g ) { $g['title'] = trim( str_replace( "\xC2\xA0", ' ', html_entity_decode( $g['title'], ENT_QUOTES ) ) ); }
+	return $groups;
 }
 
-function hsg_faq_jsonld( array $groups ): string {
+/** The H1: SEOPress's optimised title when the page has one, else the page title. */
+function hsg_faq_heading( int $post_id ): string {
+	$t = trim( (string) get_post_meta( $post_id, '_seopress_titles_title', true ) );
+	return '' !== $t ? $t : get_the_title( $post_id );
+}
+
+/**
+ * FAQPage + BreadcrumbList in one graph, tied to the Organization so answer
+ * engines know whose answers these are. SEOPress keeps title/description/OG.
+ */
+function hsg_faq_jsonld( array $groups, int $post_id ): string {
 	$ents = array();
 	foreach ( $groups as $g ) { foreach ( $g['items'] as $it ) {
 		$ents[] = array( '@type' => 'Question', 'name' => $it['q'], 'acceptedAnswer' => array( '@type' => 'Answer', 'text' => trim( preg_replace( '/\s+/u', ' ', html_entity_decode( wp_strip_all_tags( $it['a'] ), ENT_QUOTES ) ) ) ) );
 	} }
 	if ( ! $ents ) { return ''; }
-	return '<script type="application/ld+json">' . wp_json_encode( array( '@context' => 'https://schema.org', '@type' => 'FAQPage', 'mainEntity' => $ents ), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ) . '</script>';
+	$home = home_url( '/' ); $url = get_permalink( $post_id );
+	$org = array( '@type' => 'Organization', '@id' => $home . '#organization', 'name' => 'Hiring Solutions Group', 'url' => $home );
+	if ( function_exists( 'hsg_field' ) ) {
+		if ( $p = trim( (string) hsg_field( 'site_phone', '' ) ) ) { $org['telephone'] = $p; }
+		if ( $e = trim( (string) hsg_field( 'site_email', '' ) ) ) { $org['email'] = $e; }
+	}
+	$org['areaServed'] = 'Northern New Jersey';
+	$graph = array(
+		$org,
+		array( '@type' => 'WebSite', '@id' => $home . '#website', 'url' => $home, 'name' => 'Hiring Solutions Group', 'publisher' => array( '@id' => $home . '#organization' ) ),
+		array( '@type' => 'BreadcrumbList', 'itemListElement' => array(
+			array( '@type' => 'ListItem', 'position' => 1, 'name' => 'Home', 'item' => $home ),
+			array( '@type' => 'ListItem', 'position' => 2, 'name' => 'FAQ', 'item' => $url ),
+		) ),
+		array( '@type' => 'FAQPage', '@id' => $url . '#faq', 'url' => $url, 'name' => hsg_faq_heading( $post_id ),
+			'description' => (string) get_post_meta( $post_id, '_seopress_titles_desc', true ),
+			'dateModified' => get_the_modified_date( 'c', $post_id ), 'inLanguage' => 'en-US',
+			'isPartOf' => array( '@id' => $home . '#website' ), 'about' => array( '@id' => $home . '#organization' ),
+			'mainEntity' => $ents ),
+	);
+	return '<script type="application/ld+json">' . wp_json_encode( array( '@context' => 'https://schema.org', '@graph' => $graph ), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ) . '</script>';
 }
+
+/**
+ * /llms.txt — a plain-text map of the site for LLM crawlers (GEO). Served by
+ * the theme so nothing has to be uploaded; flush permalinks once after adding.
+ */
+add_action( 'init', function () { add_rewrite_rule( '^llms\.txt$', 'index.php?hsg_llms=1', 'top' ); } );
+add_filter( 'query_vars', function ( $v ) { $v[] = 'hsg_llms'; return $v; } );
+add_action( 'template_redirect', function () {
+	if ( ! get_query_var( 'hsg_llms' ) ) { return; }
+	$h = fn( $p ) => home_url( $p );
+	$lines = array(
+		'# Hiring Solutions Group',
+		'> Executive recruiting and career solutions firm in Northern New Jersey with three decades of executive search: Collaborative Search®, candidate assessment, private vetting, forensic interviewing, and career strategy for professionals.',
+		'', '## Key pages',
+		'- [Home](' . $h( '/' ) . '): what HSG does for companies and for professionals',
+		'- [FAQ](' . $h( '/faqs/' ) . '): direct answers about executive search, fees, timelines and working with a recruiter',
+		'- [Articles](' . $h( '/articles/' ) . '): the HSG journal on hiring, interviewing, leadership and career strategy',
+		'- [Situations Wanted](' . $h( '/situations-wanted/' ) . '): professionals HSG is representing, by role group',
+		'- [Job Board](' . $h( '/job-search-2/' ) . '): open positions',
+		'- [About](' . $h( '/about-us/' ) . '): Michael Schlager and the firm',
+		'- [Contact](' . $h( '/contact/' ) . ')',
+	);
+	nocache_headers(); header( 'Content-Type: text/plain; charset=utf-8' ); echo implode( "\n", $lines ), "\n"; exit;
+} );

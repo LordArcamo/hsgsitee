@@ -389,6 +389,14 @@
   box-shadow: var(--shadow-lg); padding: 18px;
   opacity: 0; transform: translateY(-8px);
   transition: opacity .22s var(--ease), transform .22s var(--ease);
+  /* The bar is position: fixed, so a panel taller than the space below it
+     could never be scrolled into view with the page — on a short phone, or
+     any phone held sideways, the Next button sat off-screen for good. It
+     scrolls inside itself instead. audience-menu.ts measures the space that
+     is actually left and sets --aud-max-h; the fallback only covers the
+     frame before that runs. */
+  max-height: var(--aud-max-h, calc(100dvh - 150px));
+  overflow-y: auto; overscroll-behavior: contain;
 }
 .aud-menu.is-open .aud-panel { opacity: 1; transform: none; }
 /* the professionals menu sits at the right edge of the bar, so its panel
@@ -523,11 +531,32 @@
 .aud-recap dd { font-size: 12.5px; font-weight: 600; color: var(--ink); margin: 0; }
 
 /* ---------- narrow screens ---------- */
+/* iPhones zoom the whole page in when a field under 16px takes focus, and
+   leave it zoomed after — which is what made the panel look broken on a
+   phone even where it did fit. 16px on anything touch or narrow. */
+@media (max-width: 1023px), (pointer: coarse) {
+  .aud-field input[type="text"],
+  .aud-field select { font-size: 16px; }
+}
+
 @media (max-width: 560px) {
   .aud-menu { flex: 1; }
   .audbar .aud-trigger { width: 100%; justify-content: center; padding: 8px 10px; }
-  .aud-panel { left: 50%; transform: translate(-50%, -8px); width: calc(100vw - 2 * var(--gut)); }
-  .aud-menu.is-open .aud-panel { transform: translate(-50%, 0); }
+
+  /* On a phone each button is only half the bar, so a full-width panel
+     cannot hang from its own button without running off one edge — which
+     is exactly what happened: centred on the button, For Companies slid off
+     the left and For Professionals off the right. Hang both from the bar
+     itself instead, inset by the page gutter, so they always span the
+     screen whichever button opened them. */
+  .audbar-in { position: relative; }
+  .aud-menu { position: static; }
+  .aud-panel,
+  .aud-menu--right .aud-panel {
+    left: var(--gut); right: var(--gut); width: auto;
+    transform: translateY(-8px);
+  }
+  .aud-menu.is-open .aud-panel { transform: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {
