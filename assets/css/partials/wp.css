@@ -67,3 +67,13 @@
 
 /* phone drawer: keep the ® next to its word instead of floating mid-row */
 .mobile-nav ul a sup { margin-right: auto; margin-left: 2px; }
+
+/* shortlist demo, simplified: one primary control, a static pool, a show-all link */
+.sl-next { min-height: 38px; padding: 8px 16px; font-size: 13.5px; }
+.sl-next[disabled] { opacity: .55; cursor: wait; }
+.pool-view.is-static { height: auto !important; -webkit-mask-image: none !important; mask-image: none !important; }
+.pool-view.is-static .pool-track { animation: none !important; }
+.sl-more { display: inline-block; margin-top: 12px; background: none; border: 0; padding: 0; font: inherit; font-size: 13px; font-weight: 700; color: var(--accent); cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+.sl-more:hover { color: var(--accent-deep, var(--accent)); }
+@media (max-width: 560px) { .sl-ctl { gap: 10px; } .sl-next { flex: 1; justify-content: center; } }
+.sl-more[hidden] { display: none; }

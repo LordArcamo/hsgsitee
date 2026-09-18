@@ -4,6 +4,7 @@ import { initHeader } from "./scripts/header";
 import { initAudienceBar } from "./scripts/audience-bar";
 import { initAudienceMenu } from "./scripts/audience-menu";
 import { initCounters } from "./scripts/counters";
+import { initShortlist } from "./scripts/shortlist";
 import { initJobsBoard } from "./scripts/jobs-board";
 const initProgress = () => {
   const bar = document.querySelector<HTMLElement>(".post-progress"); const body = document.querySelector<HTMLElement>(".post-body");
@@ -12,5 +13,5 @@ const initProgress = () => {
   addEventListener("scroll", tick, { passive: true }); addEventListener("resize", tick); tick();
 };
 const initCopy = () => document.querySelectorAll<HTMLButtonElement>(".post-copy").forEach((b) => b.addEventListener("click", async () => { try { await navigator.clipboard.writeText(b.dataset.copy || location.href); b.classList.add("is-done"); b.textContent = "Copied"; setTimeout(() => { b.classList.remove("is-done"); b.textContent = "Copy link"; }, 1800); } catch {} }));
-const boot = () => { initCopy(); initHeader(); initAudienceBar(); initAudienceMenu(); initCounters(); initJobsBoard(); initProgress(); initReveal(); };
+const boot = () => { initCopy(); initHeader(); initAudienceBar(); initAudienceMenu(); initCounters(); initShortlist(); initJobsBoard(); initProgress(); initReveal(); };
 document.readyState === "loading" ? document.addEventListener("DOMContentLoaded", boot) : boot();

@@ -18,27 +18,29 @@ foreach ( $stages as $i => $st ) { if ( 0 === $i ) { continue; } $funnel[] = arr
 $total = count( $pool ); $finalists = $survivors( count( $stages ) - 1 );
 ?>
 <section class="sec sec--soft" id="shortlist">
-	<?php /* Client review 17 Sep 2026: the interactive 50-profile demo was "very confusing". This is the same story told statically — one example role, what the company needs, and how many people remain at each stage. */ ?>
+	<?php /* Interactive demo, simplified after client review (17 Sep 2026): no autoplay, no Play/Pause, the pool never scrolls on its own, eight profiles shown at a time, one "Next stage" button. Logic: src/scripts/shortlist.ts. */ ?>
 	<div class="wrap">
 		<div class="sec-head rv"><h2><?php hsg_e( 'sl_h2' ); ?></h2><p class="sl-sub"><?php hsg_e( 'sl_sub' ); ?></p><p class="lede"><?php hsg_e( 'sl_lede1' ); ?></p></div>
-		<div class="slx rv" style="--d:1">
-			<aside class="slx-role">
-				<span class="tag">Example search</span>
-				<h3><?php hsg_e( 'sl_role' ); ?></h3><p class="meta"><?php hsg_e( 'sl_meta' ); ?></p>
-				<h4>What the company needs</h4>
-				<ul class="slx-req"><?php foreach ( $criteria as $c ) : ?><li><?php echo esc_html( $c ); ?></li><?php endforeach; ?></ul>
-			</aside>
-			<div class="slx-steps">
-				<h4>How <?php echo (int) $total; ?> people become one hire</h4>
-				<ol>
-					<?php foreach ( $stages as $i => $st ) :
-						$count = 0 === $i ? count( $criteria ) : ( $funnel[ $i - 1 ]['count'] ?? 0 );
-						$unit  = 0 === $i ? 'requirements' : ( $count === $total ? 'in consideration' : ( 1 === $count ? 'hired' : 'still in' ) ); ?>
-					<li class="slx-step"><div class="slx-count"><?php echo (int) $count; ?><small><?php echo esc_html( $unit ); ?></small></div><div><h5><?php echo esc_html( $st['key'] ); ?></h5><p><?php echo esc_html( $st['note'] ); ?></p></div></li>
-					<?php endforeach; ?>
-				</ol>
-				<p class="slx-fine">Experience gets someone into consideration. Deeper evaluation decides who deserves a closer look. Counts are illustrative; every search is different.</p>
+		<div class="sl-demo rv" style="--d:1">
+			<div class="sl-bar">
+				<div class="sl-stages" id="slStages" aria-label="Evaluation stages"></div>
+				<div class="sl-ctl">
+					<p class="sl-count"><b id="slCount"><?php echo (int) $total; ?></b> <span id="slCountLbl">in consideration</span></p>
+					<button class="btn sl-next" id="slNext" type="button">Next stage <span class="arrow" aria-hidden="true">→</span></button>
+				</div>
 			</div>
+			<div class="sl-body">
+				<aside class="sl-role"><span class="tag">Example search</span><h3><?php hsg_e( 'sl_role' ); ?></h3><p class="meta"><?php hsg_e( 'sl_meta' ); ?></p><h4>What the company needs</h4><ul class="req" id="slReq"></ul></aside>
+				<div class="sl-pool">
+					<div class="pool-top"><p class="pool-lbl" id="slPoolLbl"><?php echo (int) $total; ?> sample profiles</p><p class="pool-note" id="slNote"></p></div>
+					<div class="pool-view is-static" id="slView"><div class="pool-track" id="slTrack"></div></div>
+					<button class="sl-more" id="slMore" type="button" hidden>Show all profiles</button>
+					<p class="pool-caution">Experience gets someone into consideration. Deeper evaluation determines who deserves a closer look.</p>
+					<p class="sl-fine">Candidate profiles shown are fictional examples created to demonstrate the evaluation process. Click a profile to see how it was assessed.</p>
+				</div>
+			</div>
+			<div class="sl-funnel"><div class="fn-row" id="slFunnel"></div><p class="sl-fine">Candidate counts and filtering shown are illustrative. Every search and evaluation process is different.</p></div>
+			<script type="application/json" id="hsg-shortlist"><?php echo wp_json_encode( array( 'criteria' => $criteria, 'stages' => $stages, 'funnel' => $funnel, 'candidates' => $pool ), JSON_UNESCAPED_UNICODE | JSON_HEX_TAG ); ?></script>
 		</div>
 		<div class="sl-payoff rv" style="--d:2"><div><h3><?php hsg_e( 'sl_payoff_h3' ); ?></h3><p><?php hsg_e( 'sl_payoff_p' ); ?></p></div><a class="btn" href="<?php echo hsg_anchor( 'collaborative' ); ?>">See How Collaborative Search<sup>®</sup> Works <span class="arrow" aria-hidden="true">→</span></a></div>
 	</div>
