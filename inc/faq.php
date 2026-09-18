@@ -33,7 +33,9 @@ function hsg_faq_parse( string $raw ): array {
 		$cur = array( 'title' => $title, 'items' => array() );
 	}
 	if ( $cur['items'] ) { $groups[] = $cur; }
-	return $groups;
+	// Business Solutions Group content lives on bsg-edge.com now; its FAQ groups are not shown here.
+	$hidden = apply_filters( 'hsg_faq_hidden_groups', array( 'business solutions', 'coaching solutions' ) );
+	return array_values( array_filter( $groups, fn( $g ) => ! in_array( strtolower( trim( $g['title'] ) ), $hidden, true ) ) );
 }
 
 function hsg_faq_jsonld( array $groups ): string {

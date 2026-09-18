@@ -35,7 +35,7 @@ function hsg_field_registry(): array {
 		'hero_brandline' => $t( 'Brand line', 'Leading Candidates to Leading Companies.' ),
 		'hero_p1' => $a( 'Paragraph 1', 'Hiring Solutions Group has decades of experience working with both employers and professionals. We help companies identify, evaluate, and hire exceptional talent while helping accomplished professionals understand where they can create the greatest value next.' ),
 		'hero_p2' => $a( 'Paragraph 2', 'Our approach goes deeper than resumes and job descriptions. We listen carefully, take notes, assess, interview, vet, and help our clients make better-informed decisions built for long-term success.' ),
-		'hero_cta1' => $t( 'Primary button', 'Find the Right Talent' ), 'hero_cta1_link' => $t( 'Primary button link (anchor id or URL)', '/job-search-2/' ),
+		'hero_cta1' => $t( 'Primary button', 'Find the Right Talent' ), 'hero_cta1_link' => $t( 'Primary button link (anchor id or URL)', '/situations-wanted/' ),
 		'hero_cta2' => $t( 'Secondary button', 'Explore Career Solutions' ), 'hero_cta2_link' => $t( 'Secondary button link', 'career' ),
 		'hero_bridge' => $h( 'BSG bridge line', 'Where does it go from here? When a company\'s needs extend beyond hiring into business growth, leadership, or HR, explore Business Solutions Group at <a href="https://bsg-edge.com/">BSG-edge.com</a>.' ),
 		'hero_image' => $i( 'Hero photograph (4:4.4, premium business photography)' ),

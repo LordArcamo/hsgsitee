@@ -31,7 +31,7 @@ $link = fn( $it ) => '<a href="' . hsg_anchor( $it['href'] ) . '">' . wp_kses( $
 
 		<div class="hdr-cta">
 			<a class="btn btn--ghost hdr-phone" href="<?php echo esc_attr( $tel ); ?>"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6.2 6.2l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg><span><?php echo esc_html( $phone ); ?></span></a>
-			<a class="btn" href="<?php echo esc_url( home_url( '/job-search-2/' ) ); ?>">Find Talent</a>
+			<a class="btn" href="<?php echo esc_url( home_url( '/situations-wanted/' ) ); ?>">Find Talent</a>
 			<button class="burger" id="burger" type="button" aria-expanded="false" aria-controls="mobilenav" aria-label="Open menu"><span aria-hidden="true"></span></button>
 		</div>
 	</div>
@@ -42,7 +42,7 @@ $link = fn( $it ) => '<a href="' . hsg_anchor( $it['href'] ) . '">' . wp_kses( $
 		<?php endforeach; ?>
 		<div class="m-group"><ul><li><a href="<?php echo hsg_anchor( $ins['href'] ); ?>"><?php echo esc_html( $ins['label'] ); ?></a></li></ul></div>
 		<div class="m-group"><p class="m-heading"><?php echo esc_html( $about['label'] ); ?></p><ul><?php foreach ( $about['items'] as $it ) { echo '<li>' . $link( $it ) . '</li>'; } ?></ul></div>
-		<div class="m-actions"><a class="btn" href="<?php echo esc_url( home_url( '/job-search-2/' ) ); ?>">Find Talent</a><a class="btn btn--ghost" href="<?php echo esc_attr( $tel ); ?>">Call <?php echo esc_html( $phone ); ?></a></div>
+		<div class="m-actions"><a class="btn" href="<?php echo esc_url( home_url( '/situations-wanted/' ) ); ?>">Find Talent</a><a class="btn btn--ghost" href="<?php echo esc_attr( $tel ); ?>">Call <?php echo esc_html( $phone ); ?></a></div>
 	</div>
 </header>
 
