@@ -6,7 +6,7 @@
    displayed through.
 
    Per HSG_For_Companies_and_Situations_Wanted_Update.md the role is no
-   longer free text: the employer picks one of ten role groups, and that
+   longer free text: the employer picks one of the supported role groups, and that
    choice is the page they land on. Everything else on the criteria line
    is still theirs — location, experience band, new/replacement, career
    path and salary range — and arrives as a query string.

@@ -9,7 +9,7 @@ import {
 } from "../data/situations";
 
 /*
- * The role selector is controlled: ten HSG role groups plus Custom Search,
+ * The role selector is controlled: HSG's supported role groups plus Custom Search,
  * and nothing else. The combobox searches `data-search` — the group's own
  * name, the heading it produces, and the titles people actually type — so
  * "Controller" finds Finance and "CRO" finds Sales.
@@ -144,7 +144,7 @@ const roleOptions = [
           </div>
 
           <!-- Custom Search: no candidates, no results page. The employer
-               asked for a role outside the ten preview groups, so this says
+               asked for a role outside the preview groups, so this says
                so and hands them to HSG rather than inventing a shortlist. -->
           <div class="aud-step aud-custom" data-aud-step="3" data-aud-final="custom" hidden>
             <p class="aud-done-t">We'll Build This Search Around Your Role.</p>

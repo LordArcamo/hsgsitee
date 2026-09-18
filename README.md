@@ -38,7 +38,7 @@ src/
     facts.ts       the headline statistics (30 years, 1,200+ placements, …)
     jobs.ts        opportunities board — DESIGN EXAMPLES, replace before launch
     candidates.ts  shortlist demonstration — all profiles fictional
-    role-groups.ts the ten role groups and their fictional candidate pools
+    role-groups.ts the role groups and their fictional candidate pools
     situations.ts  Situations Wanted — the search criteria and stat columns
   layouts/
     BaseLayout.astro   <head>, meta, Open Graph, JSON-LD, global CSS, reveals
@@ -184,11 +184,11 @@ machines without Inter installed. Add an import if you introduce a new weight.
 
 **Situations Wanted is one page per role group.** The "For Companies" intake
 in the audience bar no longer takes a free-text job title: it offers a
-controlled list of ten HSG role groups plus Custom Search, defined in
+controlled list of HSG role groups plus Custom Search, defined in
 `src/data/role-groups.ts`. The group that was chosen becomes the URL segment —
 `/situations-wanted/operations/` — and every group is prerendered with its own
 six candidates. Nothing on a role page can show another profession's people,
-because no other profession's data is on it. A role outside the ten never
+because no other profession's data is on it. A role outside those groups never
 reaches a results page at all: Custom Search ends inside the form, on a state
 that asks HSG to build the search instead.
 
@@ -236,7 +236,7 @@ different order. The cards also carry `data-sw-exp` and `data-sw-salary`, which
 is how ranking happens in the browser without the whole dataset being shipped
 to it.
 
-All sixty profiles are fictional. The pages are `noindex`ed and excluded from
+All profiles are fictional. The pages are `noindex`ed and excluded from
 the sitemap (`NOINDEX_PREFIXES` in `astro.config.mjs`) until real, consented
 candidate data replaces them — and note that prerendering puts every candidate
 in a public file, so a real feed needs SSR or an endpoint behind auth, not

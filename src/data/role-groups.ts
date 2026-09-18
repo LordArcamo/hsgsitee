@@ -12,7 +12,7 @@
 
    The employer picks one of these groups from a controlled selector on the
    "For Companies" form, and the page for that group shows its six
-   candidates and no others. A role outside these ten never reaches a
+   candidates and no others. A role outside these groups never reaches a
    results page at all: it goes to the Custom Search state instead. That
    rule is the whole point of this file — an SEO search must never be able
    to display engineering candidates.
@@ -399,6 +399,63 @@ export const ROLE_GROUPS: Record<string, RoleGroup> = {
     ],
   },
 
+  "mechanical-engineer": {
+    key: "mechanical-engineer",
+    label: "Mechanical Engineer",
+    resultTitle: "Mechanical Engineers",
+    aliases: ["Mechanical Engineering", "Mechanical Design Engineer", "Design Engineer", "Product Development Engineer"],
+    candidates: [
+      {
+        id: 1, name: "Tim", role: "Mechanical Engineer",
+        summary: "Product-focused mechanical engineer experienced with SOLIDWORKS and Ansys Mechanical, with strong exposure to component design, prototyping, and design validation. Interested in joining a smaller privately held company where engineering works closely with ownership and where he can take greater responsibility for products from concept through production.",
+        yearsCurrentCompany: 4, totalExperience: 6, currentSalary: 110000,
+        credential: "B.S. Mechanical Engineering",
+        tools: ["SOLIDWORKS", "Ansys Mechanical"],
+        workPreference: "Smaller privately held company",
+      },
+      {
+        id: 2, name: "Larry", role: "Mechanical Engineer",
+        summary: "Mechanical design engineer who works primarily with PTC Creo and has experience supporting complex assemblies, design revisions, and manufacturing handoffs. Looking for an established company with a clear advancement path and a team where he can grow into greater technical and project leadership responsibility.",
+        yearsCurrentCompany: 5, totalExperience: 6, currentSalary: 105000,
+        credential: "B.S. Mechanical Engineering",
+        tools: ["PTC Creo"],
+        workPreference: "Established company with advancement path",
+      },
+      {
+        id: 3, name: "Peter", role: "Mechanical Engineer",
+        summary: "Hands-on mechanical engineer using Autodesk Inventor and AutoCAD Mechanical for machine components, production drawings, and manufacturing support. Prefers a local manufacturing environment where engineers stay close to the shop floor and can see their designs move from drawing through fabrication and final use.",
+        yearsCurrentCompany: 3, totalExperience: 6, currentSalary: 95000,
+        credential: "B.S. Mechanical Engineering",
+        tools: ["Autodesk Inventor", "AutoCAD Mechanical"],
+        workPreference: "Local hands-on manufacturing environment",
+      },
+      {
+        id: 4, name: "David", role: "Mechanical Engineer",
+        summary: "Design engineer with experience working in Siemens NX on larger assemblies and technically complex products. Interested in becoming part of a larger engineering team where he can collaborate with specialists, contribute to more complex programs, and continue developing within a structured engineering organization.",
+        yearsCurrentCompany: 4, totalExperience: 7, currentSalary: 112000,
+        credential: "B.S. Mechanical Engineering",
+        tools: ["Siemens NX"],
+        workPreference: "Larger structured engineering team",
+      },
+      {
+        id: 5, name: "Kevin", role: "Mechanical Engineer",
+        summary: "Product-development engineer comfortable in CATIA V5 and cross-functional design environments, with experience working alongside manufacturing, quality, and product teams. Looking for a growth-oriented organization where engineers have broad ownership and can contribute directly to new-product development rather than working in a narrowly defined role.",
+        yearsCurrentCompany: 3, totalExperience: 5, currentSalary: 98000,
+        credential: "M.S. Mechanical Engineering",
+        tools: ["CATIA V5"],
+        workPreference: "Growth-oriented company with broad ownership",
+      },
+      {
+        id: 6, name: "Robert", role: "Mechanical Engineer",
+        summary: "Mechanical engineer focused on design improvement and analysis, with experience using Autodesk Fusion and Inventor Nastran for modeling, iteration, and simulation work. Interested in a company where technical problem-solving is valued and where he can work with a collaborative engineering group while still owning meaningful projects.",
+        yearsCurrentCompany: 2, totalExperience: 6, currentSalary: 102000,
+        credential: "B.S. Mechanical Engineering / EIT",
+        tools: ["Autodesk Fusion", "Inventor Nastran"],
+        workPreference: "Collaborative team with individual project ownership",
+      },
+    ],
+  },
+
   "supply-chain": {
     key: "supply-chain",
     label: "Supply Chain / Procurement Leadership",
@@ -628,7 +685,13 @@ export const ROLE_GROUPS: Record<string, RoleGroup> = {
   },
 };
 
-/** The ten groups, in the order the spec lists them in the role selector. */
+/**
+ * The supported groups, in role-selector order: the spec's ten, with
+ * Mechanical Engineer added after Engineering / Technical Leadership.
+ * Mechanical Engineer is the one individual-contributor group — its six are
+ * the original Situations Wanted sample set, which predates the leadership
+ * groups.
+ */
 export const ROLE_GROUP_LIST: RoleGroup[] = [
   "finance",
   "operations",
@@ -636,6 +699,7 @@ export const ROLE_GROUP_LIST: RoleGroup[] = [
   "marketing",
   "hr",
   "engineering",
+  "mechanical-engineer",
   "supply-chain",
   "it",
   "manufacturing",

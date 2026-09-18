@@ -2,7 +2,7 @@
  * The controlled role selector on the "For Companies" form.
  *
  * A searchable list, not a free-text field: the only thing that can leave
- * this control is one of the ten role-group keys or "custom". Typing
+ * this control is one of the role-group keys or "custom". Typing
  * narrows the list — it never becomes the answer. Whatever is in the text
  * box when the form is submitted is irrelevant; the hidden input is the
  * value, and it is cleared the moment the text stops matching the

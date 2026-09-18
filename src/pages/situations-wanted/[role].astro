@@ -3,7 +3,7 @@
  * SITUATIONS WANTED — the employer-side results page, one per role group.
  *
  * Reached from the "For Companies" intake in the audience bar. The role the
- * employer picked is the URL SEGMENT, not a query parameter: each of the ten
+ * employer picked is the URL SEGMENT, not a query parameter: each of the
  * groups is prerendered with its own six candidates, so the right people are
  * in the HTML that arrives. Nothing on this page can show candidates from
  * another profession, because no other profession's data is on it.
@@ -12,7 +12,7 @@
  * `?role=operations`. With a single page plus a query string, a static build
  * has to ship one group's candidates and swap them in the browser, which
  * means a phone on a slow connection shows six of the wrong people first.
- * A role outside the ten never reaches here at all — the form sends it to
+ * A role outside the groups never reaches here at all — the form sends it to
  * the Custom Search state instead.
  *
  * The rest of the search still arrives as a query string, and
