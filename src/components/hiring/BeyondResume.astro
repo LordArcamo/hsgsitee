@@ -1,0 +1,59 @@
+---
+/*
+ * 03 The resume is only the beginning. Visual-first, per the spec: one thing
+ * a resume shows, six it cannot, and the brand line — no block of text.
+ * The factor list is the spec's, with "Culture Alignment" written
+ * "Cultural Fit" to match the homepage.
+ */
+const beyond = [
+  "Leadership",
+  "Communication",
+  "Decision-Making",
+  "Problem-Solving",
+  "Cultural Fit",
+  "Growth Potential",
+];
+---
+
+<section class="sec" id="beyond-resume">
+  <div class="wrap br-grid">
+    <div class="sec-head rv">
+      <p class="eyebrow is-brand">The Resume Is Only the Beginning</p>
+      <h2>The Best Candidate Isn't Always the Best Resume.</h2>
+      <p class="lede">Experience may get someone into consideration. It does not tell you everything you need to know before making a critical hire.</p>
+      <p class="br-line">People deserve more attention than paper.</p>
+    </div>
+
+    <div
+      class="br-vis rv"
+      style="--d:1"
+      role="img"
+      aria-label={`A resume shows experience. Deeper evaluation looks at ${beyond.join(", ").toLowerCase()}.`}
+    >
+      <div class="br-zone br-zone--paper">
+        <p class="br-zlbl">On the resume</p>
+        <div class="br-paper" aria-hidden="true">
+          <i class="br-l br-l--h"></i>
+          <i class="br-l" style="width:78%"></i>
+          <i class="br-l" style="width:64%"></i>
+          <i class="br-l" style="width:84%"></i>
+          <i class="br-l" style="width:52%"></i>
+          <span class="br-hit">Experience</span>
+          <i class="br-l" style="width:70%"></i>
+          <i class="br-l" style="width:44%"></i>
+        </div>
+      </div>
+
+      <span class="br-arrow" aria-hidden="true">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </span>
+
+      <div class="br-zone br-zone--beyond">
+        <p class="br-zlbl">Beyond the resume</p>
+        <ul class="br-factors">
+          {beyond.map((f, i) => <li style={`--i:${i}`}>{f}</li>)}
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>

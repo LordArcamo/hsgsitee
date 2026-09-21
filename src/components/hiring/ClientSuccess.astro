@@ -1,0 +1,67 @@
+---
+import { FEATURED_STORY as s } from "../../data/stories";
+import { sup } from "../../lib/text";
+
+/*
+ * 11 Client success — the homepage's employer story, retold in the spec's
+ * Challenge → HSG Approach → Outcome structure from the same data file.
+ *
+ * The testimonial is a visible placeholder: no employer testimonial has been
+ * approved for public use yet. The two CTAs have no pages to go to, so they
+ * render without an href — a "#" link would scroll to the top and read as
+ * broken — and pick up real destinations when those pages exist.
+ */
+---
+
+<section class="sec" id="client-success">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <p class="eyebrow is-brand">Client Success</p>
+      <h2>The Search Matters. The Result Matters More.</h2>
+    </div>
+
+    <article class="cl-story rv" style="--d:1">
+      <header class="cl-story-head">
+        <h3>{s.title}</h3>
+        <div class="cl-story-tags">
+          {s.tags.map((t) => <span class="story-tag" set:html={sup(t)} />)}
+        </div>
+      </header>
+
+      <div class="cl-story-cols">
+        <div class="cl-col">
+          <p class="cl-col-lbl"><span>01</span> Challenge</p>
+          {s.challenge.map((p) => <p>{p}</p>)}
+        </div>
+        <div class="cl-col">
+          <p class="cl-col-lbl"><span>02</span> HSG Approach</p>
+          {s.approach.map((p) => <p>{p}</p>)}
+        </div>
+        <div class="cl-col cl-col--out">
+          <p class="cl-col-lbl"><span>03</span> Outcome</p>
+          <p class="turn">{s.turn}</p>
+          {s.outcome.map((p) => <p>{p}</p>)}
+        </div>
+      </div>
+
+      <div class="cl-story-metrics">
+        {s.metrics.map((m) => (
+          <div class="story-metric"><b>{m.value}</b><span>{m.label}</span></div>
+        ))}
+      </div>
+    </article>
+
+    <figure class="cl-quote rv" style="--d:2">
+      <span class="cl-quote-mark" aria-hidden="true">“</span>
+      <blockquote>
+        <p>Approved employer testimonial</p>
+      </blockquote>
+      <figcaption>Name · Title · Company <span class="cl-pending">Pending approval</span></figcaption>
+    </figure>
+
+    <div class="cl-actions rv" style="--d:3">
+      <a class="btn" aria-disabled="true" title="Page coming soon">Read Success Stories <span class="arrow" aria-hidden="true">→</span></a>
+      <a class="btn btn--ghost" aria-disabled="true" title="Page coming soon">View Testimonials <span class="arrow" aria-hidden="true">→</span></a>
+    </div>
+  </div>
+</section>

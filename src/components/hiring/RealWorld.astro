@@ -1,0 +1,27 @@
+---
+import { EVALUATION_CARDS } from "../../data/hiring";
+import Icon from "./Icon.astro";
+
+/* 09 Real-world evaluation — on the dark panel, so the page's one "how we
+   actually test people" section reads as a change of register. */
+---
+
+<section class="sec rw" id="evaluation">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <p class="eyebrow">Real-World Evaluation</p>
+      <h2>A Resume Tells You Where Someone Has Been.</h2>
+      <p class="rw-sub">We Want to Understand How They Operate.</p>
+    </div>
+
+    <div class="rw-grid">
+      {EVALUATION_CARDS.map((c, i) => (
+        <article class="rw-card rv" style={`--d:${i + 1}`}>
+          <span class="rw-ic"><Icon name={c.icon} /></span>
+          <h3>{c.title}</h3>
+          <p>{c.body}</p>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>

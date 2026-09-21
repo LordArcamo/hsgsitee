@@ -1,0 +1,35 @@
+---
+import { FAQS } from "../../data/hiring";
+import { sup } from "../../lib/text";
+
+/*
+ * 12 FAQ — native <details>, so it opens and closes with no script and is
+ * keyboard- and screen-reader-accessible for free.
+ *
+ * The answers are drafts and the page says so. There is deliberately no
+ * FAQPage structured data here: search engines would publish these as HSG's
+ * answers. Add it once Michael has approved final wording.
+ */
+---
+
+<section class="sec sec--soft" id="faq">
+  <div class="wrap faq-wrap">
+    <div class="sec-head rv">
+      <p class="eyebrow is-brand">Questions About Executive Search?</p>
+      <h2>What Companies Ask Us</h2>
+      <p class="draft-note">Draft answers for review — to be finalized with Michael's input.</p>
+    </div>
+
+    <div class="faq rv" style="--d:1">
+      {FAQS.map((f, i) => (
+        <details class="faq-item" open={i === 0}>
+          <summary>
+            <span set:html={sup(f.q)} />
+            <span class="faq-ic" aria-hidden="true"></span>
+          </summary>
+          <p set:html={sup(f.a)} />
+        </details>
+      ))}
+    </div>
+  </div>
+</section>

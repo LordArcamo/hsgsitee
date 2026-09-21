@@ -1,0 +1,65 @@
+---
+import { NETWORK_NODES, REACH } from "../../data/hiring";
+import { FACTS } from "../../data/facts";
+
+/*
+ * 10 Search reach — HSG at the centre of the six places a search looks.
+ *
+ * Node positions sit on a circle in a 100×100 box; the spokes are one SVG
+ * in the same box, so lines and pills line up at any width. Below 600px the
+ * ring is too small to read, and the same markup falls back to a centred
+ * badge over a two-column grid (hiring.css). Hovering or focusing a node
+ * lights its spoke (hiring.ts); nothing depends on that to be understood.
+ */
+const R = 38;
+const nodes = NETWORK_NODES.map((n, i) => {
+  const a = (-90 + i * 60) * (Math.PI / 180);
+  const caption =
+    "fact" in n && n.fact === "resumes"
+      ? `${FACTS.resumes} resumes accessible`
+      : "fact" in n && n.fact === "partners"
+        ? `~${FACTS.partners} partners in four countries`
+        : "";
+  return {
+    ...n,
+    caption,
+    x: +(50 + R * Math.cos(a)).toFixed(2),
+    y: +(50 + R * Math.sin(a)).toFixed(2),
+  };
+});
+---
+
+<section class="sec sec--soft" id="reach">
+  <div class="wrap reach-grid">
+    <div class="sec-head rv">
+      <p class="eyebrow is-hire">Search Reach</p>
+      <h2>{REACH.title}</h2>
+      <p class="lede">{REACH.lede}</p>
+      <div class="reach-facts">
+        <p><b>{FACTS.resumes}</b><span>Resumes accessible</span></p>
+        <p><b>{FACTS.network}</b><span>Professional network</span></p>
+      </div>
+      <p class="reach-note">Supported by {REACH.partnersLine}.</p>
+    </div>
+
+    <div class="net rv" style="--d:1" data-net>
+      <svg class="net-lines" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+        <circle cx="50" cy="50" r={R} class="net-ring" />
+        {nodes.map((n) => (
+          <line x1="50" y1="50" x2={n.x} y2={n.y} class="net-line" data-k={n.key} />
+        ))}
+      </svg>
+
+      <div class="net-hub" aria-hidden="true">HSG</div>
+
+      <ul class="net-nodes" aria-label="Where an HSG search looks">
+        {nodes.map((n) => (
+          <li class="net-node" data-k={n.key} tabindex="0" style={`--x:${n.x}%; --y:${n.y}%`}>
+            <span class="net-lbl">{n.label}</span>
+            {n.caption && <span class="net-cap">{n.caption}</span>}
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
+</section>

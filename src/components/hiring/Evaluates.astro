@@ -1,0 +1,28 @@
+---
+import { EVALUATES } from "../../data/hiring";
+import Icon from "./Icon.astro";
+
+/*
+ * 05 What Collaborative Search® evaluates. Three of the spec's five cards:
+ * Candidate Assessment is kept in section 06 and Real-World Evaluation has
+ * section 09 to itself, so neither is said twice on one page.
+ */
+---
+
+<section class="sec" id="evaluates">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <h2>What Collaborative Search<sup>®</sup> Evaluates</h2>
+    </div>
+
+    <div class="ev-grid">
+      {EVALUATES.map((c, i) => (
+        <article class="ev-card rv" style={`--d:${i + 1}`}>
+          <span class="ev-ic"><Icon name={c.icon} /></span>
+          <h3>{c.title}</h3>
+          <p>{c.body}</p>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>

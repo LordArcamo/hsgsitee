@@ -15,6 +15,23 @@ export function initAudienceMenu(): void {
     .forEach((menu) => setupMenu(menu));
 }
 
+/**
+ * The same intake laid inline in a page section instead of a hover panel —
+ * the Hiring Solutions page closes on it. There is nothing to open, pin or
+ * dismiss, so only the combobox and the two-step flow are wired; the steps,
+ * validation and hand-off to Situations Wanted are identical to the panel's.
+ */
+export function initInlineIntakes(): void {
+  document.querySelectorAll<HTMLElement>("[data-aud-inline]").forEach((wrap) => {
+    if (wrap.dataset.audBound) return;
+    wrap.dataset.audBound = "1";
+    const form = wrap.querySelector<HTMLFormElement>("[data-aud-form]");
+    if (!form) return;
+    initRoleCombobox(form);
+    setupSteps(form, () => {});
+  });
+}
+
 const canHover = () =>
   window.matchMedia && window.matchMedia("(hover: hover) and (pointer: fine)").matches;
 

@@ -1,5 +1,6 @@
 ---
 import { FACTS } from "../../data/facts";
+import ProofBar from "../ProofBar.astro";
 ---
 
 <!-- ===== 1. HERO ===== -->
@@ -42,12 +43,6 @@ import { FACTS } from "../../data/facts";
       </figure>
     </div>
 
-    <div class="proofbar rv">
-      <div><b>{FACTS.years}</b><span>Years experience</span></div>
-      <div><b>{FACTS.placements}</b><span>Placements</span></div>
-      <div><b>{FACTS.network}</b><span>Professional network</span></div>
-      <div><b>{FACTS.resumes}</b><span>Resumes accessible</span></div>
-      <div><b>{FACTS.interviews}</b><span>Interviews</span></div>
-    </div>
+    <ProofBar />
   </div>
 </section>

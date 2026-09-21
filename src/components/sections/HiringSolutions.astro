@@ -1,4 +1,5 @@
 ---
+import { url } from "../../lib/url";
 import { FACTS } from "../../data/facts";
 ---
 
@@ -17,7 +18,7 @@ import { FACTS } from "../../data/facts";
           <p>Our reach is supported by approximately <b>{FACTS.partners}</b> partners throughout the <b>United States, Canada, England, and China</b>.</p>
         </div>
 
-        <a class="btn" href="#close" style="margin-top:10px">Find Talent <span class="arrow" aria-hidden="true">→</span></a>
+        <a class="btn" href={url("/find-talent/")} style="margin-top:10px">Find Talent <span class="arrow" aria-hidden="true">→</span></a>
       </div>
 
       <div class="caps">

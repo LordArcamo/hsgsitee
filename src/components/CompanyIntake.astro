@@ -1,0 +1,168 @@
+---
+import { url } from "../lib/url";
+import { ROLE_GROUP_LIST, CUSTOM_ROLE } from "../data/role-groups";
+import {
+  EXPERIENCE_OPTIONS,
+  POSITION_OPTIONS,
+  CAREER_PATH_OPTIONS,
+  MAX_LENGTH,
+} from "../data/situations";
+
+/*
+ * The employer intake: role, location and experience, then opening type,
+ * career path and salary, handing off to Situations Wanted.
+ *
+ * It lives in two places — the audience bar's "For Companies" panel and the
+ * closing section of the Hiring Solutions page — so it is one component.
+ * audience-menu.ts drives both and scopes every lookup to the form itself.
+ *
+ * `idPrefix` exists because the role combobox needs real element ids for
+ * aria-controls / aria-activedescendant. Two copies on one page must not
+ * share them, so each instance gets its own prefix.
+ *
+ * The role selector is controlled: HSG's supported role groups plus Custom
+ * Search, and nothing else. The combobox searches `data-search` — the group's
+ * own name, the heading it produces, and the titles people actually type —
+ * so "Controller" finds Finance and "CRO" finds Sales. Custom Search is
+ * deliberately last and never filtered out, so a role HSG has no preview
+ * pool for ("SEO") has somewhere to land instead of being nudged into the
+ * nearest group: an unsupported role must never display another
+ * profession's people.
+ */
+interface Props {
+  idPrefix?: string;
+  /** Text link under the buttons. Omit it where the form is already on that page. */
+  jump?: { href: string; label: string };
+  title?: string;
+}
+
+const { idPrefix = "aud", jump, title = "Start a search" } = Astro.props;
+const id = (s: string) => `${idPrefix}-${s}`;
+
+const roleOptions = [
+  ...ROLE_GROUP_LIST.map((g) => ({
+    value: g.key,
+    label: g.label,
+    search: [g.label, g.resultTitle, ...g.aliases].join(" · "),
+  })),
+  { value: CUSTOM_ROLE.key, label: CUSTOM_ROLE.label, search: CUSTOM_ROLE.label },
+];
+---
+
+<!-- data-aud-results is the BASE of the results path: the chosen role
+     group's key is appended to it, so the employer lands on that group's
+     own prerendered page. Custom Search never gets a page — it finishes on
+     the custom-search state inside the form. -->
+<form class="aud-form" data-aud-form data-aud-results={url("/situations-wanted/")} novalidate>
+  <div class="aud-head">
+    <p class="aud-title">{title}</p>
+    <p class="aud-sub" data-aud-sub></p>
+    <div class="aud-prog"><i data-aud-bar></i></div>
+    <p class="aud-count" data-aud-count></p>
+  </div>
+
+  <div class="aud-step" data-aud-step="1" data-aud-copy="Tell us about the role — two quick steps.">
+    <div class="aud-field">
+      <span class="aud-lbl" id={id("role-lbl")}>Role / Position</span>
+      <div class="aud-combo" data-role-combo>
+        <input
+          type="text"
+          class="aud-combo-input"
+          data-role-input
+          id={id("role-input")}
+          role="combobox"
+          aria-expanded="false"
+          aria-controls={id("role-list")}
+          aria-autocomplete="list"
+          aria-labelledby={id("role-lbl")}
+          placeholder="e.g. CFO, Plant Manager"
+          autocomplete="off"
+        />
+        <svg class="aud-combo-chev" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+        <!-- The only control here with a name: whatever is submitted is a
+             role-group key or "custom", never typed text. -->
+        <input type="hidden" name="role" data-role-value />
+        <ul class="aud-combo-list" id={id("role-list")} role="listbox" aria-labelledby={id("role-lbl")} hidden data-role-list>
+          {
+            roleOptions.map((o) => (
+              <li
+                role="option"
+                aria-selected="false"
+                id={id(`role-${o.value}`)}
+                data-value={o.value}
+                data-search={o.search}
+                class:list={["aud-combo-opt", { "is-custom": o.value === CUSTOM_ROLE.key }]}
+              >
+                {o.label}
+              </li>
+            ))
+          }
+          <li class="aud-combo-empty" data-role-empty hidden>No matching role group.</li>
+        </ul>
+      </div>
+    </div>
+    <label class="aud-field">
+      <span class="aud-lbl">Location</span>
+      <input type="text" name="location" placeholder="City, State" maxlength={MAX_LENGTH.location} autocomplete="off" />
+    </label>
+    <label class="aud-field">
+      <span class="aud-lbl">Years of experience</span>
+      <select name="experience">
+        <option value="">Select a range</option>
+        {EXPERIENCE_OPTIONS.map((o) => <option value={o.value}>{o.label}</option>)}
+      </select>
+    </label>
+  </div>
+
+  <div class="aud-step" data-aud-step="2" data-aud-copy="Now the shape of the search." hidden>
+    <fieldset class="aud-field">
+      <legend class="aud-lbl">New or replacement?</legend>
+      <div class="aud-seg">
+        {
+          POSITION_OPTIONS.map((o) => (
+            <label><input type="radio" name="position" value={o.value} /><span>{o.label}</span></label>
+          ))
+        }
+      </div>
+    </fieldset>
+    <fieldset class="aud-field">
+      <legend class="aud-lbl">Is there a career path?</legend>
+      <div class="aud-seg">
+        {
+          CAREER_PATH_OPTIONS.map((o) => (
+            <label><input type="radio" name="careerPath" value={o.value} /><span>{o.label}</span></label>
+          ))
+        }
+      </div>
+    </fieldset>
+    <label class="aud-field">
+      <span class="aud-lbl">Salary range</span>
+      <input type="text" name="salary" placeholder="e.g. $175K – $225K" maxlength={MAX_LENGTH.salary} autocomplete="off" />
+    </label>
+  </div>
+
+  <!-- Custom Search: no candidates, no results page. The employer asked for a
+       role outside the preview groups, so this says so and hands them to HSG
+       rather than inventing a shortlist. -->
+  <div class="aud-step aud-custom" data-aud-step="3" data-aud-final="custom" hidden>
+    <p class="aud-done-t">We'll Build This Search Around Your Role.</p>
+    <p class="aud-done-s">
+      Your search falls outside the current Situations Wanted preview
+      categories. Send HSG the role details and we'll review the market
+      and discuss the search with you.
+    </p>
+    <a class="btn aud-btn aud-custom-btn" href={`${url("/")}#close`}>
+      Start a Custom Search <span class="arrow" aria-hidden="true">→</span>
+    </a>
+  </div>
+
+  <p class="aud-err" data-aud-err role="alert" hidden></p>
+
+  <div class="aud-actions">
+    <button type="button" class="btn btn--ghost aud-btn" data-aud-back hidden>Back</button>
+    <button type="button" class="btn aud-btn" data-aud-next>Next <span class="arrow" aria-hidden="true">→</span></button>
+    <button type="submit" class="btn aud-btn" data-aud-send hidden>Show Matching Professionals <span class="arrow" aria-hidden="true">→</span></button>
+  </div>
+
+  {jump && <a class="aud-jump" href={jump.href} data-aud-jump>{jump.label}</a>}
+</form>

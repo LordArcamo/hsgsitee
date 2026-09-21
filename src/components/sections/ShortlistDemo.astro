@@ -1,17 +1,55 @@
+---
+/*
+ * The homepage and the Hiring Solutions page run the same demonstration
+ * under different headings, and end it differently: on the homepage the
+ * Collaborative Search section comes next, on the Hiring page it has
+ * already been shown, so the payoff points onward instead. Defaults are the
+ * homepage's.
+ */
+interface Props {
+  /** Grey band (the homepage) or white — pass false where the section before is already grey. */
+  soft?: boolean;
+  eyebrow?: string;
+  title?: string;
+  sub?: string;
+  ledes?: string[];
+  payoff?: { title: string; body: string; href: string; label: string; down?: boolean };
+}
+
+const {
+  soft = true,
+  eyebrow = "Beyond the Resume",
+  title = "50 Candidate Profiles. One Hiring Decision.",
+  sub = "See how a hypothetical candidate pool becomes a focused shortlist.",
+  ledes = [
+    "Finding candidates is not the hardest part of executive recruiting.",
+    "Understanding which person has the experience, leadership style, judgment, motivations, working style, and organizational fit to succeed is where the real work begins.",
+    "HSG goes beyond the resume to help clients narrow a large candidate pool into a smaller group of people worth serious consideration.",
+  ],
+  payoff = {
+    title: "Narrowing the Field Is Only the Beginning.",
+    body: "The deeper questions begin once the obvious qualifications have been considered.",
+    href: "#collaborative",
+    label: "See How Collaborative Search® Works",
+    down: true,
+  },
+} = Astro.props;
+
+import { sup } from "../../lib/text";
+---
+
 <!-- ===== 6. SHORTLIST DEMONSTRATION ===== -->
 <!-- Illustrative preview of Collaborative Search. Deliberately reuses the
      Collaborative Search vocabulary rather than introducing a second method,
      and every elimination carries a written reason so the narrowing reads as
      judgement rather than as an applicant-tracking score. -->
-<section class="sec sec--soft" id="shortlist">
+<section class:list={["sec", { "sec--soft": soft }]} id="shortlist">
   <div class="wrap">
     <div class="sec-head rv">
-      <p class="eyebrow is-brand">Beyond the Resume</p>
-      <h2>50 Candidate Profiles. One Hiring Decision.</h2>
-      <p class="sl-sub">See how a hypothetical candidate pool becomes a focused shortlist.</p>
-      <p class="lede">Finding candidates is not the hardest part of executive recruiting.</p>
-      <p class="lede">Understanding which person has the experience, leadership style, judgment, motivations, working style, and organizational fit to succeed is where the real work begins.</p>
-      <p class="lede">HSG goes beyond the resume to help clients narrow a large candidate pool into a smaller group of people worth serious consideration.</p>
+      <p class="eyebrow is-brand">{eyebrow}</p>
+      <h2>{title}</h2>
+      <p class="sl-sub">{sub}</p>
+      {ledes.map((l) => <p class="lede">{l}</p>)}
     </div>
 
     <div class="sl-demo rv" style="--d:1">
@@ -58,10 +96,12 @@
 
     <div class="sl-payoff rv" style="--d:2">
       <div>
-        <h3>Narrowing the Field Is Only the Beginning.</h3>
-        <p>The deeper questions begin once the obvious qualifications have been considered.</p>
+        <h3>{payoff.title}</h3>
+        <p>{payoff.body}</p>
       </div>
-      <a class="btn" href="#collaborative">See How Collaborative Search<sup>®</sup> Works <span class="arrow arrow--down" aria-hidden="true">↓</span></a>
+      <a class="btn" href={payoff.href}><Fragment set:html={sup(payoff.label)} /> {payoff.down
+        ? <span class="arrow arrow--down" aria-hidden="true">↓</span>
+        : <span class="arrow" aria-hidden="true">→</span>}</a>
     </div>
   </div>
 </section>

@@ -1,0 +1,105 @@
+---
+/*
+ * /find-talent/ — Hiring Solutions.
+ *
+ * Built to HSG_Hiring_Solutions_Final_Visual_Design_Page_Architecture.md.
+ * The URL is the live site's existing Hiring Solutions address, kept so the
+ * page inherits it.
+ *
+ * Several sections are the homepage's own components, given this page's
+ * headings through props — the shortlist demonstration (07), the two-sided
+ * diagram (08) and the proof strip (02) — so a fix to one fixes both. The
+ * words that are this page's alone live in src/data/hiring.ts, each tagged
+ * SPEC / SITE / DRAFT; that is the one file to edit when Michael's Hiring
+ * Solutions copy arrives.
+ */
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import MockNote from "../../components/MockNote.astro";
+import Header from "../../components/Header.astro";
+import AudienceBar from "../../components/AudienceBar.astro";
+import Footer from "../../components/Footer.astro";
+
+import FtHero from "../../components/hiring/FtHero.astro";
+import BeyondResume from "../../components/hiring/BeyondResume.astro";
+import FtCollaborative from "../../components/hiring/FtCollaborative.astro";
+import Evaluates from "../../components/hiring/Evaluates.astro";
+import WhyHsg from "../../components/hiring/WhyHsg.astro";
+import ShortlistDemo from "../../components/sections/ShortlistDemo.astro";
+import WhyTwoSided from "../../components/sections/WhyTwoSided.astro";
+import RealWorld from "../../components/hiring/RealWorld.astro";
+import SearchReach from "../../components/hiring/SearchReach.astro";
+import ClientSuccess from "../../components/hiring/ClientSuccess.astro";
+import Faq from "../../components/hiring/Faq.astro";
+import FtContact from "../../components/hiring/FtContact.astro";
+
+import { PAGE_META, SHORTLIST, BOTH_SIDES } from "../../data/hiring";
+import { url } from "../../lib/url";
+---
+
+<BaseLayout title={PAGE_META.title} description={PAGE_META.description} path={PAGE_META.path}>
+  {/* Remove MockNote — and src/styles/mock-note.css — at launch. */}
+  <MockNote />
+  <Header home={url("/")} />
+  <AudienceBar />
+
+  <main id="main">
+    <!-- 01 Hero · 02 Proof strip -->
+    <FtHero />
+
+    <!-- 03 The best candidate isn't always the best resume -->
+    <BeyondResume />
+
+    <!-- 04 Collaborative Search® -->
+    <FtCollaborative />
+
+    <!-- 05 What Collaborative Search® evaluates -->
+    <Evaluates />
+
+    <!-- 06 Why companies choose HSG -->
+    <WhyHsg />
+
+    <!-- 07 From candidate pool to hiring decision -->
+    <ShortlistDemo
+      soft={false}
+      eyebrow={SHORTLIST.eyebrow}
+      title={SHORTLIST.title}
+      ledes={SHORTLIST.ledes}
+      payoff={SHORTLIST.payoff}
+    />
+
+    <!-- 08 Experience from both sides -->
+    <WhyTwoSided
+      id="both-sides"
+      soft
+      eyebrow={BOTH_SIDES.eyebrow}
+      title={BOTH_SIDES.title}
+      ledes={[BOTH_SIDES.lede]}
+      left={{ label: "The Company", items: BOTH_SIDES.company }}
+      right={{ label: "The Candidate", items: BOTH_SIDES.candidate }}
+      outcome={BOTH_SIDES.outcome}
+      note={BOTH_SIDES.note}
+    />
+
+    <!-- 09 Real-world evaluation -->
+    <RealWorld />
+
+    <!-- 10 Search reach -->
+    <SearchReach />
+
+    <!-- 11 Client success -->
+    <ClientSuccess />
+
+    <!-- 12 FAQ -->
+    <Faq />
+
+    <!-- 13 Final CTA -->
+    <FtContact />
+  </main>
+
+  <Footer home={url("/")} />
+</BaseLayout>
+
+<script>
+  import { initHiringPage } from "../../scripts/hiring";
+  initHiringPage();
+</script>

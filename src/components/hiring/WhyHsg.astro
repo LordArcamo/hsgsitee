@@ -1,0 +1,26 @@
+---
+import { BENEFITS } from "../../data/hiring";
+import Icon from "./Icon.astro";
+
+/* 06 Why companies choose HSG — six short benefits, replacing the old
+   eight-item interface. Reuses the homepage's capability-card styling. */
+---
+
+<section class="sec sec--soft" id="why">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <p class="eyebrow is-hire">Why HSG</p>
+      <h2>Why Companies Choose HSG</h2>
+    </div>
+
+    <div class="why-grid">
+      {BENEFITS.map((b, i) => (
+        <article class="cap rv" style={`--d:${(i % 3) + 1}`}>
+          <span class="cap-ic"><Icon name={b.icon} /></span>
+          <h4>{b.title}</h4>
+          <p>{b.body}</p>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>

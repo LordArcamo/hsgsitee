@@ -1,0 +1,63 @@
+---
+import { COLLAB_STAGES } from "../../data/hiring";
+
+/*
+ * 04 Collaborative Search® — the homepage's seven-stage flow, opened up:
+ * each stage selects a short explanation below the row.
+ *
+ * Built as tabs (WAI-ARIA tab pattern, arrow keys move between stages).
+ * Every panel is in the HTML and visible until hiring.ts runs, so without
+ * script the section reads as a plain numbered list of stages. No
+ * auto-advance: these are paragraphs to read, not a slideshow.
+ */
+const pad = (n: number) => String(n).padStart(2, "0");
+const total = pad(COLLAB_STAGES.length);
+---
+
+<section class="sec sec--soft" id="collaborative">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <p class="eyebrow is-brand">The HSG Approach</p>
+      <h2>Collaborative Search<sup>®</sup></h2>
+      <p class="cs-sub">Understand the company before searching for the candidate.</p>
+    </div>
+
+    <div class="cs rv" style="--d:1" data-cs>
+      <div class="cs-row" role="tablist" aria-label="Collaborative Search stages">
+        {COLLAB_STAGES.map((st, i) => (
+          <button
+            class="cs-tab"
+            type="button"
+            role="tab"
+            id={`cs-tab-${st.key}`}
+            aria-controls={`cs-panel-${st.key}`}
+            aria-selected={i === 0 ? "true" : "false"}
+            tabindex={i === 0 ? 0 : -1}
+          >
+            <span class="cs-dot" aria-hidden="true"></span>
+            <span class="n">{pad(i + 1)}</span>
+            <span class="cs-name">{st.name}</span>
+          </button>
+        ))}
+      </div>
+
+      <div class="cs-panels">
+        {COLLAB_STAGES.map((st, i) => (
+          <div
+            class="cs-panel"
+            role="tabpanel"
+            id={`cs-panel-${st.key}`}
+            aria-labelledby={`cs-tab-${st.key}`}
+            tabindex="0"
+          >
+            <p class="cs-count">Stage {pad(i + 1)} of {total}</p>
+            <h3>{st.name}</h3>
+            <p>{st.detail}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <p class="flow-micro rv">Understand the company. Understand the candidate. Improve the decision.</p>
+  </div>
+</section>

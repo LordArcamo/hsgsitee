@@ -1,0 +1,48 @@
+---
+import { HERO } from "../../data/hiring";
+import { FACTS } from "../../data/facts";
+import ProofBar from "../ProofBar.astro";
+
+/*
+ * 01 Hero + 02 Proof strip. The strip is the homepage's own component, so
+ * the two pages always show the same five figures under the same labels.
+ * One floating proof card only, per the spec — it reuses the homepage's
+ * approved badge wording.
+ */
+---
+
+<section class="hero hero--hire" id="top">
+  <div class="wrap">
+    <div class="hero-grid">
+      <div>
+        <p class="eyebrow eyebrow--pill is-hire rv">{HERO.eyebrow}</p>
+        <h1 class="rv" style="--d:1">{HERO.title}</h1>
+
+        <div class="hero-copy rv" style="--d:2">
+          {HERO.copy.map((p) => <p>{p}</p>)}
+        </div>
+
+        <div class="hero-actions rv" style="--d:3">
+          <a class="btn" href="#start">Start a Search <span class="arrow" aria-hidden="true">→</span></a>
+          <a class="btn btn--ghost" href="#collaborative">See How We Search <span class="arrow arrow--down" aria-hidden="true">↓</span></a>
+        </div>
+      </div>
+
+      <figure class="hero-fig rv" style="--d:2">
+        <div class="hero-img">
+          <span class="ph">
+            <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2.5"/><circle cx="9" cy="10" r="2.2"/><path d="M3 17.5l5-4.2 3.4 2.8L15.6 12 21 16.4"/></svg>
+            <strong>Hero image</strong>
+            <span>{HERO.imageNote}</span>
+          </span>
+        </div>
+        <figcaption class="hero-badge">
+          <b>{FACTS.placements}</b>
+          <span>Placements across executive and specialized roles</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <ProofBar />
+  </div>
+</section>
