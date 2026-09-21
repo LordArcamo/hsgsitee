@@ -1,5 +1,5 @@
 ---
-import { EVALUATION_CARDS } from "../../data/hiring";
+import { EVALUATION_CARDS, SIMULATION_QUOTE as q } from "../../data/hiring";
 import Icon from "./Icon.astro";
 
 /* 09 Real-world evaluation — on the dark panel, so the page's one "how we
@@ -23,5 +23,10 @@ import Icon from "./Icon.astro";
         </article>
       ))}
     </div>
+
+    <figure class="rw-quote rv" style="--d:5">
+      <blockquote><p>{q.text}</p></blockquote>
+      <figcaption><b>{q.name}</b> · {q.role}</figcaption>
+    </figure>
   </div>
 </section>

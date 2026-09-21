@@ -1,48 +1,42 @@
 ---
 import { HERO } from "../../data/hiring";
-import { FACTS } from "../../data/facts";
-import ProofBar from "../ProofBar.astro";
+import { FACTS, type FactKey } from "../../data/facts";
 
 /*
- * 01 Hero + 02 Proof strip. The strip is the homepage's own component, so
- * the two pages always show the same five figures under the same labels.
- * One floating proof card only, per the spec — it reuses the homepage's
- * approved badge wording.
+ * 01 Hero. Deliberately not the homepage's hero: a dark ground led by the
+ * Hiring green (the homepage is light and purple-led), the image framed by
+ * the green ring from the HSG mark, and no proof strip — that follows as
+ * its own band (02). One floating proof card, per the spec.
  */
+const [before, after] = HERO.title.split(HERO.accent);
+const proofValue = FACTS[HERO.proof.fact as FactKey];
 ---
 
-<section class="hero hero--hire" id="top">
-  <div class="wrap">
-    <div class="hero-grid">
-      <div>
-        <p class="eyebrow eyebrow--pill is-hire rv">{HERO.eyebrow}</p>
-        <h1 class="rv" style="--d:1">{HERO.title}</h1>
-
-        <div class="hero-copy rv" style="--d:2">
-          {HERO.copy.map((p) => <p>{p}</p>)}
-        </div>
-
-        <div class="hero-actions rv" style="--d:3">
-          <a class="btn" href="#start">Start a Search <span class="arrow" aria-hidden="true">→</span></a>
-          <a class="btn btn--ghost" href="#collaborative">See How We Search <span class="arrow arrow--down" aria-hidden="true">↓</span></a>
-        </div>
+<section class="fth" id="top">
+  <div class="wrap fth-grid">
+    <div class="fth-copy">
+      <p class="fth-eyebrow rv">{HERO.eyebrow}</p>
+      <h1 class="rv" style="--d:1">{before}<span class="fth-accent">{HERO.accent}</span>{after}</h1>
+      <p class="fth-lede rv" style="--d:2">{HERO.copy}</p>
+      <div class="fth-actions rv" style="--d:3">
+        <a class="btn fth-btn" href="#start">Start a Search <span class="arrow" aria-hidden="true">→</span></a>
+        <a class="btn btn--onpanel" href="#collaborative">See How We Search <span class="arrow arrow--down" aria-hidden="true">↓</span></a>
       </div>
-
-      <figure class="hero-fig rv" style="--d:2">
-        <div class="hero-img">
-          <span class="ph">
-            <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2.5"/><circle cx="9" cy="10" r="2.2"/><path d="M3 17.5l5-4.2 3.4 2.8L15.6 12 21 16.4"/></svg>
-            <strong>Hero image</strong>
-            <span>{HERO.imageNote}</span>
-          </span>
-        </div>
-        <figcaption class="hero-badge">
-          <b>{FACTS.placements}</b>
-          <span>Placements across executive and specialized roles</span>
-        </figcaption>
-      </figure>
     </div>
 
-    <ProofBar />
+    <figure class="fth-fig rv" style="--d:2">
+      <div class="fth-ring" aria-hidden="true"></div>
+      <div class="fth-img">
+        <span class="fth-ph">
+          <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2.5"/><circle cx="9" cy="10" r="2.2"/><path d="M3 17.5l5-4.2 3.4 2.8L15.6 12 21 16.4"/></svg>
+          <strong>Hero image</strong>
+          <span>{HERO.imageNote}</span>
+        </span>
+      </div>
+      <figcaption class="fth-card">
+        <b>{proofValue}</b>
+        <span>{HERO.proof.label}</span>
+      </figcaption>
+    </figure>
   </div>
 </section>

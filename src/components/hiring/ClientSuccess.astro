@@ -1,13 +1,14 @@
 ---
 import { FEATURED_STORY as s } from "../../data/stories";
 import { sup } from "../../lib/text";
+import { TESTIMONIAL as quote } from "../../data/hiring";
 
 /*
  * 11 Client success — the homepage's employer story, retold in the spec's
  * Challenge → HSG Approach → Outcome structure from the same data file.
  *
- * The testimonial is a visible placeholder: no employer testimonial has been
- * approved for public use yet. The two CTAs have no pages to go to, so they
+ * The testimonial is one the live /find-talent/ page already publishes
+ * (src/data/hiring.ts). The two CTAs have no pages to go to, so they
  * render without an href — a "#" link would scroll to the top and read as
  * broken — and pick up real destinations when those pages exist.
  */
@@ -16,7 +17,7 @@ import { sup } from "../../lib/text";
 <section class="sec" id="client-success">
   <div class="wrap">
     <div class="sec-head rv">
-      <p class="eyebrow is-brand">Client Success</p>
+      <p class="eyebrow is-hire">Client Success</p>
       <h2>The Search Matters. The Result Matters More.</h2>
     </div>
 
@@ -54,9 +55,9 @@ import { sup } from "../../lib/text";
     <figure class="cl-quote rv" style="--d:2">
       <span class="cl-quote-mark" aria-hidden="true">“</span>
       <blockquote>
-        <p>Approved employer testimonial</p>
+        <p>{quote.text}</p>
       </blockquote>
-      <figcaption>Name · Title · Company <span class="cl-pending">Pending approval</span></figcaption>
+      <figcaption><b>{quote.name}</b>{quote.role && <Fragment> · {quote.role}</Fragment>}</figcaption>
     </figure>
 
     <div class="cl-actions rv" style="--d:3">

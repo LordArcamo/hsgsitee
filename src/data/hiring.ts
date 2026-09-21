@@ -5,39 +5,45 @@
    place when Michael's Hiring Solutions answers arrive. Every string is
    tagged with where it came from:
 
-     SPEC   working copy from HSG_Hiring_Solutions_Final_Visual_Design_
-            Page_Architecture.md — use as written
-     SITE   already approved elsewhere on this site, reused here
-     DRAFT  suggested for the prototype so the design reads as finished.
-            Replace with Michael's copy. Drafts deliberately avoid numbers,
-            timelines and claims that are not already on the site.
+     SPEC   HSG_Hiring_Solutions_Final_Visual_Design_Page_Architecture.md
+     LIVE   published today on hiringsolutionsgroup.com/find-talent/ —
+            carried over, lightly tightened where the live text ran long
+     SITE   already approved elsewhere on this prototype (the homepage)
+     DRAFT  suggested; replace with Michael's copy
+
+   The live page's own problems are deliberately NOT carried over: the
+   "25 years" figure, the Good to Great paragraph, the job-seeker video and
+   its "750 placements" transcript, the coaching block, and the "Expertise
+   and Innovation" card that repeated the Targeted Search text.
    ============================================================ */
 
-/* ---------- page meta ----------
-   DRAFT — the spec lists the SEO title and description as a step still to
-   do. These are written to the live site's /find-talent/ intent. */
+/* ---------- page meta ---------- */
 export const PAGE_META = {
   path: "/find-talent/",
+  // DRAFT — the live title ("Hire Top Talent - Expert Recruitment Solutions")
+  // carries neither the brand nor the location
   title: "Executive Search & Hiring Solutions in New Jersey | Hiring Solutions Group",
+  // LIVE meta description, with the page's new headline worked in
   description:
-    "Find the leaders your business needs next. HSG's Collaborative Search® starts by understanding your company, then searches, evaluates, interviews and vets candidates beyond the resume.",
+    "Executive recruiting that helps companies find and hire the leaders they need next — structured search, deep evaluation, and long-term fit. Hiring Solutions Group, New Jersey.",
 };
 
 /* ---------- 01 hero ---------- */
 export const HERO = {
   eyebrow: "Hiring Solutions", // SPEC
   title: "Find the Leaders Your Business Needs Next.", // SPEC
-  // SITE — the homepage's Hiring Solutions lede, until the page has its own
-  copy: [
-    "Hiring an executive is not a resume transaction.",
-    "Before HSG recommends a candidate, we work to understand the organization, its leadership, expectations, culture, challenges, and what success in the position actually requires.",
-  ],
+  /** The word set in the Hiring green. */
+  accent: "Leaders",
+  // LIVE — the live hero's own paragraph
+  copy: "We specialize in the art of finding the perfect match for your business. Our dedicated team conducts thorough assessments and evaluations to ensure a seamless fit between candidates' skills, personality, and your company's unique needs.",
   imageNote: "Executive interview or business leadership photography.", // SPEC
+  /** One floating proof card (SPEC). Not the figure that opens the strip below it. */
+  proof: { fact: "interviews", label: "Interviews conducted" },
 };
 
 /* ---------- 04 Collaborative Search® ----------
-   The seven stages are shared with the homepage, which shows the names
-   only. The page opens each one into a short explanation. */
+   The seven stage names are shared with the homepage, which shows the names
+   only. The details are the live page's own description of the method. */
 export interface CollabStage {
   key: string;
   name: string;
@@ -48,57 +54,71 @@ export const COLLAB_STAGES: CollabStage[] = [
   {
     key: "understand",
     name: "Understand", // SPEC
-    // DRAFT — built from the homepage Hiring Solutions copy
+    // LIVE — "Evaluate and Assess Your Staff"
     detail:
-      "Learn the organization, its leadership, expectations, culture and challenges — and what success in the position actually requires — before the search begins.",
+      "Before the search begins, our team studies your company's goals, challenges, and vision for the future. It is the foundation of a custom-tailored hiring strategy.",
   },
   {
     key: "search",
     name: "Search",
-    // DRAFT — from the spec's Targeted Search and Search Reach notes
+    // LIVE — FAQ, "How do you find candidates who are not actively job searching?"
     detail:
-      "Reach beyond active applicants, through HSG's candidate database, recruiting partners and professional networks, to people who fit the actual opportunity.",
+      "Direct outreach, referrals, market knowledge, and long-standing professional networks reach the people who are not actively job searching.",
   },
   {
     key: "evaluate",
     name: "Evaluate",
-    // DRAFT — the homepage's Candidate Assessment card
+    // LIVE — "Candidate Assessment"
     detail:
-      "Look beyond credentials at experience, leadership, communication, behavior and alignment with the role and the people around it.",
+      "Interviews, skills assessments, reference checks, and background screenings identify candidates who meet the qualifications and align with your culture and values.",
   },
   {
     key: "interview",
     name: "Interview",
-    // DRAFT — homepage Collaborative Search and Forensic Interviewing copy
+    // LIVE — "Real-World Technical Interviews" + "Holistic Hiring Approach"
     detail:
-      "Help prepare the interviews and, where the engagement calls for it, take part in them — looking past rehearsed answers to how someone thinks and operates.",
+      "Detailed, industry-specific interviews, including focused interviews on-site — with HSG in the room for as many of them as you want.",
   },
   {
     key: "vet",
     name: "Vet",
-    // DRAFT — the homepage's Private Vetting card
+    // LIVE — "Candidate Assessment & Background Screening"
     detail:
-      "Take reference checking further through Private Vetting, so the decision rests on more than what a candidate chose to share.",
+      "A network of screening partners thoroughly vets candidates, capturing the most qualified while filtering out the unsuitable.",
   },
   {
     key: "decide",
     name: "Decide",
-    // DRAFT — homepage Collaborative Search copy
+    // LIVE — FAQ, "What is your executive recruitment process step-by-step?"
     detail:
-      "Gather feedback, compare finalists on the requirements that actually matter, and support the people making the decision.",
+      "The real work happens between the steps: where expectations are clarified, misalignment shows up, and decisions get made. It is where most searches either succeed or fall apart.",
   },
   {
     key: "support",
     name: "Support",
-    // DRAFT — the spec's onboarding line
+    // LIVE — "Onboarding & Long-Term Support"
     detail:
-      "The search doesn't necessarily end when the offer is accepted. Onboarding and retention support help the right hire succeed.",
+      "A seamless onboarding process for every new hire, with continuous HR support during and after the transition.",
   },
 ];
 
+/* How involved HSG gets — the live page's most distinctive promise. */
+export const INVOLVEMENT = {
+  // LIVE — "The Power of a Holistic Hiring Approach"
+  quote: "We won't just tell you what you need to do. We will work with you every step of the way until it's done.",
+  lead: "Unlike recruiters who prefer to provide their opinions remotely, we are committed to being as involved as you desire.",
+  // LIVE — "Many clients want us to be present for every interview, others wish
+  // to operate independently, and some want something more flexible."
+  options: [
+    { title: "At Every Interview", body: "Many clients want HSG present for every interview." },
+    { title: "Independent", body: "Others prefer to run the process themselves." },
+    { title: "Flexible", body: "Some want something in between." },
+  ],
+};
+
 /* ---------- 05 What Collaborative Search® evaluates ----------
-   Three of the spec's five cards. Candidate Assessment lives in section 06
-   and Real-World Evaluation has section 09 to itself, so neither repeats. */
+   All five of the spec's cards — the live page's five method steps. Short
+   here, on purpose: sections 04 and 09 carry the detail. */
 export const EVALUATES = [
   {
     icon: "building",
@@ -111,6 +131,16 @@ export const EVALUATES = [
     body: "Go beyond prepared interview answers to better understand how someone thinks and operates.", // SPEC
   },
   {
+    icon: "clipboard",
+    title: "Candidate Assessment",
+    body: "Evaluate experience, fit, motivation, background, and the requirements that actually matter.", // SPEC
+  },
+  {
+    icon: "window",
+    title: "Real-World Evaluation",
+    body: "Where appropriate, use technical interviews and workplace-style scenarios to better understand capability.", // SPEC
+  },
+  {
     icon: "flag",
     // non-breaking hyphen: a narrow card was splitting it "Long- / Term"
     title: "Onboarding & Long‑Term Support",
@@ -118,33 +148,33 @@ export const EVALUATES = [
   },
 ] as const;
 
-/* ---------- 06 Why companies choose HSG ---------- */
+/* ---------- 06 Why companies choose HSG ----------
+   SPEC's six titles; each body is the live card's own text, cut to its
+   first point. */
 export const BENEFITS = [
-  { icon: "target", title: "Targeted Search", body: "Find people who fit the actual opportunity rather than simply generating resumes." }, // SPEC
-  { icon: "clipboard", title: "Candidate Assessment", body: "Evaluate beyond credentials." }, // SPEC
-  { icon: "network", title: "Access to Networks", body: "Reach beyond active applicants." }, // SPEC
-  { icon: "lock", title: "Confidentiality", body: "Protect sensitive searches and conversations." }, // SPEC
-  { icon: "clock", title: "Time Savings", body: "Let HSG handle research, outreach, screening, and evaluation." }, // SPEC
-  { icon: "sprout", title: "Onboarding & Retention", body: "Help create the conditions for the right hire to succeed." }, // SPEC
+  { icon: "target", title: "Targeted Search", body: "Focused strategies to identify and attract top-tier candidates with the skill sets and qualifications the role actually needs." },
+  { icon: "clipboard", title: "Candidate Assessment", body: "Interviews, skills assessments, reference checks, and background screenings — for a fit with your culture and values, not just the job description." },
+  { icon: "network", title: "Access to Networks", body: "Professional networks across numerous industries and niches reach exceptional talent that traditional methods may overlook." },
+  { icon: "lock", title: "Confidentiality", body: "Robust protocols for sensitive or confidential positions, so information is handled securely and discreetly." },
+  { icon: "clock", title: "Time Savings", body: "From the first call to signing the contract, HSG handles the process — so you can stay focused on your core responsibilities." },
+  { icon: "sprout", title: "Onboarding & Retention", body: "A smooth transition for new hires, and guidance on compensation, career development, and engagement to keep top talent." },
 ] as const;
 
-/* ---------- 07 From candidate pool to hiring decision ----------
-   The homepage's shortlist demonstration under this page's headings. */
-export const SHORTLIST = {
+/* ---------- 07 From candidate pool to hiring decision ---------- */
+export const FUNNEL = {
   eyebrow: "From Candidate Pool to Hiring Decision", // SPEC
   title: "Finding Candidates Is Only the Beginning.", // SPEC
-  // SITE — the homepage demonstration's own ledes, minus the one the title now says
-  ledes: [
-    "Understanding which person has the experience, leadership style, judgment, motivations, working style, and organizational fit to succeed is where the real work begins.",
-    "HSG goes beyond the resume to help clients narrow a large candidate pool into a smaller group of people worth serious consideration.",
+  // SITE — the homepage demonstration's closing line
+  lede: "Experience gets someone into consideration. Deeper evaluation determines who deserves a closer look.",
+  stages: [
+    { count: 50, label: "Candidate Profiles" }, // SPEC
+    { count: 25, label: "Initial Alignment" },
+    { count: 12, label: "Deeper Evaluation" },
+    { count: 6, label: "Strong Matches" },
+    { count: 3, label: "Finalists" },
   ],
-  payoff: {
-    title: "Your Hiring Decision.", // SPEC
-    // DRAFT — the spec's stated emphasis for the section, as a sentence
-    body: "HSG's value is not simply generating applicants. It is understanding why someone should — or should not — move forward.",
-    href: "#start",
-    label: "Start a Search",
-  },
+  decision: "Your Hiring Decision", // SPEC
+  note: "Candidate counts and filtering are illustrative. Every search is different.", // SPEC
 };
 
 /* ---------- 08 Experience from both sides ----------
@@ -152,57 +182,45 @@ export const SHORTLIST = {
 export const BOTH_SIDES = {
   eyebrow: "Both Sides of the Table", // SITE
   title: "Experience From Both Sides. Representation on One.", // SPEC
-  // SITE — the homepage's lede for the same idea
-  lede: "HSG has spent decades working with both employers and professionals. That experience continues to give us a deeper understanding of what each side needs, expects, and considers when making an important hiring or career decision. But our commitment in every engagement is clear: HSG represents only one side.",
   outcome: "The Right Alignment", // SPEC
   note: "HSG never represents both sides in the same search.", // SPEC
-  company: [
-    "Business Objectives",
-    "Leadership Requirements",
-    "Team Dynamics",
-    "Cultural Fit",
-    "Growth Stage",
-    "Future Expectations",
-  ],
-  candidate: [
-    "Career Direction",
-    "Motivation",
-    "Leadership Opportunity",
-    "Compensation",
-    "Environment",
-    "Long-Term Fit",
-  ],
+  company: ["Business Objectives", "Leadership Requirements", "Team Dynamics", "Cultural Fit", "Growth Stage", "Future Expectations"],
+  candidate: ["Career Direction", "Motivation", "Leadership Opportunity", "Compensation", "Environment", "Long-Term Fit"],
 };
 
 /* ---------- 09 Real-world evaluation ----------
-   Titles are SPEC. Bodies are DRAFT, assembled from copy the site already
-   carries — the spec asks for Michael's own account of how HSG runs these. */
+   SPEC titles; bodies from the live page's method steps. */
 export const EVALUATION_CARDS = [
   {
     icon: "people",
     title: "Behavioral Interviews",
-    body: "Uncover the experiences, behaviors and motivations that influence whether someone succeeds after the interview is over.",
+    body: "Analytical behavioral assessments look at the soft skills that decide success — emotional intelligence, leadership, and communication.",
   },
   {
     icon: "code",
     title: "Technical Evaluation",
-    body: "Where the role calls for it, technical interviews test the capability a resume can only claim.",
+    body: "HSG's S.M.A.R.T. team conducts detailed, industry-specific interviews using relevant data.",
   },
   {
     icon: "window",
     title: "Workplace Simulation",
-    body: "Workplace-style scenarios show how a candidate approaches the problems the role will actually bring.",
+    body: "Candidates work through realistic workplace simulations — at your workspace or in one of our testing environments — to test their abilities.",
   },
   {
     icon: "shield",
     title: "Vetting & References",
-    body: "Private Vetting takes reference checking to a deeper level before a decision is made.",
+    body: "Reference checks, background screening, and Private Vetting take the decision beyond what a candidate chose to share.",
   },
 ] as const;
 
-/* ---------- 10 Search reach ----------
-   Node names are SPEC. Only the two nodes the site has figures for carry a
-   caption; the rest stay labels until there is something true to say. */
+/* LIVE — a published testimonial from someone who went through a simulation. */
+export const SIMULATION_QUOTE = {
+  text: "Part of my interview was a “workplace simulation” with an employee, which gave me great insights into the company as well.",
+  name: "Carlo Diciolla",
+  role: "Strategic Account Manager, BOWMAN Dispensers",
+};
+
+/* ---------- 10 Search reach ---------- */
 export const NETWORK_NODES = [
   { key: "database", label: "Candidate Database", fact: "resumes" },
   { key: "partners", label: "Recruiting Partners", fact: "partners" },
@@ -214,49 +232,75 @@ export const NETWORK_NODES = [
 
 export const REACH = {
   title: "The Right Person May Not Be Applying.", // SPEC
-  // DRAFT — from the spec's stated purpose for the section
-  lede: "The strongest candidate for a role is often not looking. HSG's search reaches past the people actively applying, to the people who fit the opportunity.",
+  // LIVE — FAQ answers on executive search and passive candidates
+  lede: "The best leaders are usually not applying anywhere. You do not just find these candidates when you need them — you build relationships over time.",
   // SITE — the homepage Hiring Solutions reach line
   partnersLine: "approximately 1,600 partners throughout the United States, Canada, England, and China",
 };
 
+/* ---------- 11 Client success ---------- */
+/* LIVE — published testimonial. The live page credits Jeff Arbeit two
+   different ways ("General, CFO & COO" and "Monell Center, Associate
+   Director"), so only his name is shown until one is confirmed. */
+export const TESTIMONIAL = {
+  text: "Michael has recruited and consulted for me on many occasions (over 30). His commitment to our company and the candidates comes through both in his dedication and sincere insights into his work. On occasion, he got to know us well enough to say “you will like candidate A, but candidate B is best for you for the following reasons…”. He was right on those occasions and many others.",
+  name: "Jeff Arbeit",
+  role: "",
+};
+
 /* ---------- 12 FAQ ----------
-   Questions are SPEC. Answers are DRAFT — kept to what the site already
-   says, with no timelines or promises — and are flagged as drafts on the
-   page. There is deliberately no FAQPage structured data: placeholder
-   answers must not be published to search engines as HSG's answers. */
+   The live page's ten published questions and answers, plus two the spec
+   asks for, answered in copy the homepage already carries. All published
+   copy, so the page emits FAQPage structured data — as the live page does
+   today. */
 export const FAQS = [
   {
-    q: "What does an executive recruiter do?",
-    a: "An executive recruiter helps a company find, evaluate and hire leaders for the roles that matter most. At HSG that starts with understanding the organization and what success in the position requires, then searching, assessing, interviewing and vetting candidates before helping the client make the decision.",
+    q: "What does an executive recruiting firm do?",
+    a: "An executive recruiting firm helps companies identify, attract, evaluate, and secure high-level talent through targeted search, strong networks, and structured candidate assessment. That is the simple version. The real work usually starts before the search begins. Most companies are not fully clear on what they actually need. We spend time getting that right first because if that part is off, even a great candidate will not solve the problem.",
   },
   {
     q: "How is executive search different from traditional recruiting?",
-    a: "Some recruiters compete on how quickly they can send resumes. Executive search invests the time to understand the company, the people making the decision, the position and the candidates being considered — looking beyond the resume to how someone thinks, leads and works with others.",
+    a: "Executive search is a proactive process focused on senior-level and hard-to-fill roles, often engaging candidates who are not actively job searching. Traditional recruiting tends to react. Executive search goes out and finds the right people. The best leaders are usually not applying anywhere. The real question is how you approach them and whether your opportunity is strong enough to make them listen.",
   },
   {
-    q: "How long does an executive search take?",
-    a: "Every search is different. Timing depends on the role, the market for that experience and the interview schedule on the client's side. HSG sets expectations at the start of each engagement.",
+    q: "How does Collaborative Search® work?", // SPEC question, SITE answer
+    a: "Collaborative Search® looks beyond the hiring manager to better understand the people, relationships, expectations, and working environment surrounding the role. It moves through seven stages — Understand, Search, Evaluate, Interview, Vet, Decide, and Support.",
   },
   {
-    q: "Does HSG recruit passive candidates?",
-    a: "Yes. The right person may not be applying. HSG's search reaches beyond active applicants through its candidate database, recruiting partners and professional networks.",
+    q: "How long does it take to fill an executive role?",
+    a: "Most executive roles take between 60 and 120 days to fill, depending on the position, market conditions, and internal decision-making speed. That timeline works when everyone is aligned. When there is confusion internally, things slow down quickly. We have seen searches drag because no one agrees on what success looks like. We have also seen them move very fast when clarity is there from day one.",
   },
   {
-    q: "What industries does HSG serve?",
-    a: "HSG recruits for leadership and specialized roles across finance, operations, sales, marketing, HR, engineering, supply chain, IT, manufacturing and general management.",
+    q: "How involved is HSG during the interview process?", // SPEC question, SITE + LIVE answer
+    a: "As involved as you want us to be. Depending on the engagement, HSG may help prepare interviews, participate in the interview process, conduct assessments, gather feedback, evaluate candidates, and support the client throughout the decision. Many clients want us present for every interview; others prefer to operate independently.",
   },
   {
-    q: "How does Collaborative Search® work?",
-    a: "Collaborative Search® looks beyond the hiring manager to understand the people, relationships, expectations and working environment surrounding the role. It moves through seven stages — Understand, Search, Evaluate, Interview, Vet, Decide and Support.",
+    q: "Why should companies use executive recruiters instead of hiring internally?",
+    a: "Executive recruiters provide access to passive candidates, reduce hiring risk, and bring an outside, objective perspective to the hiring process. Internal teams are strong, but they are also close to the situation. Sometimes too close. We come in with a different lens. In many cases, we are not just finding candidates. We are helping fix the thinking behind the hire.",
   },
   {
-    q: "What happens after a candidate accepts an offer?",
-    a: "The search doesn't necessarily end when the offer is accepted. Depending on the engagement, HSG provides onboarding and retention support to help create the conditions for the right hire to succeed.",
+    q: "What industries do you specialize in for executive recruiting?",
+    a: "We support executive recruiting across industries including healthcare, finance, technology, manufacturing, and professional services. Industries matter, but patterns matter more. Leadership, communication, and decision-making show up everywhere. We focus on how people operate, not just where they have been.",
   },
   {
-    q: "How involved is HSG during the interview process?",
-    a: "Depending on the engagement, HSG may help prepare interviews, participate in the interview process, conduct assessments, gather feedback, evaluate candidates, and support the client throughout the decision.",
+    q: "How do you find candidates who are not actively job searching?",
+    a: "We use direct outreach, referrals, market knowledge, and long-standing professional networks to connect with passive candidates. You do not just find these candidates when you need them. You build relationships over time. The best candidates move when something speaks to them. If your opportunity does not connect, they will not move no matter how strong their background is.",
+  },
+  {
+    q: "What is your executive recruitment process step-by-step?",
+    a: "Our executive recruitment process includes discovery, role definition, sourcing, screening, interviews, alignment, and offer support. That is the structure. The real work happens between those steps, where expectations are clarified, misalignment shows up, and decisions get made. That is where most searches either succeed or fall apart.",
+  },
+  {
+    q: "How do you evaluate leadership candidates for cultural fit?",
+    a: "We evaluate leadership candidates by reviewing communication style, values, leadership behavior, and overall alignment with your organization's environment and goals. Culture fit is one of the most misunderstood parts of hiring. Sometimes companies say they want fit, but what they really need is change. We look at whether the person can succeed in your environment and whether your environment is ready for them.",
+  },
+  {
+    q: "What happens if the hire does not work out?",
+    a: "Many executive recruiting firms offer a replacement guarantee for a defined period if the hire does not succeed. That matters. But the better question is why it did not work. Most failed hires are not just about the candidate. It is expectations, onboarding, and leadership alignment. If those are not addressed, the next hire may face the same issues.",
+  },
+  {
+    q: "How much does executive recruiting cost?",
+    a: "Executive recruiting fees often range from 20 percent to 35 percent of the placed candidate's first-year compensation, depending on the role and search scope. Cost is always part of the conversation. But a bad hire costs far more than the fee. Lost time, lost momentum, and frustrated teams add up quickly. The real question is what result you are getting, not just what you are paying.",
   },
 ] as const;
 
@@ -264,4 +308,15 @@ export const FAQS = [
 export const CONTACT = {
   title: "Let's Talk About the Person Your Business Needs Next.", // SPEC
   copy: "Tell us about the role, your company, and what needs to change. We'll start by understanding the problem before beginning the search.", // SPEC
+};
+
+/* ---------- structured data ----------
+   LIVE — the Service node the live page publishes today, kept so the move
+   to the new build loses nothing. */
+export const SERVICE = {
+  name: "Executive Recruiting & Hiring Solutions",
+  serviceType: "Executive Recruiting and Talent Acquisition",
+  description:
+    "Hiring Solutions Group helps companies identify, attract, evaluate, and hire top executive talent through a collaborative search process focused on culture fit, leadership alignment, and long-term retention.",
+  areaServed: ["Northern New Jersey", "Passaic", "New Jersey"],
 };

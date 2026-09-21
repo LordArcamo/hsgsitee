@@ -1,0 +1,44 @@
+---
+import { BOTH_SIDES as b } from "../../data/hiring";
+
+/*
+ * 08 Experience from both sides — the spec's three-part structure as a
+ * bridge: the company's considerations, HSG as the alignment between them,
+ * the candidate's considerations. Its own layout, not the homepage's
+ * stacked diagram.
+ */
+---
+
+<section class="sec sec--soft" id="both-sides">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <p class="eyebrow is-hire">{b.eyebrow}</p>
+      <h2>{b.title}</h2>
+    </div>
+
+    <div class="bs">
+      <div class="bs-side bs-side--co rv" style="--d:1">
+        <p class="bs-lbl">The Company</p>
+        <ul>{b.company.map((it) => <li>{it}</li>)}</ul>
+      </div>
+
+      <div class="bs-mid rv" style="--d:2" aria-hidden="true">
+        <span class="bs-line"></span>
+        <span class="bs-hub">HSG</span>
+        <span class="bs-line"></span>
+      </div>
+
+      <div class="bs-side bs-side--ca rv" style="--d:3">
+        <p class="bs-lbl">The Candidate</p>
+        <ul>{b.candidate.map((it) => <li>{it}</li>)}</ul>
+      </div>
+    </div>
+
+    <p class="bs-outcome rv" style="--d:3">{b.outcome}</p>
+
+    <p class="bs-note rv" style="--d:4">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 3v6c0 4.5-3.4 8-8 9-4.6-1-8-4.5-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-4.5"/></svg>
+      <span>{b.note}</span>
+    </p>
+  </div>
+</section>

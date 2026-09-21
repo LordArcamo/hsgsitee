@@ -23,6 +23,12 @@ interface Props {
    * astro.config.mjs, or the two will contradict each other.
    */
   noindex?: boolean;
+  /**
+   * Extra JSON-LD nodes for this page only (FAQPage, Service, BreadcrumbList
+   * …), each emitted as its own block after the site-wide one. Only put
+   * published, approved content here — search engines quote it.
+   */
+  schema?: Record<string, unknown>[];
 }
 
 const {
@@ -30,6 +36,7 @@ const {
   description = SITE.description,
   path = "/",
   noindex = false,
+  schema = [],
 } = Astro.props;
 
 const canonical = new URL(url(path), Astro.site ?? SITE.url).href;
@@ -117,6 +124,9 @@ const structuredData = {
       type="application/ld+json"
       set:html={JSON.stringify(structuredData)}
     />
+    {schema.map((node) => (
+      <script is:inline type="application/ld+json" set:html={JSON.stringify(node)} />
+    ))}
   </head>
 
   <body>

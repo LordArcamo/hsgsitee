@@ -2,49 +2,98 @@
 /*
  * /find-talent/ — Hiring Solutions.
  *
- * Built to HSG_Hiring_Solutions_Final_Visual_Design_Page_Architecture.md.
- * The URL is the live site's existing Hiring Solutions address, kept so the
- * page inherits it.
+ * Built to HSG_Hiring_Solutions_Final_Visual_Design_Page_Architecture.md,
+ * at the live site's existing Hiring Solutions URL.
  *
- * Several sections are the homepage's own components, given this page's
- * headings through props — the shortlist demonstration (07), the two-sided
- * diagram (08) and the proof strip (02) — so a fix to one fixes both. The
- * words that are this page's alone live in src/data/hiring.ts, each tagged
- * SPEC / SITE / DRAFT; that is the one file to edit when Michael's Hiring
- * Solutions copy arrives.
+ * This page has its own look — a dark, Hiring-green hero and layouts of its
+ * own for the method, the funnel and the two-sided bridge — so it does not
+ * read as a second copy of the homepage. Only the proof figures (one
+ * ProofBar, homepage labels) and the employer intake (one CompanyIntake) are
+ * shared components; the Collaborative Search stage names and the featured
+ * story are shared data.
+ *
+ * Its words live in src/data/hiring.ts, tagged SPEC / LIVE / SITE / DRAFT —
+ * much of it carried over from the live page as published today.
  */
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import MockNote from "../../components/MockNote.astro";
 import Header from "../../components/Header.astro";
 import AudienceBar from "../../components/AudienceBar.astro";
 import Footer from "../../components/Footer.astro";
+import ProofBar from "../../components/ProofBar.astro";
 
 import FtHero from "../../components/hiring/FtHero.astro";
 import BeyondResume from "../../components/hiring/BeyondResume.astro";
 import FtCollaborative from "../../components/hiring/FtCollaborative.astro";
 import Evaluates from "../../components/hiring/Evaluates.astro";
 import WhyHsg from "../../components/hiring/WhyHsg.astro";
-import ShortlistDemo from "../../components/sections/ShortlistDemo.astro";
-import WhyTwoSided from "../../components/sections/WhyTwoSided.astro";
+import FunnelDemo from "../../components/hiring/FunnelDemo.astro";
+import BothSides from "../../components/hiring/BothSides.astro";
 import RealWorld from "../../components/hiring/RealWorld.astro";
 import SearchReach from "../../components/hiring/SearchReach.astro";
 import ClientSuccess from "../../components/hiring/ClientSuccess.astro";
 import Faq from "../../components/hiring/Faq.astro";
 import FtContact from "../../components/hiring/FtContact.astro";
 
-import { PAGE_META, SHORTLIST, BOTH_SIDES } from "../../data/hiring";
+import { PAGE_META, FAQS, SERVICE } from "../../data/hiring";
+import { SITE } from "../../data/site";
 import { url } from "../../lib/url";
+
+/* The three structured-data nodes the live page publishes today (FAQPage,
+   Service, BreadcrumbList), rebuilt from this page's own content so the move
+   to the new build loses none of them. */
+const base = Astro.site ?? SITE.url;
+const pageUrl = new URL(url(PAGE_META.path), base).href;
+const homeUrl = new URL(url("/"), base).href;
+
+const schema = [
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "@id": `${pageUrl}#faq`,
+    mainEntity: FAQS.map((f) => ({
+      "@type": "Question",
+      name: f.q,
+      acceptedAnswer: { "@type": "Answer", text: f.a },
+    })),
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "@id": `${pageUrl}#service`,
+    name: SERVICE.name,
+    serviceType: SERVICE.serviceType,
+    description: SERVICE.description,
+    url: pageUrl,
+    slogan: SITE.tagline,
+    provider: { "@type": "EmploymentAgency", name: SITE.name, url: homeUrl, telephone: SITE.phoneHref },
+    areaServed: SERVICE.areaServed.map((name) => ({ "@type": "Place", name })),
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: homeUrl },
+      { "@type": "ListItem", position: 2, name: "Hiring Solutions", item: pageUrl },
+    ],
+  },
+];
 ---
 
-<BaseLayout title={PAGE_META.title} description={PAGE_META.description} path={PAGE_META.path}>
+<BaseLayout title={PAGE_META.title} description={PAGE_META.description} path={PAGE_META.path} schema={schema}>
   {/* Remove MockNote — and src/styles/mock-note.css — at launch. */}
   <MockNote />
   <Header home={url("/")} />
   <AudienceBar />
 
-  <main id="main">
-    <!-- 01 Hero · 02 Proof strip -->
+  <main id="main" class="pg-hire">
+    <!-- 01 Hero -->
     <FtHero />
+
+    <!-- 02 Proof strip -->
+    <section class="ft-proof" aria-label="HSG in numbers">
+      <div class="wrap"><ProofBar variant="band" /></div>
+    </section>
 
     <!-- 03 The best candidate isn't always the best resume -->
     <BeyondResume />
@@ -59,26 +108,10 @@ import { url } from "../../lib/url";
     <WhyHsg />
 
     <!-- 07 From candidate pool to hiring decision -->
-    <ShortlistDemo
-      soft={false}
-      eyebrow={SHORTLIST.eyebrow}
-      title={SHORTLIST.title}
-      ledes={SHORTLIST.ledes}
-      payoff={SHORTLIST.payoff}
-    />
+    <FunnelDemo />
 
     <!-- 08 Experience from both sides -->
-    <WhyTwoSided
-      id="both-sides"
-      soft
-      eyebrow={BOTH_SIDES.eyebrow}
-      title={BOTH_SIDES.title}
-      ledes={[BOTH_SIDES.lede]}
-      left={{ label: "The Company", items: BOTH_SIDES.company }}
-      right={{ label: "The Candidate", items: BOTH_SIDES.candidate }}
-      outcome={BOTH_SIDES.outcome}
-      note={BOTH_SIDES.note}
-    />
+    <BothSides />
 
     <!-- 09 Real-world evaluation -->
     <RealWorld />

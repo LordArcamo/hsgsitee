@@ -1,0 +1,67 @@
+---
+import { FUNNEL } from "../../data/hiring";
+
+/*
+ * 07 From candidate pool to hiring decision — the spec's narrowing visual,
+ * built for this page instead of reusing the homepage's 50-card shortlist
+ * demonstration.
+ *
+ * Fifty dots, each tagged with the stage it leaves at (0 = finalist). The
+ * assignment is a fixed, seeded shuffle done at build time, so the picture
+ * is identical on every load and the markup needs no script to exist.
+ * hiring.ts steps through the stages once the section is in view, and every
+ * stage is also a button. Without script it is a labelled list beside a full
+ * grid; with reduced motion it waits for a click.
+ */
+const counts = FUNNEL.stages.map((s) => s.count);
+const exits: number[] = [];
+for (let stage = 1; stage < counts.length; stage++) {
+  for (let k = 0; k < counts[stage - 1] - counts[stage]; k++) exits.push(stage);
+}
+while (exits.length < counts[0]) exits.push(0); // the finalists
+
+let seed = 7;
+const rand = () => ((seed = (seed * 1103515245 + 12345) % 2147483648) / 2147483648);
+for (let i = exits.length - 1; i > 0; i--) {
+  const j = Math.floor(rand() * (i + 1));
+  [exits[i], exits[j]] = [exits[j], exits[i]];
+}
+const last = FUNNEL.stages.length; // index of the decision step
+---
+
+<section class="sec" id="funnel">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <p class="eyebrow is-hire">{FUNNEL.eyebrow}</p>
+      <h2>{FUNNEL.title}</h2>
+      <p class="lede">{FUNNEL.lede}</p>
+    </div>
+
+    <div class="cf rv" style="--d:1" data-funnel data-last={last}>
+      <ol class="cf-steps">
+        {FUNNEL.stages.map((s, i) => (
+          <li style={`--w:${100 - i * 10}%`}>
+            <button class="cf-step" type="button" data-stage={i} aria-pressed={i === 0 ? "true" : "false"}>
+              <b>{s.count}</b><span>{s.label}</span>
+            </button>
+          </li>
+        ))}
+        <li style={`--w:${100 - last * 10}%`}>
+          <button class="cf-step cf-step--decision" type="button" data-stage={last} aria-pressed="false">
+            <span>{FUNNEL.decision}</span>
+          </button>
+        </li>
+      </ol>
+
+      <div class="cf-board">
+        <p class="cf-status" aria-live="polite">
+          <b data-cf-count>{counts[0]}</b> <span data-cf-label>{FUNNEL.stages[0].label}</span>
+        </p>
+        <div class="cf-dots" aria-hidden="true">
+          {exits.map((e) => <i class="cf-dot" data-out={e}></i>)}
+        </div>
+        <p class="cf-note">{FUNNEL.note}</p>
+      </div>
+    </div>
+  </div>
+</section>
