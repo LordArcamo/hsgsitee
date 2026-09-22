@@ -6,7 +6,7 @@
 defined( 'ABSPATH' ) || exit;
 define( 'HSG_VER', '0.2.0' );
 
-foreach ( array( 'site', 'nav', 'blog', 'shortlist-data', 'fields', 'jobs', 'situations', 'roles', 'leads', 'faq', 'seo', 'assets', 'avada', 'homepage-isolation', 'cache-plugins', 'avada-legacy' ) as $inc ) { require get_stylesheet_directory() . "/inc/$inc.php"; }
+foreach ( array( 'site', 'nav', 'blog', 'shortlist-data', 'fields', 'jobs', 'situations', 'roles', 'leads', 'faq', 'cities', 'seo', 'assets', 'avada', 'homepage-isolation', 'cache-plugins', 'avada-legacy' ) as $inc ) { require get_stylesheet_directory() . "/inc/$inc.php"; }
 
 add_action( 'after_setup_theme', function () {
 	add_theme_support( 'title-tag' );

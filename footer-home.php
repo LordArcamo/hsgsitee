@@ -12,7 +12,7 @@
 			<?php endforeach; ?>
 			<div>
 				<h5>Locations</h5>
-				<ul><?php foreach ( hsg_area_served() as $a ) { echo '<li><a href="' . hsg_anchor( 'geo' ) . '">' . esc_html( $a ) . '</a></li>'; } ?></ul>
+				<ul><?php foreach ( hsg_area_served() as $a ) { echo '<li><a href="' . esc_url( hsg_city_hub_url() ) . '">' . esc_html( $a ) . '</a></li>'; } ?></ul>
 				<p class="ftr-related">Business consulting, leadership coaching, or HR support? <a href="<?php echo esc_url( hsg_field( 'site_related_url' ) ); ?>"><?php hsg_e( 'site_related_name' ); ?></a></p>
 			</div>
 		</div>

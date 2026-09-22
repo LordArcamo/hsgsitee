@@ -8,7 +8,7 @@ defined( 'ABSPATH' ) || exit;
 /** Every request the NEW chrome renders. Everything else is Avada's. */
 function hsg_uses_new_chrome(): bool {
 	if ( is_admin() || isset( $_GET['fb-edit'] ) || isset( $_GET['builder'] ) || isset( $_GET['awb-studio-content'] ) ) { return false; }
-	return is_front_page() || is_home() || is_singular( 'post' ) || is_category() || is_tag() || is_author() || is_date() || is_search() || is_page_template( 'page-jobs.php' ) || is_page_template( 'page-situations.php' ) || is_page_template( 'page-faq.php' );
+	return is_front_page() || is_home() || is_singular( 'post' ) || is_category() || is_tag() || is_author() || is_date() || is_search() || is_page_template( 'page-jobs.php' ) || is_page_template( 'page-situations.php' ) || is_page_template( 'page-faq.php' ) || is_page_template( 'page-city.php' );
 }
 
 /** The child theme's template for a new-chrome request (Avada's Template Builder must not win). */
@@ -17,6 +17,7 @@ function hsg_new_chrome_template(): string {
 	if ( is_page_template( 'page-jobs.php' ) ) { return get_stylesheet_directory() . '/page-jobs.php'; }
 	if ( is_page_template( 'page-situations.php' ) ) { return get_stylesheet_directory() . '/page-situations.php'; }
 	if ( is_page_template( 'page-faq.php' ) ) { return get_stylesheet_directory() . '/page-faq.php'; }
+	if ( is_page_template( 'page-city.php' ) ) { return get_stylesheet_directory() . '/page-city.php'; }
 	if ( is_singular( 'post' ) ) { return get_single_template(); }
 	if ( is_home() ) { return get_home_template(); }
 	if ( is_search() ) { return get_search_template(); }
