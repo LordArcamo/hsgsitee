@@ -1,14 +1,32 @@
 ---
+import { Image } from "astro:assets";
+import Icon from "../Icon.astro";
+import mark from "../../assets/brand/hsg-mark.png";
+
 /*
- * The two-sided diagram: one side's considerations, HSG in the middle, the
- * other side's considerations. The homepage frames it as Employers and
- * Professionals; the Hiring Solutions page as The Company and The Candidate,
- * with its own lists and a closing line on representation. Defaults are the
- * homepage's.
+ * "Better Decisions Come From Understanding Both Perspectives."
+ *
+ * The graphic follows Michael's concept image: what the company brings and
+ * what the candidate brings flow inward, through HSG's process, into one
+ * funnel — Evaluate, Align, Select — and out to a single hire.
+ *
+ * Drawn in HTML and CSS rather than shipped as a picture: the labels stay
+ * real text (readable, translatable, searchable), it restyles with the
+ * palette, and it reflows on a phone instead of shrinking to nothing. The
+ * flow bands are decorative CSS and drop out below 960px, where the three
+ * parts stack.
+ *
+ * Content note: the two lists and "The Right Fit" are the wording approved
+ * in HSG_3_Section_Final_Update_Claude_Code.md, not the concept image's
+ * labels, which differ. Colours are the HSG practice colours (green for the
+ * company side, gold for the candidate side) rather than the image's blue
+ * and orange.
  */
 interface Side {
   label: string;
-  items: string[];
+  tagline: string;
+  caption: string;
+  items: { icon: string; label: string }[];
 }
 interface Props {
   id?: string;
@@ -19,7 +37,7 @@ interface Props {
   left?: Side;
   right?: Side;
   outcome?: string;
-  /** A closing statement under the diagram — used for the representation rule. */
+  outcomeSub?: string;
   note?: string;
 }
 
@@ -33,19 +51,38 @@ const {
     "Because HSG has spent years working separately with employers and professionals, we understand the questions, pressures, expectations, and challenges that exist on both sides of an important hiring or career decision. That experience helps us look more closely at culture, fit, leadership, personality, goals, timing, and opportunity while representing only the client we serve in each engagement.",
   ],
   left = {
-    label: "Employers",
-    // Company Culture and Geography per Michael (HSG 3-section update)
-    items: ["Business Needs", "Role", "Company Culture", "Team Fit", "Geography", "Leadership"],
+    label: "The Company",
+    tagline: "Clear needs. A brighter future.",
+    caption: "Better people build brighter companies",
+    items: [
+      { icon: "chart", label: "Business Needs" },
+      { icon: "clipboard", label: "Role" },
+      { icon: "people", label: "Company Culture" },
+      { icon: "network", label: "Team Fit" },
+      { icon: "globe", label: "Geography" },
+      { icon: "star", label: "Leadership" },
+    ],
   },
   right = {
-    label: "Professionals",
-    items: ["Experience", "Personality", "Goals", "Values", "Timing", "Opportunity"],
+    label: "The Candidate",
+    tagline: "Real talent. Brighter opportunities.",
+    caption: "The right fit creates a brighter tomorrow",
+    items: [
+      { icon: "briefcase", label: "Experience" },
+      { icon: "heart", label: "Personality" },
+      { icon: "target", label: "Goals" },
+      { icon: "shield", label: "Values" },
+      { icon: "clock", label: "Timing" },
+      { icon: "compass", label: "Opportunity" },
+    ],
   },
   outcome = "The Right Fit",
+  outcomeSub = "The right company + the right candidate",
   note,
 } = Astro.props;
 
-const aria = `${left.label} considerations and ${right.label.toLowerCase()} considerations both meet at Hiring Solutions Group, producing ${outcome.toLowerCase()}.`;
+const stages = ["Evaluate", "Align", "Select"];
+const aria = `${left.label} brings ${left.items.map((i) => i.label).join(", ")}. ${right.label} brings ${right.items.map((i) => i.label).join(", ")}. Both meet at HSG's process — evaluate, align, select — producing ${outcome.toLowerCase()}.`;
 ---
 
 <!-- ===== 3. WHY THE TWO-SIDED MODEL MATTERS ===== -->
@@ -57,21 +94,44 @@ const aria = `${left.label} considerations and ${right.label.toLowerCase()} cons
       {ledes.map((l) => <p class="lede">{l}</p>)}
     </div>
 
-    <div class="model" role="img" aria-label={aria}>
-      <div class="model-col model-col--hire rv" style="--d:1">
-        <p class="col-label">{left.label}</p>
-        {left.items.map((it) => <div class="model-item">{it}</div>)}
-      </div>
+    <div class="fit" role="img" aria-label={aria}>
+      {[left, right].map((side, s) => (
+        <div class:list={["fit-side", s === 0 ? "fit-side--co" : "fit-side--ca"]}>
+          <div class="fit-head rv" style={`--d:${s + 1}`}>
+            <p class="fit-lbl">{side.label}</p>
+            <p class="fit-tag">{side.tagline}</p>
+          </div>
+          <span class="fit-ribbon" aria-hidden="true"></span>
+          <ul class="fit-list">
+            {side.items.map((it, i) => (
+              <li class="rv" style={`--d:${Math.min(i, 3)}`}>
+                <span class="fit-ic"><Icon name={it.icon} size={18} /></span>
+                {it.label}
+              </li>
+            ))}
+          </ul>
+          <p class="fit-cap rv">{side.caption}</p>
+        </div>
+      ))}
 
-      <div class="model-hub rv" style="--d:2">
-        <div class="hub-node">HSG</div>
-        <div class="hub-stem" aria-hidden="true"></div>
-        <div class="hub-out">{outcome}</div>
-      </div>
+      <div class="fit-core">
+        <div class="fit-proc rv" style="--d:2">
+          <p class="fit-proc-lbl">HSG Process</p>
+          <p class="fit-proc-sub">Insight · Expertise · Alignment</p>
+          <span class="fit-drop">HSG</span>
+        </div>
 
-      <div class="model-col model-col--career rv" style="--d:3">
-        <p class="col-label">{right.label}</p>
-        {right.items.map((it) => <div class="model-item">{it}</div>)}
+        <div class="fit-funnel rv" style="--d:3">
+          <ol>
+            {stages.map((st) => <li>{st}</li>)}
+          </ol>
+        </div>
+
+        <div class="fit-out rv" style="--d:4">
+          <Image src={mark} alt="" width={54} height={54} loading="lazy" />
+          <p class="fit-out-t">{outcome}</p>
+          <p class="fit-out-s">{outcomeSub}</p>
+        </div>
       </div>
     </div>
 
