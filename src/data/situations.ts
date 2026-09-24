@@ -405,3 +405,25 @@ export const QUICK_STATS: Stat[] = [STATS[1]!, STATS[2]!];
 
 /** The full spreadsheet at the bottom, in the spec's column order. */
 export const FULL_STATS: Stat[] = [CURRENT_ROLE, ...STATS, TOOLS];
+
+/**
+ * The worked example of an optional column, from Michael's sketch: the
+ * column another employer asked us to add. It is NOT one of the four
+ * standardized statistics and never appears on a card or in the real
+ * table — only in the sample comparison.
+ */
+const MANAGEMENT: Stat = {
+  label: "Years of Management Experience",
+  short: "Mgmt. Experience",
+  value: (p) => years(p.managementYears),
+  numeric: true,
+};
+
+/**
+ * The sample table: everything the real one shows, plus the extra column.
+ * The last CHOSEN_COLUMNS of these are the ones the sketch rings in red and
+ * hangs its arrows from — Software / Tools and the added column — because
+ * the message is that both slots are the employer's to fill.
+ */
+export const SAMPLE_STATS: Stat[] = [...FULL_STATS, MANAGEMENT];
+export const CHOSEN_COLUMNS = 2;

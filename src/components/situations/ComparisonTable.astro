@@ -1,65 +1,126 @@
 ---
 /*
- * The complete spreadsheet. Same six professionals as the cards above and
- * the quick panel beside them, from the same `group.candidates`, rendered
- * through FULL_STATS — current role, the four card statistics, and the
- * software column that makes the six tell themselves apart at a glance.
+ * Compare the Professionals — the complete spreadsheet, and behind a button,
+ * a sample of what another employer chose.
  *
- * It stays on the page whatever the quick panel does: the panel links here,
- * it does not replace this.
+ * The real table is the same six as the cards above and the quick panel
+ * beside them, from the same `candidates`, and it stays at the bottom of the
+ * page whatever the quick panel does: the panel links here, it does not
+ * replace this.
  *
- * The scroll container is focusable so the table can be scrolled from the
- * keyboard on narrow screens; its text is never shrunk to make it fit.
+ * "See what others chose" swaps it for the sample — the same table with the
+ * extra column another employer asked for, the two chooseable columns ringed
+ * in red, and the payoff underneath. Per Michael's 25 Sep 2026 sketch: the
+ * report they are looking at is real, and the sample shows what it could
+ * become if they tell us what matters to them.
+ *
+ * Both tables are in the HTML; the one not in use carries `hidden`, which
+ * takes it out of the rendering and out of the accessibility tree. So a
+ * screen reader only ever meets one comparison, but do not read this as the
+ * other table being absent — it is still in the source.
  */
-import { FULL_STATS, header } from "../../data/situations";
-import type { Professional } from "../../data/role-groups";
+import { Image } from "astro:assets";
+
+import {
+  FULL_STATS,
+  SAMPLE_STATS,
+  CHOSEN_COLUMNS,
+} from "../../data/situations";
+import type { Professional, RoleGroup } from "../../data/role-groups";
+import { SAMPLE_COPY } from "../../data/sample-compare";
+import CompareTable from "./CompareTable.astro";
+import squirrel from "../../assets/brand/purple-squirrel.png";
 
 interface Props {
   candidates: Professional[];
+  /** Only for naming the role in the sample's opening line. */
+  group: RoleGroup;
 }
 
-const { candidates } = Astro.props;
+const { candidates, group } = Astro.props;
+const chooseFrom = SAMPLE_STATS.length - CHOSEN_COLUMNS;
 ---
 
 <section class="sec" id="full-comparison">
   <div class="wrap">
-    <div class="sec-head rv">
+    <div class="sec-head sw-cmp-head rv">
       <h2>Compare the Professionals</h2>
+      <button
+        class="btn btn--ghost sw-sample-btn"
+        type="button"
+        data-sw-sample
+        aria-expanded="false"
+        aria-controls="sample-comparison"
+        data-open={SAMPLE_COPY.openLabel}
+        data-close={SAMPLE_COPY.closeLabel}
+        hidden
+      >
+        <span data-sw-sample-label>{SAMPLE_COPY.openLabel}</span>
+        <span class="arrow" aria-hidden="true">→</span>
+      </button>
     </div>
 
-    <div
-      class="sw-table-wrap rv"
-      style="--d:1"
-      tabindex="0"
-      role="region"
-      aria-label="Full comparison of the matching professionals"
-    >
-      <table class="sw-table">
-        <thead>
-          <tr>
-            <th scope="col">Professional</th>
-            {
-              FULL_STATS.map((s) => (
-                <th scope="col" class:list={[{ "is-num": s.numeric }]}>
-                  {header(s)}
-                </th>
-              ))
-            }
-          </tr>
-        </thead>
-        <tbody data-sw-order>
-          {
-            candidates.map((p) => (
-              <tr data-sw-id={p.id}>
-                <th scope="row">{p.name}</th>
-                {FULL_STATS.map((s) => (
-                  <td class:list={[{ "is-num": s.numeric }]}>{s.value(p)}</td>
-                ))}
-              </tr>
-            ))
-          }
-        </tbody>
-      </table>
+    <!-- their own six, ranked against their search -->
+    <div class="rv" style="--d:1" data-sw-real>
+      <CompareTable
+        candidates={candidates}
+        stats={FULL_STATS}
+        label="Full comparison of the matching professionals"
+        ordered
+      />
+    </div>
+
+    <!-- somebody else's report. Hidden until the button is pressed; the
+         button is the only way in, so with no JavaScript the page is
+         exactly what it was before. -->
+    <div class="sw-sample" id="sample-comparison" hidden>
+      <p class="sw-sample-intro">{SAMPLE_COPY.intro(group.resultTitle)}</p>
+
+      <!-- the red annotation from the sketch: it sits over the table and
+           names the two columns the arrows point down at -->
+      <div class="sw-choose">
+        <p class="sw-choose-kicker">{SAMPLE_COPY.calloutKicker}</p>
+        <p class="sw-choose-title">{SAMPLE_COPY.calloutTitle}</p>
+        <p class="sw-choose-body">{SAMPLE_COPY.calloutBody}</p>
+      </div>
+
+      <CompareTable
+        candidates={candidates}
+        stats={SAMPLE_STATS}
+        label="Sample comparison, with the columns another employer chose"
+        chooseFrom={chooseFrom}
+      />
+
+      <!-- the bottom of the sketch: the arrows run from the chosen columns
+           to the squirrel at the desk -->
+      <div class="sw-payoff">
+        <ol class="sw-chain">
+          {SAMPLE_COPY.chain.map((step) => <li>{step}</li>)}
+        </ol>
+
+        <figure class="sw-squirrel">
+          <div class="sw-squirrel-art">
+            <!-- The artwork came on an opaque white background, so it is
+                 framed as a portrait rather than floated on the panel. -->
+            <span class="sw-squirrel-plate">
+              <Image src={squirrel} alt="" width={200} height={200} class="sw-squirrel-img" />
+            </span>
+            <!-- the award on the wall behind the desk -->
+            <svg class="sw-award" viewBox="0 0 64 88" aria-hidden="true">
+              <circle cx="32" cy="30" r="24" fill="var(--career-fill)" />
+              <circle cx="32" cy="30" r="17" fill="none" stroke="var(--surface)" stroke-width="2" opacity=".65" />
+              <path d="M32 18l3.9 8.2 8.6 1.2-6.3 6.3 1.5 9-7.7-4.3-7.7 4.3 1.5-9-6.3-6.3 8.6-1.2z" fill="var(--surface)" />
+              <path d="M20 52l-6 30 18-10 18 10-6-30z" fill="var(--accent)" />
+            </svg>
+            <!-- the desk -->
+            <span class="sw-desk" aria-hidden="true"></span>
+          </div>
+          <figcaption>
+            <p class="sw-payoff-title">{SAMPLE_COPY.payoffTitle}</p>
+            <p class="sw-payoff-body">{SAMPLE_COPY.payoffBody}</p>
+          </figcaption>
+        </figure>
+      </div>
     </div>
   </div>
 </section>

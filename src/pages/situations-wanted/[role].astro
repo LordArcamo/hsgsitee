@@ -94,7 +94,7 @@ const matchedCandidates = group.candidates;
   <main id="main">
     <SearchSummary criteria={criteria} group={group} />
     <MatchingProfessionals group={group} candidates={matchedCandidates} />
-    <ComparisonTable candidates={matchedCandidates} />
+    <ComparisonTable candidates={matchedCandidates} group={group} />
     <DiscussCta />
   </main>
 
@@ -103,5 +103,7 @@ const matchedCandidates = group.candidates;
 
 <script>
   import { initSituations } from "../../scripts/situations";
+  import { initSampleCompare } from "../../scripts/sample-compare";
   initSituations();
+  initSampleCompare();
 </script>

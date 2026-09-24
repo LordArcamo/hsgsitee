@@ -250,6 +250,131 @@
   .sw-index-label { flex: 1 1 100%; font-size: 16px; }
 }
 
+/* ---------- 4c. "See what others chose" ----------
+
+   Michael's 25 Sep 2026 sketch. The employer's own report is real; this is
+   a sample of what it becomes once they tell us which columns matter.
+
+   RED IS DELIBERATE AND IS NOT A BRAND COLOUR. The palette is purple,
+   Hiring green, Career gold and ink. Red appears nowhere else on the site,
+   and that is the point: the sketch marks these columns in red because they
+   are an annotation ON the report — a note in the margin — rather than part
+   of it. Keep it to this block. --note-red is the one place it is defined.
+   ============================================================ */
+:root { --note-red: #c0392b; --note-red-soft: #fdecea; }
+:root[data-theme="dark"] { --note-red: #ff8a80; --note-red-soft: #33201e; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) { --note-red: #ff8a80; --note-red-soft: #33201e; }
+}
+
+.sw-cmp-head {
+  display: flex; align-items: baseline; justify-content: space-between;
+  gap: 16px 24px; flex-wrap: wrap; max-width: none;
+}
+.sw-sample-btn { flex: none; min-height: 44px; }
+.sw-sample-btn[hidden] { display: none; }
+/* coming back is a retreat, not the offer — quieter than going in */
+.sw-sample-btn.is-showing { color: var(--ink-2); border-color: var(--rule); }
+.sw-sample-btn.is-showing .arrow { transform: rotate(180deg); }
+
+.sw-sample { margin-top: clamp(18px, 2.2vw, 26px); }
+.sw-sample[hidden] { display: none; }
+.sw-sample-intro {
+  font-size: 14px; line-height: 1.6; color: var(--ink-2);
+  max-width: 74ch; margin-bottom: 14px;
+}
+
+/* the red note that hangs over the two chosen columns */
+.sw-choose {
+  border: 1px dashed var(--note-red); border-radius: 14px;
+  background: var(--note-red-soft); padding: 16px 18px;
+  display: grid; gap: 5px; margin-bottom: 14px;
+}
+.sw-choose-kicker {
+  font-size: 10.5px; font-weight: 800; letter-spacing: .14em;
+  text-transform: uppercase; color: var(--note-red);
+}
+.sw-choose-title {
+  font-family: var(--display); font-size: clamp(17px, 2vw, 21px);
+  font-weight: 800; letter-spacing: -.022em; color: var(--ink);
+}
+.sw-choose-body { font-size: 14px; line-height: 1.6; color: var(--ink-2); max-width: 70ch; }
+
+/* the columns the arrows point at */
+.sw-table th.sw-th--choose {
+  color: var(--note-red); background: var(--note-red-soft);
+  border-bottom-color: var(--note-red);
+  box-shadow: inset 0 3px 0 var(--note-red);
+}
+.sw-choose-tag {
+  display: block; margin-top: 4px;
+  font-size: 9.5px; font-weight: 800; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--note-red); opacity: .8;
+}
+.sw-table td.sw-td--choose { background: color-mix(in srgb, var(--note-red-soft) 60%, transparent); }
+.sw-table tbody tr:nth-child(even) td.sw-td--choose {
+  background: color-mix(in srgb, var(--note-red-soft) 85%, transparent);
+}
+
+/* ---------- the payoff: if you choose -> maybe you become ---------- */
+/* Chain then figure, centred as one composition — a two-column grid left a
+   dead gap down the middle of a wide screen. */
+.sw-payoff {
+  margin-top: clamp(20px, 2.6vw, 30px);
+  display: flex; align-items: center; justify-content: center; flex-wrap: wrap;
+  gap: clamp(20px, 4vw, 56px);
+  border: 1px solid var(--rule); border-radius: 20px;
+  background: var(--soft); padding: clamp(22px, 3vw, 36px);
+}
+
+/* the sketch's arrow chain, read down the page */
+.sw-chain { flex: 0 1 auto; list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
+.sw-chain li {
+  position: relative; padding-left: 30px;
+  font-family: var(--display); font-size: clamp(16px, 1.9vw, 20px);
+  font-weight: 800; letter-spacing: -.022em; color: var(--ink-2);
+}
+.sw-chain li::before {
+  content: "→"; position: absolute; left: 0; top: -1px;
+  color: var(--note-red); font-weight: 700;
+}
+.sw-chain li + li { padding-top: 2px; }
+
+.sw-squirrel { flex: 0 1 400px; margin: 0; display: grid; gap: 16px; justify-items: center; text-align: center; }
+.sw-squirrel-art { position: relative; width: min(220px, 100%); padding-bottom: 16px; }
+/* The frame. The artwork is opaque white, so the plate is white too and the
+   join is invisible; swap for a transparent PNG and this still works. */
+.sw-squirrel-plate {
+  display: grid; place-items: center; padding: 10px 10px 4px;
+  background: var(--surface); border: 1px solid var(--rule);
+  border-radius: 20px; box-shadow: var(--shadow-sm);
+}
+.sw-squirrel-img { width: 82%; height: auto; display: block; }
+/* the award, hung over the corner of the frame */
+.sw-award { position: absolute; top: -14px; right: -10px; width: 30%; height: auto; z-index: 2; }
+/* the desk they are sitting at */
+.sw-desk {
+  position: absolute; left: 8%; right: 8%; bottom: 0; height: 10px;
+  border-radius: 6px; background: var(--accent);
+  box-shadow: 0 10px 22px color-mix(in srgb, var(--accent) 30%, transparent);
+}
+.sw-payoff-title {
+  font-family: var(--display); font-size: clamp(19px, 2.3vw, 26px);
+  font-weight: 900; letter-spacing: -.028em; color: var(--accent);
+}
+.sw-payoff-body {
+  margin-top: 6px; font-size: 14.5px; line-height: 1.6;
+  color: var(--ink-2); max-width: 46ch;
+}
+
+@media (max-width: 860px) {
+  /* Stacked, and the chain stays FIRST: "if you choose -> maybe you become"
+     has to lead into the squirrel, not follow it. An earlier order:-1 here
+     put the payoff above its own set-up. */
+  .sw-payoff { flex-direction: column; align-items: stretch; gap: 22px; }
+  .sw-chain { justify-items: start; }
+}
+
 /* ---------- 5. closing CTA ---------- */
 .sw-cta {
   background: var(--panel); color: var(--panel-ink);

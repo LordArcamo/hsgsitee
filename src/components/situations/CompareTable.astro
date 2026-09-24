@@ -1,0 +1,72 @@
+---
+/*
+ * The comparison spreadsheet itself, rendered twice on the page: once for
+ * the employer's real six, and once for the sample of what another employer
+ * chose. One component so the two can never drift apart — the sample is the
+ * same table with an extra column, which is the whole point of the sketch.
+ *
+ * The scroll container is focusable so the table can be scrolled from the
+ * keyboard on narrow screens; its text is never shrunk to make it fit.
+ */
+import { header, type Stat } from "../../data/situations";
+import type { Professional } from "../../data/role-groups";
+import { SAMPLE_COPY } from "../../data/sample-compare";
+
+interface Props {
+  candidates: Professional[];
+  stats: Stat[];
+  /** Accessible name for the scroll region. */
+  label: string;
+  /**
+   * Re-ordered with the cards and the quick panel when a search arrives.
+   * The sample is somebody else's report, so it is NOT ranked against this
+   * employer's criteria — that also keeps the sketch's 3 2 1 0 0 0 intact.
+   */
+  ordered?: boolean;
+  /**
+   * Index into `stats` from which the columns are the employer's to choose.
+   * Those get the red annotation and the "You choose" tag from the sketch.
+   */
+  chooseFrom?: number;
+}
+
+const { candidates, stats, label, ordered = false, chooseFrom } = Astro.props;
+const isChosen = (i: number) => chooseFrom !== undefined && i >= chooseFrom;
+---
+
+<div class="sw-table-wrap" tabindex="0" role="region" aria-label={label}>
+  <table class="sw-table">
+    <thead>
+      <tr>
+        <th scope="col">Professional</th>
+        {
+          stats.map((s, i) => (
+            <th
+              scope="col"
+              class:list={[{ "is-num": s.numeric, "sw-th--choose": isChosen(i) }]}
+            >
+              {header(s)}
+              {isChosen(i) && <span class="sw-choose-tag">{SAMPLE_COPY.columnTag}</span>}
+            </th>
+          ))
+        }
+      </tr>
+    </thead>
+    <tbody data-sw-order={ordered ? "" : undefined}>
+      {
+        candidates.map((p) => (
+          <tr data-sw-id={p.id}>
+            <th scope="row">{p.name}</th>
+            {stats.map((s, i) => (
+              <td
+                class:list={[{ "is-num": s.numeric, "sw-td--choose": isChosen(i) }]}
+              >
+                {s.value(p)}
+              </td>
+            ))}
+          </tr>
+        ))
+      }
+    </tbody>
+  </table>
+</div>
