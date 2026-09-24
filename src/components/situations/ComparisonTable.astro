@@ -29,6 +29,7 @@ import type { Professional, RoleGroup } from "../../data/role-groups";
 import { SAMPLE_COPY } from "../../data/sample-compare";
 import CompareTable from "./CompareTable.astro";
 import squirrel from "../../assets/brand/purple-squirrel.png";
+import squirrelAtDesk from "../../assets/brand/purple-squirrel-desk.png";
 
 interface Props {
   candidates: Professional[];
@@ -137,21 +138,24 @@ const chooseFrom = SAMPLE_STATS.length - CHOSEN_COLUMNS;
         </ol>
 
         <figure class="sw-squirrel">
+<!-- Exactly the sketch: the squirrel sitting at a desk with the HR
+               award on the wall behind. The award sits under the artwork so
+               the plant and the laptop overlap it — that is what makes it
+               read as hanging behind rather than stuck on top. -->
           <div class="sw-squirrel-art">
-            <!-- The artwork came on an opaque white background, so it is
-                 framed as a portrait rather than floated on the panel. -->
-            <span class="sw-squirrel-plate">
-              <Image src={squirrel} alt="" width={200} height={200} class="sw-squirrel-img" />
-            </span>
-            <!-- the award on the wall behind the desk -->
             <svg class="sw-award" viewBox="0 0 64 88" aria-hidden="true">
               <circle cx="32" cy="30" r="24" fill="var(--career-fill)" />
               <circle cx="32" cy="30" r="17" fill="none" stroke="var(--surface)" stroke-width="2" opacity=".65" />
               <path d="M32 18l3.9 8.2 8.6 1.2-6.3 6.3 1.5 9-7.7-4.3-7.7 4.3 1.5-9-6.3-6.3 8.6-1.2z" fill="var(--surface)" />
               <path d="M20 52l-6 30 18-10 18 10-6-30z" fill="var(--accent)" />
             </svg>
-            <!-- the desk -->
-            <span class="sw-desk" aria-hidden="true"></span>
+            <Image
+              src={squirrelAtDesk}
+              alt="A purple squirrel working at a desk, with an award on the wall behind"
+              width={560}
+              height={420}
+              class="sw-squirrel-img"
+            />
           </div>
           <figcaption>
             <p class="sw-payoff-title">{SAMPLE_COPY.payoffTitle}</p>

@@ -400,24 +400,14 @@
 }
 .sw-chain li + li { margin-top: 2px; }
 
-.sw-squirrel { flex: 0 1 400px; margin: 0; display: grid; gap: 16px; justify-items: center; text-align: center; }
-.sw-squirrel-art { position: relative; width: min(220px, 100%); padding-bottom: 16px; }
-/* The frame. The artwork is opaque white, so the plate is white too and the
-   join is invisible; swap for a transparent PNG and this still works. */
-.sw-squirrel-plate {
-  display: grid; place-items: center; padding: 10px 10px 4px;
-  background: var(--surface); border: 1px solid var(--rule);
-  border-radius: 20px; box-shadow: var(--shadow-sm);
-}
-.sw-squirrel-img { width: 82%; height: auto; display: block; }
-/* the award, hung over the corner of the frame */
-.sw-award { position: absolute; top: -14px; right: -10px; width: 30%; height: auto; z-index: 2; }
-/* the desk they are sitting at */
-.sw-desk {
-  position: absolute; left: 8%; right: 8%; bottom: 0; height: 10px;
-  border-radius: 6px; background: var(--accent);
-  box-shadow: 0 10px 22px color-mix(in srgb, var(--accent) 30%, transparent);
-}
+.sw-squirrel { flex: 0 1 460px; margin: 0; display: grid; gap: 14px; justify-items: center; text-align: center; }
+/* The artwork is a transparent PNG and carries its own desk, chair, laptop
+   and plant, so it needs no frame and no drawn desk under it. */
+.sw-squirrel-art { position: relative; width: min(420px, 100%); }
+.sw-squirrel-img { position: relative; z-index: 1; width: 100%; height: auto; display: block; }
+/* the award on the wall behind — under the artwork, so the plant and the
+   laptop cross in front of it */
+.sw-award { position: absolute; z-index: 0; top: 2%; right: 6%; width: 19%; height: auto; }
 .sw-payoff-title {
   font-family: var(--display); font-size: clamp(19px, 2.3vw, 26px);
   font-weight: 900; letter-spacing: -.028em; color: var(--accent);
