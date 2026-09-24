@@ -168,16 +168,7 @@ const chooseFrom = SAMPLE_STATS.length - CHOSEN_COLUMNS;
           <p class="sw-payoff-title">{SAMPLE_COPY.payoffTitle}</p>
           <p class="sw-payoff-body">{SAMPLE_COPY.payoffBody}</p>
 
-          <ol class="sw-steps">
-            {
-              SAMPLE_COPY.steps.map((step) => (
-                <li class="sw-step">
-                  <span class="sw-step-icon" aria-hidden="true" set:html={step.icon} />
-                  <span class="sw-step-text">{step.text}</span>
-                </li>
-              ))
-            }
-          </ol>
+          <p class="sw-flow-line">{SAMPLE_COPY.flowLine}</p>
         </figcaption>
       </figure>
     </div>

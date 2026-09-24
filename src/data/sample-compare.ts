@@ -102,26 +102,11 @@ export const SAMPLE_COPY = {
     "Choose the criteria that matter most, and the right candidate may become easier to see.",
 
   /**
-   * DRAFT — the three steps along the bottom of the design mockup, in its
-   * words. They are the corrections' story beats made visible, and they end
-   * where the corrections end: uncovering the candidate, then a better
-   * decision. Nothing here says the employer becomes the squirrel.
-   *
-   * The icons are inline SVG rather than an icon font or image files, so
-   * they take the colour of the text beside them and cost no requests.
+   * SPEC — the whole journey in one line, offered verbatim by the revision
+   * as the replacement for the boxed icon row. It carries the sketch's
+   * "if you choose → you may uncover → the purple squirrel" without a
+   * process diagram, and without arrows pointing away from the squirrel.
    */
-  steps: [
-    {
-      text: "You choose the right criteria.",
-      icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h7M15 7h5M4 12h11M19 12h1M4 17h3M11 17h9"/><circle cx="13" cy="7" r="2"/><circle cx="17" cy="12" r="2"/><circle cx="9" cy="17" r="2"/></svg>',
-    },
-    {
-      text: "You may uncover the purple squirrel.",
-      icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L21 21"/></svg>',
-    },
-    {
-      text: "A stronger hiring decision.",
-      icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 20v-1.5a3.5 3.5 0 0 0-3.5-3.5h-5A3.5 3.5 0 0 0 4 18.5V20"/><circle cx="10" cy="7.5" r="3.5"/><path d="M19.5 20v-1.5a3.5 3.5 0 0 0-2.6-3.4M15.5 4.6a3.5 3.5 0 0 1 0 6.3"/></svg>',
-    },
-  ],
+  flowLine:
+    "If you choose the right criteria, you may uncover the purple squirrel.",
 };

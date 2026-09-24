@@ -440,28 +440,15 @@
 }
 .sw-hand--talent svg { width: 30px; height: 24px; flex: none; margin-top: 2px; }
 
-/* choose -> uncover -> decide */
-.sw-steps {
-  list-style: none; margin: 18px 0 0; padding: 0;
-  display: flex; align-items: flex-start; flex-wrap: wrap; gap: 10px 8px;
-}
-.sw-step {
-  flex: 1 1 130px; min-width: 0;
-  display: grid; justify-items: center; gap: 8px; text-align: center;
-}
-/* the arrow between steps, drawn on the gap rather than as an element */
-.sw-step + .sw-step { position: relative; }
-.sw-step + .sw-step::before {
-  content: "→"; position: absolute; left: -12px; top: 12px;
-  color: var(--accent); font-size: 15px; line-height: 1;
-}
-.sw-step-icon {
-  display: grid; place-items: center; width: 40px; height: 40px;
-  border-radius: 12px; background: var(--accent-soft); color: var(--accent);
-}
-.sw-step-icon svg { width: 20px; height: 20px; }
-.sw-step-text {
-  font-size: 13px; font-weight: 700; line-height: 1.35; color: var(--ink-2);
+/*
+ * The whole journey in one line, in place of the boxed icon row that stood
+ * here. That row carried its own left-to-right arrows, which pointed away
+ * from the squirrel and fought the big curve above it.
+ */
+.sw-flow-line {
+  margin-top: 16px; padding-left: 14px;
+  border-left: 3px solid var(--accent); border-radius: 2px;
+  font-size: 15px; font-weight: 700; line-height: 1.55; color: var(--ink);
 }
 .sw-payoff-title {
   font-family: var(--display); font-size: clamp(20px, 2.4vw, 28px);
@@ -481,14 +468,11 @@
   .sw-squirrel { flex-direction: column; align-items: center; text-align: center; gap: 18px; }
   .sw-squirrel-art { flex: 0 0 auto; width: min(320px, 100%); }
   .sw-squirrel-copy { flex: 0 0 auto; }
+  /* the rule reads as a left edge; centred text does not want one */
+  .sw-flow-line { border-left: 0; border-top: 3px solid var(--accent); padding: 14px 0 0; margin-inline: auto; max-width: 34ch; }
 }
 
-@media (max-width: 560px) {
-  /* One step per row, so the arrow turns to point down the page. */
-  .sw-steps { flex-direction: column; gap: 16px; }
-  .sw-step { flex: 0 0 auto; grid-template-columns: 40px 1fr; justify-items: start; text-align: left; gap: 12px; align-items: center; }
-  .sw-step + .sw-step::before { content: "↓"; left: 14px; top: -14px; }
-}
+
 
 /* ---------- 5. closing CTA ---------- */
 .sw-cta {
