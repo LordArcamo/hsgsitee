@@ -97,16 +97,28 @@ export const SAMPLE_COPY = {
   /** SPEC — "use a headline such as: Uncover the Purple Squirrel". */
   payoffTitle: "Uncover the Purple Squirrel",
 
-  /** SPEC — the corrections' supporting copy, verbatim. */
-  payoffBody:
-    "Choose the criteria that matter most, and the right candidate may become easier to see.",
+  /*
+   * THE FLOW, read RIGHT TO LEFT, ending at the squirrel — the bottom row
+   * of Michael's sketch.
+   *
+   * The supporting paragraph that used to sit here ("Choose the criteria
+   * that matter most, and the right candidate may become easier to see.")
+   * and the full sentence under it were both removed on instruction: three
+   * elements were saying the same thing. The headline plus this flow is
+   * what remains.
+   */
+
+  /** SPEC — the far end of the flow, on the right. */
+  flowFar: "If you choose the right criteria",
+
+  /** SPEC — the middle of the flow. */
+  flowNear: "You may uncover",
 
   /**
-   * SPEC — the whole journey in one line, offered verbatim by the revision
-   * as the replacement for the boxed icon row. It carries the sketch's
-   * "if you choose → you may uncover → the purple squirrel" without a
-   * process diagram, and without arrows pointing away from the squirrel.
+   * The same journey as one sentence, for screen readers only. The visual
+   * flow runs right to left, so its DOM order would otherwise be read out
+   * backwards — squirrel first, premise last.
    */
-  flowLine:
+  flowSpoken:
     "If you choose the right criteria, you may uncover the purple squirrel.",
 };

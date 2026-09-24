@@ -399,64 +399,51 @@
 .sw-table td.sw-td--badged .sw-cell-value { color: var(--accent); font-weight: 700; }
 
 /* ---------- the payoff: if you choose -> maybe you become ---------- */
-/* ---------- the arrow from the custom columns to the squirrel ----------
-   The panel below starts where this ends, so the arrowhead sits directly
-   over the illustration rather than in dead space. */
-/* Lifted over the panel below so the head lands on the illustration
-   rather than stopping in the gap above it. */
-.sw-flow { position: relative; z-index: 1; margin: 6px 0 -14px; pointer-events: none; }
-.sw-flow-curve { display: block; width: 100%; height: 104px; }
-.sw-flow-down { display: none; }
-@media (max-width: 860px) {
-  /* Stacked, so the connection is a straight drop rather than a curve. */
-  .sw-flow-curve { display: none; }
-  .sw-flow-down { display: block; margin: 0 auto; width: 40px; height: 74px; }
-}
-@media (prefers-reduced-motion: no-preference) {
-  /* nothing animated here — the arrow is static by design */
-}
-
 /* The payoff, immediately under the table it belongs to: the illustration
    beside its headline, nothing between them. No medal — the corrections
    rule out implying the employer becomes the squirrel. */
+/* ---------- the payoff card ----------
+   Heading, then the flow: squirrel on the left, the message arriving from
+   the right. Everything points at the squirrel. */
 .sw-squirrel {
-  margin: 0;
-  display: flex; align-items: center; justify-content: center; flex-wrap: wrap;
-  gap: clamp(18px, 3.5vw, 44px);
+  margin: clamp(20px, 2.6vw, 30px) 0 0;
   border: 1px solid var(--rule); border-radius: 20px;
   background: var(--soft); padding: clamp(20px, 2.8vw, 34px);
 }
-/* The artwork is a transparent PNG carrying its own desk, chair, laptop and
-   plant, so it needs no frame and nothing drawn under it. */
-.sw-squirrel-art { position: relative; flex: 0 1 360px; min-width: 0; padding-top: 18px; }
-.sw-squirrel-img { width: 100%; height: auto; display: block; }
-.sw-squirrel-copy { flex: 1 1 380px; max-width: 52ch; }
+.sw-squirrel-head { text-align: center; }
 
-/* the "HSG Talent" note pointing at the squirrel */
-.sw-hand--talent {
-  position: absolute; top: 0; left: 0; z-index: 2;
-  display: flex; align-items: flex-start; gap: 2px;
-  font-size: 21px; color: var(--accent);
+.sw-rtl {
+  margin-top: clamp(14px, 2vw, 22px);
+  display: flex; align-items: center; justify-content: center;
+  gap: clamp(6px, 1.2vw, 14px);
 }
-.sw-hand--talent svg { width: 30px; height: 24px; flex: none; margin-top: 2px; }
-
+.sw-rtl-art { flex: 0 1 320px; min-width: 0; }
+.sw-rtl-arrow { flex: 0 1 96px; min-width: 42px; height: 24px; }
 /*
- * The whole journey in one line, in place of the boxed icon row that stood
- * here. That row carried its own left-to-right arrows, which pointed away
- * from the squirrel and fought the big curve above it.
+ * The last arrow of the journey runs into the artwork rather than stopping
+ * beside it, so there is no doubt what it is pointing at, and rides up to
+ * meet the squirrel at its desk instead of aiming under the table.
  */
-.sw-flow-line {
-  margin-top: 16px; padding-left: 14px;
-  border-left: 3px solid var(--accent); border-radius: 2px;
-  font-size: 15px; font-weight: 700; line-height: 1.55; color: var(--ink);
+.sw-rtl-art + .sw-rtl-arrow { margin-left: -26px; transform: translateY(-10px); }
+.sw-rtl-step {
+  flex: 0 1 auto; max-width: 20ch;
+  font-family: var(--display); font-size: clamp(15px, 1.7vw, 19px);
+  font-weight: 800; letter-spacing: -.022em; line-height: 1.3;
+  color: var(--ink); text-align: center;
 }
+/* the premise, furthest from the squirrel */
+.sw-rtl-step--far { color: var(--ink-2); }
+/* The artwork is a transparent PNG carrying its own desk, chair, laptop and
+   plant, so it needs no frame and nothing drawn on it — the handwritten
+   "HSG Talent" note that used to sit here was removed on instruction. */
+.sw-squirrel-img { width: 100%; height: auto; display: block; }
+
+
 .sw-payoff-title {
   font-family: var(--display); font-size: clamp(20px, 2.4vw, 28px);
   font-weight: 900; letter-spacing: -.028em; color: var(--accent);
 }
-.sw-payoff-body {
-  margin-top: 8px; font-size: 15.5px; line-height: 1.6; color: var(--ink-2);
-}
+
 
 @media (max-width: 1000px) {
   .sw-cmp-top { grid-template-columns: 1fr; }
@@ -464,12 +451,17 @@
 }
 
 @media (max-width: 860px) {
-  /* Stacked: illustration, then the headline it explains. */
-  .sw-squirrel { flex-direction: column; align-items: center; text-align: center; gap: 18px; }
-  .sw-squirrel-art { flex: 0 0 auto; width: min(320px, 100%); }
-  .sw-squirrel-copy { flex: 0 0 auto; }
-  /* the rule reads as a left edge; centred text does not want one */
-  .sw-flow-line { border-left: 0; border-top: 3px solid var(--accent); padding: 14px 0 0; margin-inline: auto; max-width: 34ch; }
+  /*
+   * Stacked. column-reverse puts the premise at the top and the squirrel at
+   * the bottom, so the story still runs from the message TO the squirrel,
+   * and the arrows turn to point down the page instead of left.
+   */
+  .sw-rtl { flex-direction: column-reverse; gap: 14px; }
+  .sw-rtl-art { flex: 0 0 auto; width: min(300px, 100%); }
+  .sw-rtl-arrow { flex: 0 0 auto; width: 24px; height: 52px; transform: rotate(-90deg); }
+  /* stacked, so nothing needs pulling sideways into the artwork */
+  .sw-rtl-art + .sw-rtl-arrow { margin-left: 0; transform: rotate(-90deg); }
+  .sw-rtl-step { max-width: 28ch; }
 }
 
 

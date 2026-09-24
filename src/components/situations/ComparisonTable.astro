@@ -125,51 +125,46 @@ const chooseFrom = SAMPLE_STATS.length - CHOSEN_COLUMNS;
         chooseFrom={chooseFrom}
       />
 
-      <!-- The arrow that makes the last step of the journey visible: it
-           leaves the custom columns at the table's lower right and curves
-           down to the left, pointing at the squirrel. Two paths rather than
-           one, because a curve that reads well across a wide panel reads as
-           a squiggle on a phone, where the squirrel is directly below. -->
-      <div class="sw-flow" aria-hidden="true">
-        <svg class="sw-flow-curve" viewBox="0 0 1000 120" preserveAspectRatio="none" fill="none" stroke="var(--accent)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke">
-          <path d="M930 8 C 900 88, 560 8, 215 116" />
-          <path d="M236 89 L215 116 L249 118" />
-        </svg>
-        <svg class="sw-flow-down" viewBox="0 0 40 90" fill="none" stroke="var(--accent)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M20 4 V 74" />
-          <path d="M8 62 L20 78 L32 62" />
-        </svg>
-      </div>
+      <!-- The journey happens INSIDE this card, reading right to left and
+           ending on the squirrel — the bottom row of Michael's sketch. The
+           last arrow sits directly against the illustration so there is no
+           doubt what it points at.
 
-      <!-- Straight under the table it belongs to. No award medal: the
-           corrections rule out implying the employer becomes the squirrel,
-           so the squirrel is the candidate they may uncover.
-
-           The three steps run left to right — choose, uncover, decide —
-           because that is the order they are written in and the order the
-           causation runs. The mockup draws its arrows pointing the other
-           way, which would have the outcome producing the choice. -->
+           Source order is squirrel, arrow, middle, arrow, premise, because
+           that is the left-to-right paint order. Read aloud that would be
+           the story backwards, so the whole flow is hidden from screen
+           readers and `flowSpoken` carries it as one sentence instead. -->
       <figure class="sw-squirrel">
-        <div class="sw-squirrel-art">
-          <p class="sw-hand sw-hand--talent">
-            HSG Talent
-            <svg viewBox="0 0 40 30" aria-hidden="true"><path d="M2 3c9 3 15 10 18 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M15 21l5 4 1-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </p>
-          <Image
-            src={squirrelAtDesk}
-            alt="A purple squirrel working at a desk"
-            width={560}
-            height={420}
-            class="sw-squirrel-img"
-          />
-        </div>
-
-        <figcaption class="sw-squirrel-copy">
+        <figcaption class="sw-squirrel-head">
           <p class="sw-payoff-title">{SAMPLE_COPY.payoffTitle}</p>
-          <p class="sw-payoff-body">{SAMPLE_COPY.payoffBody}</p>
-
-          <p class="sw-flow-line">{SAMPLE_COPY.flowLine}</p>
+          <p class="sw-vh">{SAMPLE_COPY.flowSpoken}</p>
         </figcaption>
+
+        <div class="sw-rtl">
+          <div class="sw-rtl-art">
+            <Image
+              src={squirrelAtDesk}
+              alt="A purple squirrel working at a desk"
+              width={560}
+              height={420}
+              class="sw-squirrel-img"
+            />
+          </div>
+
+          <svg class="sw-rtl-arrow" viewBox="0 0 96 24" aria-hidden="true" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M92 12H8" />
+            <path d="M20 4 L6 12 L20 20" />
+          </svg>
+
+          <p class="sw-rtl-step" aria-hidden="true">{SAMPLE_COPY.flowNear}</p>
+
+          <svg class="sw-rtl-arrow" viewBox="0 0 96 24" aria-hidden="true" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M92 12H8" />
+            <path d="M20 4 L6 12 L20 20" />
+          </svg>
+
+          <p class="sw-rtl-step sw-rtl-step--far" aria-hidden="true">{SAMPLE_COPY.flowFar}</p>
+        </div>
       </figure>
     </div>
   </div>
