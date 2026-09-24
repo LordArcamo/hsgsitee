@@ -349,6 +349,12 @@ export interface Stat {
   value: (p: Professional) => string;
   /** Figures are right-aligned and get tabular numerals. */
   numeric: boolean;
+  /**
+   * A short pill beside the value, or null for none. The mockup puts one on
+   * a master's degree so the higher qualification is findable at a glance
+   * without reading six credential strings.
+   */
+  badge?: (p: Professional) => string | null;
 }
 
 /** Column header for a stat — `short` when it has one. */
@@ -379,6 +385,14 @@ export const STATS: Stat[] = [
     short: "Degree / Certification",
     value: (p) => p.credential,
     numeric: false,
+    // Read off the credential rather than stored, so it cannot disagree
+    // with the text beside it. Plain string tests rather than a regular
+    // expression: the credentials are short and this needs no escaping.
+    badge: (p) => {
+      const c = p.credential.toLowerCase();
+      const masters = ["m.s.", "m.a.", "mba", "master"];
+      return masters.some((m) => c.includes(m)) ? "Master's" : null;
+    },
   },
 ];
 

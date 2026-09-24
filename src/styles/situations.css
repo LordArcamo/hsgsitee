@@ -267,11 +267,37 @@
   :root:not([data-theme="light"]) { --note-red: #ff8a80; --note-red-soft: #33201e; }
 }
 
-.sw-cmp-head {
-  display: flex; align-items: baseline; justify-content: space-between;
-  gap: 16px 24px; flex-wrap: wrap; max-width: none;
+/* heading and the "tailored for you" card, side by side */
+.sw-cmp-top {
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(280px, 380px);
+  gap: clamp(20px, 3vw, 44px); align-items: start;
 }
-.sw-sample-btn { flex: none; min-height: 44px; }
+.sw-cmp-intro h2 { margin-top: 8px; max-width: 18ch; }
+.sw-cmp-lede {
+  margin-top: 12px; font-size: 15.5px; line-height: 1.6;
+  color: var(--ink-2); max-width: 58ch;
+}
+
+.sw-tailored {
+  display: flex; align-items: center; gap: 14px;
+  background: var(--accent-soft); border: 1px solid color-mix(in srgb, var(--accent) 18%, transparent);
+  border-radius: 18px; padding: 18px 20px;
+}
+.sw-tailored-mark { flex: none; width: 58px; height: auto; mix-blend-mode: multiply; }
+:root[data-theme="dark"] .sw-tailored-mark { mix-blend-mode: normal; }
+.sw-tailored-copy { min-width: 0; }
+.sw-tailored-kicker {
+  font-size: 10px; font-weight: 800; letter-spacing: .14em;
+  text-transform: uppercase; color: var(--accent);
+}
+.sw-tailored-title {
+  margin-top: 4px; font-family: var(--display); font-size: 17px;
+  font-weight: 800; letter-spacing: -.024em; color: var(--ink);
+}
+.sw-tailored-body { margin-top: 4px; font-size: 13.5px; line-height: 1.5; color: var(--ink-2); }
+
+.sw-cmp-actions { margin-top: clamp(18px, 2.2vw, 26px); }
+.sw-sample-btn { min-height: 44px; }
 .sw-sample-btn[hidden] { display: none; }
 /* coming back is a retreat, not the offer — quieter than going in */
 .sw-sample-btn.is-showing { color: var(--ink-2); border-color: var(--rule); }
@@ -279,6 +305,24 @@
 
 .sw-sample { margin-top: clamp(18px, 2.2vw, 26px); }
 .sw-sample[hidden] { display: none; }
+
+.sw-sample-head { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 10px; }
+.sw-sample-icon {
+  display: grid; place-items: center; width: 34px; height: 34px; flex: none;
+  border-radius: 10px; background: var(--accent-soft); color: var(--accent);
+}
+.sw-sample-tag {
+  font-size: 11.5px; font-weight: 800; letter-spacing: .13em;
+  text-transform: uppercase; color: var(--ink-2);
+}
+.sw-sample-badge {
+  font-size: 11.5px; font-weight: 700; color: var(--accent);
+  background: var(--accent-soft); border-radius: 999px; padding: 5px 12px;
+}
+.sw-choose-note {
+  margin-top: 10px; font-size: 12.5px; line-height: 1.55;
+  color: var(--note-red); text-align: right; max-width: none;
+}
 .sw-sample-intro {
   font-size: 14px; line-height: 1.6; color: var(--ink-2);
   max-width: 74ch; margin-bottom: 14px;
@@ -291,9 +335,12 @@
   display: grid; gap: 5px; margin-bottom: 14px;
 }
 .sw-choose-kicker {
+  display: flex; align-items: center; gap: 8px;
   font-size: 10.5px; font-weight: 800; letter-spacing: .14em;
   text-transform: uppercase; color: var(--note-red);
 }
+.sw-choose-arrow { font-size: 13px; line-height: 1; }
+.sw-choose-arrow:last-child { margin-left: auto; }
 .sw-choose-title {
   font-family: var(--display); font-size: clamp(17px, 2vw, 21px);
   font-weight: 800; letter-spacing: -.022em; color: var(--ink);
@@ -315,6 +362,17 @@
 .sw-table tbody tr:nth-child(even) td.sw-td--choose {
   background: color-mix(in srgb, var(--note-red-soft) 85%, transparent);
 }
+/* the two of them read as one panel laid over the sheet */
+.sw-table .sw-cell--edge { border-left: 2px solid var(--note-red); }
+
+/* a master's degree, findable without reading six credential strings */
+.sw-badge {
+  display: inline-block; margin-left: 8px; vertical-align: 1px;
+  font-size: 9.5px; font-weight: 800; letter-spacing: .08em;
+  text-transform: uppercase; color: #fff; background: var(--accent);
+  border-radius: 999px; padding: 3px 8px; white-space: nowrap;
+}
+.sw-table td.sw-td--badged .sw-cell-value { color: var(--accent); font-weight: 700; }
 
 /* ---------- the payoff: if you choose -> maybe you become ---------- */
 /* Chain then figure, centred as one composition — a two-column grid left a
@@ -330,15 +388,17 @@
 /* the sketch's arrow chain, read down the page */
 .sw-chain { flex: 0 1 auto; list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
 .sw-chain li {
-  position: relative; padding-left: 30px;
+  display: flex; align-items: center; gap: 12px;
   font-family: var(--display); font-size: clamp(16px, 1.9vw, 20px);
   font-weight: 800; letter-spacing: -.022em; color: var(--ink-2);
 }
-.sw-chain li::before {
-  content: "→"; position: absolute; left: 0; top: -1px;
-  color: var(--note-red); font-weight: 700;
+.sw-chain-n {
+  flex: none; display: grid; place-items: center; width: 30px; height: 30px;
+  border-radius: 50%; background: var(--surface);
+  border: 1.5px solid var(--note-red); color: var(--note-red);
+  font-family: var(--body); font-size: 13px; font-weight: 800;
 }
-.sw-chain li + li { padding-top: 2px; }
+.sw-chain li + li { margin-top: 2px; }
 
 .sw-squirrel { flex: 0 1 400px; margin: 0; display: grid; gap: 16px; justify-items: center; text-align: center; }
 .sw-squirrel-art { position: relative; width: min(220px, 100%); padding-bottom: 16px; }
@@ -365,6 +425,11 @@
 .sw-payoff-body {
   margin-top: 6px; font-size: 14.5px; line-height: 1.6;
   color: var(--ink-2); max-width: 46ch;
+}
+
+@media (max-width: 1000px) {
+  .sw-cmp-top { grid-template-columns: 1fr; }
+  .sw-cmp-intro h2 { max-width: none; }
 }
 
 @media (max-width: 860px) {

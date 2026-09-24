@@ -3,6 +3,11 @@
  * Compare the Professionals — the complete spreadsheet, and behind a button,
  * a sample of what another employer chose.
  *
+ * Built to the design mockup of 25 Sep 2026, with Michael's voice note
+ * settling every point where the two disagree; data/sample-compare.ts lists
+ * the four and why. In short: the annotations are red, not purple, and the
+ * employer BECOMES the purple squirrel rather than uncovering one.
+ *
  * The real table is the same six as the cards above and the quick panel
  * beside them, from the same `candidates`, and it stays at the bottom of the
  * page whatever the quick panel does: the panel links here, it does not
@@ -10,9 +15,7 @@
  *
  * "See what others chose" swaps it for the sample — the same table with the
  * extra column another employer asked for, the two chooseable columns ringed
- * in red, and the payoff underneath. Per Michael's 25 Sep 2026 sketch: the
- * report they are looking at is real, and the sample shows what it could
- * become if they tell us what matters to them.
+ * in red, and the payoff underneath.
  *
  * Both tables are in the HTML; the one not in use carries `hidden`, which
  * takes it out of the rendering and out of the accessibility tree. So a
@@ -21,11 +24,7 @@
  */
 import { Image } from "astro:assets";
 
-import {
-  FULL_STATS,
-  SAMPLE_STATS,
-  CHOSEN_COLUMNS,
-} from "../../data/situations";
+import { FULL_STATS, SAMPLE_STATS, CHOSEN_COLUMNS } from "../../data/situations";
 import type { Professional, RoleGroup } from "../../data/role-groups";
 import { SAMPLE_COPY } from "../../data/sample-compare";
 import CompareTable from "./CompareTable.astro";
@@ -43,8 +42,27 @@ const chooseFrom = SAMPLE_STATS.length - CHOSEN_COLUMNS;
 
 <section class="sec" id="full-comparison">
   <div class="wrap">
-    <div class="sec-head sw-cmp-head rv">
-      <h2>Compare the Professionals</h2>
+    <!-- The invitation sits in the section itself, not inside the sample,
+         so "tell us what you need to know" is read before the button is
+         pressed rather than after. -->
+    <div class="sw-cmp-top rv">
+      <div class="sw-cmp-intro">
+        <p class="eyebrow is-brand">{SAMPLE_COPY.eyebrow}</p>
+        <h2>Compare the Professionals</h2>
+        <p class="sw-cmp-lede">{SAMPLE_COPY.lede}</p>
+      </div>
+
+      <aside class="sw-tailored">
+        <Image src={squirrel} alt="" width={120} height={120} class="sw-tailored-mark" />
+        <div class="sw-tailored-copy">
+          <p class="sw-tailored-kicker">{SAMPLE_COPY.tailoredKicker}</p>
+          <p class="sw-tailored-title">{SAMPLE_COPY.tailoredTitle}</p>
+          <p class="sw-tailored-body">{SAMPLE_COPY.tailoredBody}</p>
+        </div>
+      </aside>
+    </div>
+
+    <div class="sw-cmp-actions rv" style="--d:1">
       <button
         class="btn btn--ghost sw-sample-btn"
         type="button"
@@ -61,7 +79,7 @@ const chooseFrom = SAMPLE_STATS.length - CHOSEN_COLUMNS;
     </div>
 
     <!-- their own six, ranked against their search -->
-    <div class="rv" style="--d:1" data-sw-real>
+    <div class="rv" style="--d:2" data-sw-real>
       <CompareTable
         candidates={candidates}
         stats={FULL_STATS}
@@ -74,12 +92,24 @@ const chooseFrom = SAMPLE_STATS.length - CHOSEN_COLUMNS;
          button is the only way in, so with no JavaScript the page is
          exactly what it was before. -->
     <div class="sw-sample" id="sample-comparison" hidden>
+      <div class="sw-sample-head">
+        <span class="sw-sample-icon" aria-hidden="true">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h7M15 7h5M4 12h11M19 12h1M4 17h3M11 17h9"/><circle cx="13" cy="7" r="2"/><circle cx="17" cy="12" r="2"/><circle cx="9" cy="17" r="2"/></svg>
+        </span>
+        <p class="sw-sample-tag">{SAMPLE_COPY.sampleTag}</p>
+        <span class="sw-sample-badge">{SAMPLE_COPY.sampleBadge}</span>
+      </div>
+
       <p class="sw-sample-intro">{SAMPLE_COPY.intro(group.resultTitle)}</p>
 
-      <!-- the red annotation from the sketch: it sits over the table and
-           names the two columns the arrows point down at -->
+      <!-- the red annotation from the sketch: it names the two columns the
+           arrows point down at -->
       <div class="sw-choose">
-        <p class="sw-choose-kicker">{SAMPLE_COPY.calloutKicker}</p>
+        <p class="sw-choose-kicker">
+          <span class="sw-choose-arrow" aria-hidden="true">↓</span>
+          {SAMPLE_COPY.calloutKicker}
+          <span class="sw-choose-arrow" aria-hidden="true">↓</span>
+        </p>
         <p class="sw-choose-title">{SAMPLE_COPY.calloutTitle}</p>
         <p class="sw-choose-body">{SAMPLE_COPY.calloutBody}</p>
       </div>
@@ -91,11 +121,19 @@ const chooseFrom = SAMPLE_STATS.length - CHOSEN_COLUMNS;
         chooseFrom={chooseFrom}
       />
 
-      <!-- the bottom of the sketch: the arrows run from the chosen columns
-           to the squirrel at the desk -->
+      <p class="sw-choose-note">{SAMPLE_COPY.columnNote}</p>
+
+      <!-- the bottom of the sketch: the chain runs into the squirrel -->
       <div class="sw-payoff">
         <ol class="sw-chain">
-          {SAMPLE_COPY.chain.map((step) => <li>{step}</li>)}
+          {
+            SAMPLE_COPY.chain.map((step, i) => (
+              <li>
+                <span class="sw-chain-n" aria-hidden="true">{i + 1}</span>
+                {step}
+              </li>
+            ))
+          }
         </ol>
 
         <figure class="sw-squirrel">

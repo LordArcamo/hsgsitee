@@ -32,6 +32,8 @@ interface Props {
 
 const { candidates, stats, label, ordered = false, chooseFrom } = Astro.props;
 const isChosen = (i: number) => chooseFrom !== undefined && i >= chooseFrom;
+/** The first chosen column carries the panel's left edge. */
+const isChosenEdge = (i: number) => i === chooseFrom;
 ---
 
 <div class="sw-table-wrap" tabindex="0" role="region" aria-label={label}>
@@ -43,7 +45,13 @@ const isChosen = (i: number) => chooseFrom !== undefined && i >= chooseFrom;
           stats.map((s, i) => (
             <th
               scope="col"
-              class:list={[{ "is-num": s.numeric, "sw-th--choose": isChosen(i) }]}
+              class:list={[
+                {
+                  "is-num": s.numeric,
+                  "sw-th--choose": isChosen(i),
+                  "sw-cell--edge": isChosenEdge(i),
+                },
+              ]}
             >
               {header(s)}
               {isChosen(i) && <span class="sw-choose-tag">{SAMPLE_COPY.columnTag}</span>}
@@ -57,13 +65,24 @@ const isChosen = (i: number) => chooseFrom !== undefined && i >= chooseFrom;
         candidates.map((p) => (
           <tr data-sw-id={p.id}>
             <th scope="row">{p.name}</th>
-            {stats.map((s, i) => (
-              <td
-                class:list={[{ "is-num": s.numeric, "sw-td--choose": isChosen(i) }]}
-              >
-                {s.value(p)}
-              </td>
-            ))}
+            {stats.map((s, i) => {
+              const badge = s.badge?.(p) ?? null;
+              return (
+                <td
+                  class:list={[
+                    {
+                      "is-num": s.numeric,
+                      "sw-td--choose": isChosen(i),
+                      "sw-cell--edge": isChosenEdge(i),
+                      "sw-td--badged": badge !== null,
+                    },
+                  ]}
+                >
+                  <span class="sw-cell-value">{s.value(p)}</span>
+                  {badge && <span class="sw-badge">{badge}</span>}
+                </td>
+              );
+            })}
           </tr>
         ))
       }
