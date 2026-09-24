@@ -127,9 +127,18 @@ const chooseFrom = SAMPLE_STATS.length - CHOSEN_COLUMNS;
 
       <!-- Straight under the table it belongs to. No award medal: the
            corrections rule out implying the employer becomes the squirrel,
-           so the squirrel is the candidate they may uncover. -->
+           so the squirrel is the candidate they may uncover.
+
+           The three steps run left to right — choose, uncover, decide —
+           because that is the order they are written in and the order the
+           causation runs. The mockup draws its arrows pointing the other
+           way, which would have the outcome producing the choice. -->
       <figure class="sw-squirrel">
         <div class="sw-squirrel-art">
+          <p class="sw-hand sw-hand--talent">
+            HSG Talent
+            <svg viewBox="0 0 40 30" aria-hidden="true"><path d="M2 3c9 3 15 10 18 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M15 21l5 4 1-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </p>
           <Image
             src={squirrelAtDesk}
             alt="A purple squirrel working at a desk"
@@ -138,9 +147,21 @@ const chooseFrom = SAMPLE_STATS.length - CHOSEN_COLUMNS;
             class="sw-squirrel-img"
           />
         </div>
+
         <figcaption class="sw-squirrel-copy">
           <p class="sw-payoff-title">{SAMPLE_COPY.payoffTitle}</p>
           <p class="sw-payoff-body">{SAMPLE_COPY.payoffBody}</p>
+
+          <ol class="sw-steps">
+            {
+              SAMPLE_COPY.steps.map((step) => (
+                <li class="sw-step">
+                  <span class="sw-step-icon" aria-hidden="true" set:html={step.icon} />
+                  <span class="sw-step-text">{step.text}</span>
+                </li>
+              ))
+            }
+          </ol>
         </figcaption>
       </figure>
     </div>

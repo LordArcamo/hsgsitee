@@ -319,11 +319,21 @@
   font-size: 11.5px; font-weight: 700; color: var(--accent);
   background: var(--accent-soft); border-radius: 999px; padding: 5px 12px;
 }
+/* ---------- marker annotations ----------
+   The one place on the site that is not Inter. These read as notes written
+   onto the report by hand, which is why they are a different face and why
+   the column ones are red rather than brand purple. */
+.sw-hand {
+  font-family: var(--hand); font-weight: 600; line-height: 1.15;
+  letter-spacing: .01em;
+}
+
 /* Directly above the two columns it names, right-aligned so it sits over
    them rather than over the standard ones. */
 .sw-choose-note {
-  margin: 10px 0 6px; font-size: 12px; font-weight: 700; line-height: 1.5;
-  letter-spacing: .02em; color: var(--note-red); text-align: right;
+  font-family: var(--hand); font-weight: 600;
+  margin: 10px 0 6px; font-size: 18px; line-height: 1.25;
+  color: var(--note-red); text-align: right;
 }
 .sw-sample-intro {
   font-size: 14px; line-height: 1.6; color: var(--ink-2);
@@ -389,9 +399,41 @@
 }
 /* The artwork is a transparent PNG carrying its own desk, chair, laptop and
    plant, so it needs no frame and nothing drawn under it. */
-.sw-squirrel-art { flex: 0 1 360px; min-width: 0; }
+.sw-squirrel-art { position: relative; flex: 0 1 360px; min-width: 0; padding-top: 18px; }
 .sw-squirrel-img { width: 100%; height: auto; display: block; }
-.sw-squirrel-copy { flex: 1 1 320px; max-width: 48ch; }
+.sw-squirrel-copy { flex: 1 1 380px; max-width: 52ch; }
+
+/* the "HSG Talent" note pointing at the squirrel */
+.sw-hand--talent {
+  position: absolute; top: 0; left: 0; z-index: 2;
+  display: flex; align-items: flex-start; gap: 2px;
+  font-size: 21px; color: var(--accent);
+}
+.sw-hand--talent svg { width: 30px; height: 24px; flex: none; margin-top: 2px; }
+
+/* choose -> uncover -> decide */
+.sw-steps {
+  list-style: none; margin: 18px 0 0; padding: 0;
+  display: flex; align-items: flex-start; flex-wrap: wrap; gap: 10px 8px;
+}
+.sw-step {
+  flex: 1 1 130px; min-width: 0;
+  display: grid; justify-items: center; gap: 8px; text-align: center;
+}
+/* the arrow between steps, drawn on the gap rather than as an element */
+.sw-step + .sw-step { position: relative; }
+.sw-step + .sw-step::before {
+  content: "→"; position: absolute; left: -12px; top: 12px;
+  color: var(--accent); font-size: 15px; line-height: 1;
+}
+.sw-step-icon {
+  display: grid; place-items: center; width: 40px; height: 40px;
+  border-radius: 12px; background: var(--accent-soft); color: var(--accent);
+}
+.sw-step-icon svg { width: 20px; height: 20px; }
+.sw-step-text {
+  font-size: 13px; font-weight: 700; line-height: 1.35; color: var(--ink-2);
+}
 .sw-payoff-title {
   font-family: var(--display); font-size: clamp(20px, 2.4vw, 28px);
   font-weight: 900; letter-spacing: -.028em; color: var(--accent);
@@ -409,6 +451,14 @@
   /* Stacked: illustration, then the headline it explains. */
   .sw-squirrel { flex-direction: column; align-items: center; text-align: center; gap: 18px; }
   .sw-squirrel-art { flex: 0 0 auto; width: min(320px, 100%); }
+  .sw-squirrel-copy { flex: 0 0 auto; }
+}
+
+@media (max-width: 560px) {
+  /* One step per row, so the arrow turns to point down the page. */
+  .sw-steps { flex-direction: column; gap: 16px; }
+  .sw-step { flex: 0 0 auto; grid-template-columns: 40px 1fr; justify-items: start; text-align: left; gap: 12px; align-items: center; }
+  .sw-step + .sw-step::before { content: "↓"; left: 14px; top: -14px; }
 }
 
 /* ---------- 5. closing CTA ---------- */

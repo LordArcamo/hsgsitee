@@ -50,6 +50,8 @@
 
   --display: Inter, "Segoe UI Variable Display", "Segoe UI", Roboto, -apple-system, BlinkMacSystemFont, Arial, sans-serif;
   --body: Inter, "Segoe UI Variable Text", "Segoe UI", Roboto, -apple-system, BlinkMacSystemFont, Arial, sans-serif;
+  /* Marker handwriting, for the annotations on the sample comparison only. */
+  --hand: Caveat, "Segoe Script", "Bradley Hand", cursive;
 
   --wrap: 1260px;
   --gut: clamp(20px, 5vw, 56px);
