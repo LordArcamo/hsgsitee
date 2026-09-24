@@ -198,18 +198,30 @@
   background: var(--surface); box-shadow: var(--shadow-sm);
   overflow-x: auto; -webkit-overflow-scrolling: touch;
 }
-.sw-table {
-  width: 100%; border-collapse: collapse;
-  /* seven columns at full type size — the wrapper scrolls rather than
-     shrinking the text to fit a phone */
-  min-width: 1120px;
+/*
+ * The whole table fits its container on a desktop — no scrollbar, which is
+ * what the refinement asked for. It only falls back to scrolling below
+ * 1080px, where eight columns cannot fit without shrinking the type past
+ * readable. Nothing is ever clipped: cells wrap instead.
+ */
+.sw-table { width: 100%; border-collapse: collapse; }
+@media (max-width: 1079px) {
+  .sw-table { min-width: 940px; }
 }
-.sw-table th, .sw-table td { text-align: left; padding: 14px 18px; vertical-align: top; }
+.sw-table th, .sw-table td { text-align: left; padding: 13px 14px; vertical-align: top; }
 .sw-table thead th {
   background: var(--soft); color: var(--ink-2);
   font-family: var(--body); font-size: 11px; font-weight: 800;
   letter-spacing: .12em; text-transform: uppercase; line-height: 1.4;
   border-bottom: 1px solid var(--rule); white-space: nowrap;
+}
+/* Headings wrap once the table has to fit — "Degree / Certification" held a
+   whole column open on its own otherwise. */
+@media (min-width: 1080px) {
+  .sw-table thead th { white-space: normal; letter-spacing: .08em; }
+  .sw-table th, .sw-table td { padding: 12px 11px; }
+  .sw-table tbody td { font-size: 13.5px; }
+  .sw-table tbody th { font-size: 15px; }
 }
 .sw-table tbody th {
   font-family: var(--display); font-size: 16px; font-weight: 800;
@@ -387,11 +399,28 @@
 .sw-table td.sw-td--badged .sw-cell-value { color: var(--accent); font-weight: 700; }
 
 /* ---------- the payoff: if you choose -> maybe you become ---------- */
+/* ---------- the arrow from the custom columns to the squirrel ----------
+   The panel below starts where this ends, so the arrowhead sits directly
+   over the illustration rather than in dead space. */
+/* Lifted over the panel below so the head lands on the illustration
+   rather than stopping in the gap above it. */
+.sw-flow { position: relative; z-index: 1; margin: 6px 0 -14px; pointer-events: none; }
+.sw-flow-curve { display: block; width: 100%; height: 104px; }
+.sw-flow-down { display: none; }
+@media (max-width: 860px) {
+  /* Stacked, so the connection is a straight drop rather than a curve. */
+  .sw-flow-curve { display: none; }
+  .sw-flow-down { display: block; margin: 0 auto; width: 40px; height: 74px; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  /* nothing animated here — the arrow is static by design */
+}
+
 /* The payoff, immediately under the table it belongs to: the illustration
    beside its headline, nothing between them. No medal — the corrections
    rule out implying the employer becomes the squirrel. */
 .sw-squirrel {
-  margin: clamp(20px, 2.6vw, 30px) 0 0;
+  margin: 0;
   display: flex; align-items: center; justify-content: center; flex-wrap: wrap;
   gap: clamp(18px, 3.5vw, 44px);
   border: 1px solid var(--rule); border-radius: 20px;
@@ -506,8 +535,8 @@
   .sw-cta .btn { justify-self: start; }
   /* tighter cells so less of the table sits off-screen — the type size is
      left alone, which is the point of scrolling it rather than shrinking it */
-  .sw-table { min-width: 1000px; }
-  .sw-table th, .sw-table td { padding: 12px 14px; }
+  .sw-table { min-width: 900px; }
+  .sw-table th, .sw-table td { padding: 12px 12px; }
 }
 
 @media (max-width: 380px) {

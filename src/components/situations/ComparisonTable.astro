@@ -125,6 +125,22 @@ const chooseFrom = SAMPLE_STATS.length - CHOSEN_COLUMNS;
         chooseFrom={chooseFrom}
       />
 
+      <!-- The arrow that makes the last step of the journey visible: it
+           leaves the custom columns at the table's lower right and curves
+           down to the left, pointing at the squirrel. Two paths rather than
+           one, because a curve that reads well across a wide panel reads as
+           a squiggle on a phone, where the squirrel is directly below. -->
+      <div class="sw-flow" aria-hidden="true">
+        <svg class="sw-flow-curve" viewBox="0 0 1000 120" preserveAspectRatio="none" fill="none" stroke="var(--accent)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke">
+          <path d="M930 8 C 900 88, 560 8, 215 116" />
+          <path d="M236 89 L215 116 L249 118" />
+        </svg>
+        <svg class="sw-flow-down" viewBox="0 0 40 90" fill="none" stroke="var(--accent)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 4 V 74" />
+          <path d="M8 62 L20 78 L32 62" />
+        </svg>
+      </div>
+
       <!-- Straight under the table it belongs to. No award medal: the
            corrections rule out implying the employer becomes the squirrel,
            so the squirrel is the candidate they may uncover.
