@@ -454,7 +454,7 @@ export const ROLE_GROUPS: Record<string, RoleGroup> = {
       {
         id: 6, name: "Robert", role: "Mechanical Engineer",
         summary: "Mechanical engineer focused on design improvement and analysis, with experience using Autodesk Fusion and Inventor Nastran for modeling, iteration, and simulation work. Interested in a company where technical problem-solving is valued and where he can work with a collaborative engineering group while still owning meaningful projects.",
-        yearsCurrentCompany: 2, totalExperience: 6, currentSalary: 102000, managementYears: 0,
+        yearsCurrentCompany: 2, totalExperience: 6, currentSalary: 102000, managementYears: 4,
         credential: "B.S. Mechanical Engineering / EIT",
         tools: ["Autodesk Fusion", "Inventor Nastran"],
         workPreference: "Collaborative team with individual project ownership",

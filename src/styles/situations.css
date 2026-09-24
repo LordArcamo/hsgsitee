@@ -301,7 +301,7 @@
 .sw-sample-btn[hidden] { display: none; }
 /* coming back is a retreat, not the offer — quieter than going in */
 .sw-sample-btn.is-showing { color: var(--ink-2); border-color: var(--rule); }
-.sw-sample-btn.is-showing .arrow { transform: rotate(180deg); }
+.sw-sample-btn.is-showing .arrow { transform: rotate(-90deg); }
 
 .sw-sample { margin-top: clamp(18px, 2.2vw, 26px); }
 .sw-sample[hidden] { display: none; }
@@ -319,9 +319,11 @@
   font-size: 11.5px; font-weight: 700; color: var(--accent);
   background: var(--accent-soft); border-radius: 999px; padding: 5px 12px;
 }
+/* Directly above the two columns it names, right-aligned so it sits over
+   them rather than over the standard ones. */
 .sw-choose-note {
-  margin-top: 10px; font-size: 12.5px; line-height: 1.55;
-  color: var(--note-red); text-align: right; max-width: none;
+  margin: 10px 0 6px; font-size: 12px; font-weight: 700; line-height: 1.5;
+  letter-spacing: .02em; color: var(--note-red); text-align: right;
 }
 .sw-sample-intro {
   font-size: 14px; line-height: 1.6; color: var(--ink-2);
@@ -375,46 +377,27 @@
 .sw-table td.sw-td--badged .sw-cell-value { color: var(--accent); font-weight: 700; }
 
 /* ---------- the payoff: if you choose -> maybe you become ---------- */
-/* Chain then figure, centred as one composition — a two-column grid left a
-   dead gap down the middle of a wide screen. */
-.sw-payoff {
-  margin-top: clamp(20px, 2.6vw, 30px);
+/* The payoff, immediately under the table it belongs to: the illustration
+   beside its headline, nothing between them. No medal — the corrections
+   rule out implying the employer becomes the squirrel. */
+.sw-squirrel {
+  margin: clamp(20px, 2.6vw, 30px) 0 0;
   display: flex; align-items: center; justify-content: center; flex-wrap: wrap;
-  gap: clamp(20px, 4vw, 56px);
+  gap: clamp(18px, 3.5vw, 44px);
   border: 1px solid var(--rule); border-radius: 20px;
-  background: var(--soft); padding: clamp(22px, 3vw, 36px);
+  background: var(--soft); padding: clamp(20px, 2.8vw, 34px);
 }
-
-/* the sketch's arrow chain, read down the page */
-.sw-chain { flex: 0 1 auto; list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
-.sw-chain li {
-  display: flex; align-items: center; gap: 12px;
-  font-family: var(--display); font-size: clamp(16px, 1.9vw, 20px);
-  font-weight: 800; letter-spacing: -.022em; color: var(--ink-2);
-}
-.sw-chain-n {
-  flex: none; display: grid; place-items: center; width: 30px; height: 30px;
-  border-radius: 50%; background: var(--surface);
-  border: 1.5px solid var(--note-red); color: var(--note-red);
-  font-family: var(--body); font-size: 13px; font-weight: 800;
-}
-.sw-chain li + li { margin-top: 2px; }
-
-.sw-squirrel { flex: 0 1 460px; margin: 0; display: grid; gap: 14px; justify-items: center; text-align: center; }
-/* The artwork is a transparent PNG and carries its own desk, chair, laptop
-   and plant, so it needs no frame and no drawn desk under it. */
-.sw-squirrel-art { position: relative; width: min(420px, 100%); }
-.sw-squirrel-img { position: relative; z-index: 1; width: 100%; height: auto; display: block; }
-/* the award on the wall behind — under the artwork, so the plant and the
-   laptop cross in front of it */
-.sw-award { position: absolute; z-index: 0; top: 2%; right: 6%; width: 19%; height: auto; }
+/* The artwork is a transparent PNG carrying its own desk, chair, laptop and
+   plant, so it needs no frame and nothing drawn under it. */
+.sw-squirrel-art { flex: 0 1 360px; min-width: 0; }
+.sw-squirrel-img { width: 100%; height: auto; display: block; }
+.sw-squirrel-copy { flex: 1 1 320px; max-width: 48ch; }
 .sw-payoff-title {
-  font-family: var(--display); font-size: clamp(19px, 2.3vw, 26px);
+  font-family: var(--display); font-size: clamp(20px, 2.4vw, 28px);
   font-weight: 900; letter-spacing: -.028em; color: var(--accent);
 }
 .sw-payoff-body {
-  margin-top: 6px; font-size: 14.5px; line-height: 1.6;
-  color: var(--ink-2); max-width: 46ch;
+  margin-top: 8px; font-size: 15.5px; line-height: 1.6; color: var(--ink-2);
 }
 
 @media (max-width: 1000px) {
@@ -423,11 +406,9 @@
 }
 
 @media (max-width: 860px) {
-  /* Stacked, and the chain stays FIRST: "if you choose -> maybe you become"
-     has to lead into the squirrel, not follow it. An earlier order:-1 here
-     put the payoff above its own set-up. */
-  .sw-payoff { flex-direction: column; align-items: stretch; gap: 22px; }
-  .sw-chain { justify-items: start; }
+  /* Stacked: illustration, then the headline it explains. */
+  .sw-squirrel { flex-direction: column; align-items: center; text-align: center; gap: 18px; }
+  .sw-squirrel-art { flex: 0 0 auto; width: min(320px, 100%); }
 }
 
 /* ---------- 5. closing CTA ---------- */

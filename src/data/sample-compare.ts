@@ -1,65 +1,67 @@
 /* ============================================================
    COMPARE THE PROFESSIONALS — the section's copy
 
-   Two sources, and where they disagree the voice note wins. That was the
-   instruction: "please follow what in the message."
+   Three sources, newest wins:
 
-     SPEC   — Michael's voice note and sketch, 25 Sep 2026.
-     DRAFT  — everything else. Most of it comes from the design mockup of
-              the same date; the rest was written here to join his words
-              together. These are the lines to review first.
+     SPEC   — the written corrections of 25 Sep 2026, which are the most
+              recent instruction and override everything below them.
+     VOICE  — Michael's voice note and sketch of the same day.
+     DRAFT  — written here. These are the lines to review first.
 
-   FOUR PLACES THE MOCKUP DISAGREES WITH HIM, ALL RESOLVED HIS WAY:
+   THE CORRECTIONS REVERSED TWO THINGS THE VOICE NOTE ASKED FOR. They were
+   reversed deliberately ("unless new client instructions specifically
+   override it"), so do not put them back:
 
-   1. The mockup says "You may uncover the purple squirrel" — the candidate
-      is the rare find, which is the conventional industry meaning. He said
-      "maybe you become … the purple squirrel of HR": the HR manager is the
-      rare find, which is why he drew an award on the wall. Kept his.
-   2. The mockup draws the annotations in brand purple. He asked for red,
-      twice, because they are notes ABOUT the report rather than part of
-      it. Kept red — see --note-red in situations.css.
-   3. The mockup gives Robert 4 years of management experience. The sketch
-      is 3 2 1 0 0 0, "the first three people have experience, the second
-      three don't". Kept the sketch — see data/role-groups.ts.
-   4. The mockup's three steps read left to right but its arrows point
-      left. The chain here runs left to right, ending at the squirrel.
+   1. The voice note said the employer BECOMES the purple squirrel, with an
+      award on the wall behind. The corrections say the opposite: "do not
+      use an award medal or imply that the client becomes the Purple
+      Squirrel". The squirrel is the candidate again, and the medal is
+      gone. Headline and supporting copy below are theirs, word for word.
+   2. The voice note's sketch gave Robert 0 years of management experience,
+      so the column read 3 2 1 0 0 0. The corrections set him to 4. See
+      data/role-groups.ts.
+
+   TWO THINGS THE VOICE NOTE ASKED FOR STILL STAND, because the corrections
+   restate them rather than contradict them:
+
+   3. The annotations are RED, not brand purple — "keep these two columns
+      highlighted together in red".
+   4. BOTH columns are the employer's to choose, not just the new one —
+      "do not treat Management Experience as the only customizable field".
    ============================================================ */
 
 export const SAMPLE_COPY = {
   /* ---------- the section, always visible ---------- */
 
-  /** DRAFT — mockup. */
+  /** DRAFT — from the design mockup. */
   eyebrow: "Compare Talent",
 
-  /** DRAFT — mockup. */
+  /** DRAFT — from the design mockup. */
   lede: "Get a clear, side-by-side view of top candidates. Quickly compare experience, skills, education and more — all in one place.",
 
-  /** DRAFT — mockup. */
+  /** DRAFT — from the design mockup. */
   tailoredKicker: "Tailored for you",
 
-  /** SPEC — "Tell us, tell us what you need to know." */
+  /** VOICE — "Tell us, tell us what you need to know." */
   tailoredTitle: "Tell us what you need to know.",
 
-  /**
-   * DRAFT — mockup, and close to his "we're going to customize this for
-   * you. We're going to make something that's so special".
-   */
+  /** DRAFT — from the design mockup. */
   tailoredBody: "We customize this comparison around your hiring needs.",
 
   /* ---------- the toggle ---------- */
 
-  /** SPEC — "see some samples of what some other people chose". */
+  /** SPEC — "Keep: See what others chose →". */
   openLabel: "See what others chose",
 
-  /** DRAFT — the way back to their own report. */
-  closeLabel: "Back to your comparison",
+  /** SPEC — "change the button state to something simple such as". */
+  closeLabel: "Hide custom example",
 
   /* ---------- the sample ---------- */
 
-  /** DRAFT — mockup. */
+  /** DRAFT — from the design mockup. */
   sampleTag: "Sample chart",
 
-  /** DRAFT — mockup. */
+  /** DRAFT — from the design mockup. */
   sampleBadge: "Customizable example",
 
   /**
@@ -70,42 +72,32 @@ export const SAMPLE_COPY = {
   intro: (role: string) =>
     `A sample: the same comparison for ${role}, with the columns another employer asked us to add.`,
 
-  /** SPEC — lettered on the sketch, in red: "Optional columns, you choose!" */
+  /** SPEC — "OPTIONAL COLUMNS — YOU CHOOSE". Uppercased by the stylesheet. */
   calloutKicker: "Optional columns — you choose",
 
-  /** SPEC — "maybe you can even write that above that: let us know what's important to you." */
-  calloutTitle: "Let us know what's important to you.",
+  /** SPEC — "Tell us what's important to you." */
+  calloutTitle: "Tell us what's important to you.",
 
-  /**
-   * SPEC — "these two columns are for you to tell us what you need, so that
-   * we can create the best Compare the Professionals for you."
-   */
+  /** SPEC — the corrections' replacement wording, verbatim. */
   calloutBody:
-    "These two columns are for you to tell us what you need, so that we can create the best Compare the Professionals for you.",
+    "Choose the two criteria that matter most to your hiring decision, and we'll customize the comparison around them.",
 
-  /** SPEC — the label the sketch's arrows carry down onto each column. */
+  /** VOICE — the label the sketch's arrows carry down onto each column. */
   columnTag: "You choose",
 
-  /** DRAFT — mockup, the note under the panel. */
-  columnNote: "These columns are examples of criteria chosen by the client.",
+  /**
+   * SPEC — "if needed, add a smaller note directly above the columns".
+   * Directly above, not below: "do not leave the explanation floating far
+   * below the table".
+   */
+  columnNote: "Example criteria chosen by a client",
 
   /* ---------- the payoff ---------- */
 
-  /**
-   * SPEC — the arrow chain along the bottom of the sketch, in his words and
-   * in his order. The mockup's middle step, "you may uncover the purple
-   * squirrel", is the one thing he was most explicit about NOT meaning.
-   */
-  chain: ["If you choose…", "Maybe you become…"] as const,
+  /** SPEC — "use a headline such as: Uncover the Purple Squirrel". */
+  payoffTitle: "Uncover the Purple Squirrel",
 
-  /** SPEC — "the purple squirrel of HR". */
-  payoffTitle: "The Purple Squirrel of HR",
-
-  /**
-   * DRAFT — the sketch draws this rather than writing it: the squirrel at
-   * the desk with the award behind it. His intent, in his words, was
-   * "you'll become successful as a result of using this service".
-   */
+  /** SPEC — the corrections' supporting copy, verbatim. */
   payoffBody:
-    "Tell us what matters to you and we will build the comparison around it — so the shortlist you walk into the room with is the one that makes you look right.",
+    "Choose the criteria that matter most, and the right candidate may become easier to see.",
 };

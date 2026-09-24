@@ -103,8 +103,9 @@ const chooseFrom = SAMPLE_STATS.length - CHOSEN_COLUMNS;
 
       <p class="sw-sample-intro">{SAMPLE_COPY.intro(group.resultTitle)}</p>
 
-      <!-- the red annotation from the sketch: it names the two columns the
-           arrows point down at -->
+      <!-- The red annotation and the small note both sit ABOVE the table,
+           against the two columns they describe. The corrections are
+           explicit that the explanation must not float far below it. -->
       <div class="sw-choose">
         <p class="sw-choose-kicker">
           <span class="sw-choose-arrow" aria-hidden="true">↓</span>
@@ -115,6 +116,8 @@ const chooseFrom = SAMPLE_STATS.length - CHOSEN_COLUMNS;
         <p class="sw-choose-body">{SAMPLE_COPY.calloutBody}</p>
       </div>
 
+      <p class="sw-choose-note">{SAMPLE_COPY.columnNote}</p>
+
       <CompareTable
         candidates={candidates}
         stats={SAMPLE_STATS}
@@ -122,47 +125,24 @@ const chooseFrom = SAMPLE_STATS.length - CHOSEN_COLUMNS;
         chooseFrom={chooseFrom}
       />
 
-      <p class="sw-choose-note">{SAMPLE_COPY.columnNote}</p>
-
-      <!-- the bottom of the sketch: the chain runs into the squirrel -->
-      <div class="sw-payoff">
-        <ol class="sw-chain">
-          {
-            SAMPLE_COPY.chain.map((step, i) => (
-              <li>
-                <span class="sw-chain-n" aria-hidden="true">{i + 1}</span>
-                {step}
-              </li>
-            ))
-          }
-        </ol>
-
-        <figure class="sw-squirrel">
-<!-- Exactly the sketch: the squirrel sitting at a desk with the HR
-               award on the wall behind. The award sits under the artwork so
-               the plant and the laptop overlap it — that is what makes it
-               read as hanging behind rather than stuck on top. -->
-          <div class="sw-squirrel-art">
-            <svg class="sw-award" viewBox="0 0 64 88" aria-hidden="true">
-              <circle cx="32" cy="30" r="24" fill="var(--career-fill)" />
-              <circle cx="32" cy="30" r="17" fill="none" stroke="var(--surface)" stroke-width="2" opacity=".65" />
-              <path d="M32 18l3.9 8.2 8.6 1.2-6.3 6.3 1.5 9-7.7-4.3-7.7 4.3 1.5-9-6.3-6.3 8.6-1.2z" fill="var(--surface)" />
-              <path d="M20 52l-6 30 18-10 18 10-6-30z" fill="var(--accent)" />
-            </svg>
-            <Image
-              src={squirrelAtDesk}
-              alt="A purple squirrel working at a desk, with an award on the wall behind"
-              width={560}
-              height={420}
-              class="sw-squirrel-img"
-            />
-          </div>
-          <figcaption>
-            <p class="sw-payoff-title">{SAMPLE_COPY.payoffTitle}</p>
-            <p class="sw-payoff-body">{SAMPLE_COPY.payoffBody}</p>
-          </figcaption>
-        </figure>
-      </div>
+      <!-- Straight under the table it belongs to. No award medal: the
+           corrections rule out implying the employer becomes the squirrel,
+           so the squirrel is the candidate they may uncover. -->
+      <figure class="sw-squirrel">
+        <div class="sw-squirrel-art">
+          <Image
+            src={squirrelAtDesk}
+            alt="A purple squirrel working at a desk"
+            width={560}
+            height={420}
+            class="sw-squirrel-img"
+          />
+        </div>
+        <figcaption class="sw-squirrel-copy">
+          <p class="sw-payoff-title">{SAMPLE_COPY.payoffTitle}</p>
+          <p class="sw-payoff-body">{SAMPLE_COPY.payoffBody}</p>
+        </figcaption>
+      </figure>
     </div>
   </div>
 </section>
