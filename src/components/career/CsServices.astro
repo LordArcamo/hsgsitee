@@ -29,7 +29,7 @@ import Icon from "../Icon.astro";
     </div>
 
     {SERVICE_GROUPS.map((g, gi) => (
-      <div class="svc-group rv" style={`--d:${Math.min(gi + 1, 3)}`}>
+      <div class="svc-group rv" id={g.key} style={`--d:${Math.min(gi + 1, 3)}`}>
         <p class="svc-group-t">{g.label}</p>
 
         <div class="svc-grid">
