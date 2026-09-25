@@ -1,0 +1,39 @@
+---
+import { MORE_THAN } from "../../data/career";
+import Icon from "../Icon.astro";
+
+/*
+ * 04 You are more than your resume.
+ *
+ * The Hiring Solutions page already has a "the best candidate isn't the best
+ * resume" section, aimed at employers. This is the same belief from the
+ * other side, so it must not be the same picture: there, a resume is set
+ * against what it leaves out; here, three things HSG says it wants to
+ * understand first — goals, qualifications, vision — stand on their own,
+ * with the resume named once and then left behind.
+ *
+ * Those three words are the transcript's, not a chosen set.
+ */
+---
+
+<section class="sec cs-more" id="more-than-resume">
+  <div class="wrap">
+    <div class="sec-head sec-head--center rv">
+      <p class="eyebrow is-career">{MORE_THAN.eyebrow}</p>
+      <h2>{MORE_THAN.title}</h2>
+      <p class="lede">{MORE_THAN.lede}</p>
+    </div>
+
+    <ol class="mt-list">
+      {MORE_THAN.items.map((it, i) => (
+        <li class="mt-item rv" style={`--d:${i + 1}`}>
+          <span class="mt-ic" aria-hidden="true"><Icon name={it.icon} size={20} /></span>
+          <h3>{it.label}</h3>
+          <p>{it.body}</p>
+        </li>
+      ))}
+    </ol>
+
+    <p class="mt-close rv" style="--d:4">{MORE_THAN.close}</p>
+  </div>
+</section>

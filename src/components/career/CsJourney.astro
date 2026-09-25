@@ -1,0 +1,41 @@
+---
+import { JOURNEY } from "../../data/career";
+
+/*
+ * 07 The career search journey.
+ *
+ * Eight stages, in the order HSG's own video describes them, each carrying
+ * the transcript's sentence for that step. The spec proposed a different
+ * eight; this one can be sourced line by line, which matters more.
+ *
+ * Deliberately not interactive. The Hiring Solutions page already asks a
+ * visitor to click through stages and a funnel, and a professional reading
+ * this one wants to see the whole road at once — so it is a timeline that is
+ * simply all there, alternating sides on a wide screen and running straight
+ * down a narrow one.
+ */
+---
+
+<section class="sec cs-journey" id="journey">
+  <div class="wrap">
+    <div class="sec-head sec-head--center rv">
+      <p class="eyebrow is-career">{JOURNEY.eyebrow}</p>
+      <h2>{JOURNEY.title}</h2>
+      <p class="lede">{JOURNEY.lede}</p>
+    </div>
+
+    <ol class="jn">
+      {JOURNEY.stages.map((s, i) => (
+        <li class="jn-step rv" style={`--d:${(i % 2) + 1}`}>
+          <span class="jn-dot" aria-hidden="true"><i>{i + 1}</i></span>
+          <div class="jn-card">
+            <h3>{s.label}</h3>
+            <p>{s.body}</p>
+          </div>
+        </li>
+      ))}
+    </ol>
+
+    <p class="jn-note rv">{JOURNEY.note}</p>
+  </div>
+</section>

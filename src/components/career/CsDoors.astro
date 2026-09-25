@@ -1,0 +1,42 @@
+---
+import { DOORS } from "../../data/career";
+import Icon from "../Icon.astro";
+
+/*
+ * 02 What do you need right now. Two doors, because the live page's two
+ * buttons (Search Jobs / Submit Resume) already assume two very different
+ * visitors and then send both to the same board.
+ *
+ * Only the first door leaves the site. The second is a jump to this page's
+ * own services, so the page can answer it rather than handing the visitor
+ * off before it has said anything.
+ *
+ * The class family is `cdoor`, not `door`: sections.css already owns `.door`
+ * for the homepage's dark pair, and its `.door h3 { color: var(--panel-ink) }`
+ * paints a heading white — invisible on this section's white cards.
+ */
+---
+
+<section class="sec cs-doors" id="start-here">
+  <div class="wrap">
+    <div class="sec-head sec-head--center rv">
+      <p class="eyebrow is-career">Start Here</p>
+      <h2>What Do You Need Right Now?</h2>
+    </div>
+
+    <div class="cdoors">
+      {DOORS.map((d, i) => (
+        <div class="cdoor rv" style={`--d:${i + 1}`}>
+          <span class="cdoor-ic" aria-hidden="true"><Icon name={d.icon} size={20} /></span>
+          <p class="cdoor-eyebrow">{d.eyebrow}</p>
+          <h3>{d.title}</h3>
+          <p>{d.body}</p>
+          <a class="cdoor-cta" href={d.cta.href}>
+            {d.cta.label}
+            <span class="arrow" aria-hidden="true">{d.cta.href.startsWith("#") ? "↓" : "→"}</span>
+          </a>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

@@ -1,0 +1,464 @@
+/* ============================================================
+   CAREER SOLUTIONS PAGE — /find-a-job/
+
+   Led by the Career gold, the way /find-talent/ is led by the Hiring
+   green and the homepage by purple. The two solution pages are built to
+   read as a pair without reading as copies of each other: this one's hero
+   frames a single tall portrait rather than a ringed square, its services
+   open instead of tabbing, its process is a timeline that is simply all
+   there, and it never repeats the funnel or the reach map.
+
+   Purple stays for what belongs to the brand everywhere — the primary
+   buttons outside the hero, and the HSG node.
+   ============================================================ */
+
+/* A centred section head, for the sections that carry no side column. */
+.sec-head--center { max-width: 64ch; margin-inline: auto; text-align: center; align-items: center; }
+.sec-head--center .lede { margin-inline: auto; }
+
+/* ---------- 01 hero (dark, gold-led) ---------- */
+.csh {
+  position: relative; isolation: isolate; overflow: hidden;
+  padding-block: clamp(56px, 7vw, 104px) clamp(64px, 7.5vw, 110px);
+  background:
+    radial-gradient(52% 58% at 88% 14%, color-mix(in srgb, var(--career-fill) 22%, transparent), transparent 70%),
+    radial-gradient(48% 56% at 2% 96%, color-mix(in srgb, var(--accent) 36%, transparent), transparent 70%),
+    var(--panel);
+  color: var(--panel-ink);
+}
+/* A ruled ground rather than the Hiring hero's square grid: horizontal
+   lines only, so the two dark heroes are not the same texture. */
+.csh::before {
+  content: ""; position: absolute; inset: 0; z-index: -1;
+  background-image: linear-gradient(rgba(255, 255, 255, .05) 1px, transparent 1px);
+  background-size: 100% 38px;
+  -webkit-mask-image: linear-gradient(200deg, transparent, #000 55%);
+  mask-image: linear-gradient(200deg, transparent, #000 55%);
+}
+.csh-grid {
+  display: grid; grid-template-columns: 1.12fr .88fr;
+  gap: clamp(32px, 5vw, 76px); align-items: center;
+}
+.csh-eyebrow {
+  display: inline-flex; align-items: center; gap: 12px;
+  font-size: 12px; font-weight: 800; letter-spacing: .16em; text-transform: uppercase;
+  color: var(--career-fill);
+}
+.csh-eyebrow::before { content: ""; width: 30px; height: 2px; background: var(--career-fill); }
+.csh h1 {
+  margin-top: 18px; max-width: 15ch; text-wrap: balance; color: #fff;
+  font-size: clamp(34px, 4.6vw, 58px); line-height: 1.06; letter-spacing: -.03em;
+}
+/* The exact logo gold, as on the homepage h1: brand match over contrast. */
+.csh-accent { color: var(--career-fill); }
+.csh-kicker {
+  margin-top: 20px; font-family: var(--display); font-weight: 800;
+  font-size: clamp(17px, 1.8vw, 21px); letter-spacing: -.02em; color: #fff;
+}
+.csh-lede { margin-top: 8px; max-width: 54ch; font-size: clamp(16px, 1.45vw, 18px); line-height: 1.62; color: var(--panel-ink-2); }
+.csh-actions { margin-top: 30px; display: flex; flex-wrap: wrap; gap: 12px; }
+.csh-btn { background: var(--career-fill); border-color: var(--career-fill); color: #2a2100; }
+.csh-btn:hover { background: #ffd34d; border-color: #ffd34d; color: #2a2100; }
+.csh-jump {
+  margin-top: 22px; display: inline-flex; align-items: center; gap: 8px;
+  font-size: 14px; font-weight: 700; color: var(--panel-ink-2); text-decoration: none;
+  border-bottom: 1px solid var(--panel-rule); padding-bottom: 3px;
+}
+.csh-jump:hover { color: #fff; border-bottom-color: var(--career-fill); }
+
+.csh-fig { position: relative; margin: 0; justify-self: end; width: min(100%, 400px); }
+.csh-img {
+  position: relative; aspect-ratio: 4 / 5; border-radius: 22px; overflow: hidden;
+  background: color-mix(in srgb, #fff 6%, transparent);
+  border: 1px solid var(--panel-rule);
+}
+/* One gold edge, picking up the ring on the HSG mark without repeating the
+   Hiring hero's full ring. */
+.csh-img::after {
+  content: ""; position: absolute; left: 0; top: 14%; bottom: 14%; width: 4px;
+  border-radius: 4px; background: var(--career-fill);
+}
+.csh-ph {
+  position: absolute; inset: 0; display: grid; align-content: center; justify-items: center;
+  gap: 8px; padding: 26px; text-align: center; color: var(--panel-ink-2);
+}
+.csh-ph strong { font-size: 13px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: #fff; }
+.csh-ph span { font-size: 13px; line-height: 1.5; max-width: 26ch; }
+
+@media (max-width: 900px) {
+  .csh-grid { grid-template-columns: 1fr; }
+  .csh-fig { width: min(76%, 320px); margin-top: 20px; justify-self: start; }
+}
+
+/* ---------- 02 two doors ---------- */
+.cdoors {
+  display: grid; grid-template-columns: 1fr 1fr; gap: clamp(18px, 2.4vw, 28px);
+  margin-top: clamp(34px, 4.4vw, 54px);
+}
+.cdoor {
+  position: relative; display: flex; flex-direction: column; gap: 10px;
+  padding: clamp(24px, 2.8vw, 34px); border-radius: 18px;
+  background: var(--surface); border: 1px solid var(--rule); box-shadow: var(--shadow-sm);
+  transition: border-color .25s ease, transform .25s var(--ease), box-shadow .25s ease;
+}
+.cdoor:hover { border-color: color-mix(in srgb, var(--career-fill) 60%, var(--rule)); transform: translateY(-3px); box-shadow: var(--shadow); }
+.cdoor-ic {
+  display: grid; place-items: center; width: 42px; height: 42px; border-radius: 12px;
+  background: var(--career-soft); color: var(--career);
+}
+.cdoor-eyebrow { font-size: 12px; font-weight: 800; letter-spacing: .13em; text-transform: uppercase; color: var(--career); }
+.cdoor h3 { font-size: clamp(20px, 2.1vw, 25px); letter-spacing: -.02em; }
+.cdoor p { font-size: 15.5px; line-height: 1.62; color: var(--ink-2); }
+.cdoor-cta {
+  margin-top: auto; padding-top: 10px; align-self: flex-start;
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 14.5px; font-weight: 800; color: var(--accent); text-decoration: none;
+}
+.cdoor-cta .arrow { transition: transform .28s var(--ease); }
+.cdoor:hover .cdoor-cta .arrow { transform: translateX(4px); }
+
+@media (max-width: 760px) { .cdoors { grid-template-columns: 1fr; } }
+
+/* ---------- 03 deep dive ---------- */
+.dd-grid { display: grid; grid-template-columns: 1fr minmax(0, 470px); gap: clamp(32px, 5vw, 70px); align-items: center; }
+.dd-copy { display: flex; flex-direction: column; gap: 22px; }
+.dd-kicker { font-family: var(--display); font-weight: 800; font-size: 17px; letter-spacing: -.015em; color: var(--career); }
+.dd-pull {
+  padding: 20px 24px; border-left: 3px solid var(--career-fill); border-radius: 0 14px 14px 0;
+  background: color-mix(in srgb, var(--career-soft) 70%, transparent);
+}
+.dd-pull-t { font-family: var(--display); font-weight: 900; font-size: clamp(20px, 2.2vw, 26px); letter-spacing: -.025em; }
+.dd-pull-b { margin-top: 6px; font-size: 15.5px; line-height: 1.62; color: var(--ink-2); }
+.dd-note { font-size: 14px; color: var(--ink-3); }
+.dd-cta { align-self: flex-start; }
+
+.dd-panel {
+  padding: clamp(22px, 2.6vw, 30px); border-radius: 18px;
+  background: var(--surface); border: 1px solid var(--rule); box-shadow: var(--shadow-sm);
+}
+.dd-panel-t { font-size: 12px; font-weight: 800; letter-spacing: .13em; text-transform: uppercase; color: var(--ink-3); }
+.dd-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; margin-top: 18px; }
+.dd-col-t {
+  padding-bottom: 8px; margin-bottom: 10px; border-bottom: 1px solid var(--rule-soft);
+  font-family: var(--display); font-weight: 800; font-size: 14.5px; letter-spacing: -.01em; color: var(--ink);
+}
+.dd-col ul { display: grid; gap: 7px; list-style: none; padding: 0; }
+.dd-col li { position: relative; padding-left: 16px; font-size: 14px; line-height: 1.45; color: var(--ink-2); }
+.dd-col li::before {
+  content: ""; position: absolute; left: 0; top: .55em; width: 6px; height: 6px;
+  border-radius: 50%; background: var(--career-fill);
+}
+.dd-promise {
+  margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--rule-soft);
+  font-family: var(--display); font-weight: 800; font-size: 15px; letter-spacing: -.01em; color: var(--career);
+}
+
+@media (max-width: 980px) { .dd-grid { grid-template-columns: 1fr; } }
+@media (max-width: 520px) { .dd-cols { grid-template-columns: 1fr; } }
+
+/* ---------- 04 more than a resume ---------- */
+.mt-list {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(18px, 2.4vw, 30px);
+  margin-top: clamp(34px, 4.4vw, 54px); list-style: none; padding: 0;
+  counter-reset: mt;
+}
+.mt-item {
+  position: relative; padding-top: 24px; border-top: 2px solid var(--rule);
+  display: flex; flex-direction: column; gap: 10px;
+  transition: border-color .3s ease;
+}
+.mt-item:hover { border-top-color: var(--career-fill); }
+.mt-ic { display: grid; place-items: center; width: 38px; height: 38px; border-radius: 11px; background: var(--career-soft); color: var(--career); }
+.mt-item h3 { font-family: var(--display); font-size: clamp(21px, 2.2vw, 27px); letter-spacing: -.028em; }
+.mt-item p { font-size: 15px; line-height: 1.62; color: var(--ink-2); }
+.mt-close {
+  margin-top: clamp(30px, 3.6vw, 44px); text-align: center;
+  font-family: var(--display); font-weight: 800; font-size: clamp(18px, 2vw, 23px);
+  letter-spacing: -.022em; color: var(--ink); text-wrap: balance;
+}
+
+@media (max-width: 860px) { .mt-list { grid-template-columns: 1fr; gap: 24px; } }
+
+/* ---------- 05 services ---------- */
+.svc-group { margin-top: clamp(30px, 3.6vw, 46px); }
+.svc-group-t {
+  display: flex; align-items: center; gap: 14px;
+  font-size: 12px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: var(--career);
+}
+.svc-group-t::after { content: ""; flex: 1; height: 1px; background: color-mix(in srgb, var(--career-fill) 40%, transparent); }
+.svc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 16px; }
+
+.svc-card {
+  background: var(--surface); border: 1px solid var(--rule); border-radius: 16px;
+  box-shadow: var(--shadow-sm); transition: border-color .25s ease;
+}
+.svc-card[open] { border-color: color-mix(in srgb, var(--career-fill) 55%, var(--rule)); }
+.svc-card summary {
+  display: flex; align-items: flex-start; gap: 14px; padding: 18px 20px;
+  cursor: pointer; list-style: none;
+}
+.svc-card summary::-webkit-details-marker { display: none; }
+.svc-card summary:focus-visible { outline: 2px solid var(--career); outline-offset: 2px; border-radius: 16px; }
+.svc-ic { flex: none; display: grid; place-items: center; width: 36px; height: 36px; border-radius: 10px; background: var(--career-soft); color: var(--career); }
+.svc-text { flex: 1; display: grid; gap: 4px; }
+.svc-title { font-family: var(--display); font-weight: 800; font-size: 16px; letter-spacing: -.015em; color: var(--ink); }
+.svc-flag {
+  margin-left: 8px; padding: 2px 8px; border-radius: 99px; vertical-align: 1px;
+  font-family: var(--body); font-style: normal; font-size: 10.5px; font-weight: 800;
+  letter-spacing: .06em; text-transform: uppercase;
+  background: var(--career-soft); color: var(--career);
+}
+.svc-sum { font-size: 13.8px; line-height: 1.5; color: var(--ink-3); }
+.svc-chev {
+  flex: none; position: relative; width: 24px; height: 24px; margin-top: 6px;
+  border-radius: 50%; background: var(--soft);
+}
+.svc-chev::before,
+.svc-chev::after {
+  content: ""; position: absolute; left: 50%; top: 50%; width: 10px; height: 2px; border-radius: 2px;
+  background: var(--career); transform: translate(-50%, -50%); transition: transform .25s var(--ease);
+}
+.svc-chev::after { transform: translate(-50%, -50%) rotate(90deg); }
+.svc-card[open] .svc-chev::after { transform: translate(-50%, -50%) rotate(0deg); }
+.svc-body { padding: 0 20px 20px 70px; display: grid; gap: 12px; }
+.svc-body p { font-size: 14.8px; line-height: 1.66; color: var(--ink-2); }
+.svc-bullets { display: grid; gap: 7px; list-style: none; padding: 0; }
+.svc-bullets li { position: relative; padding-left: 18px; font-size: 14.2px; line-height: 1.5; color: var(--ink-2); }
+.svc-bullets li::before {
+  content: ""; position: absolute; left: 0; top: .6em; width: 7px; height: 2px; border-radius: 2px;
+  background: var(--career-fill);
+}
+.svc-note {
+  margin-top: clamp(28px, 3.2vw, 40px); padding: 16px 20px; border-radius: 14px;
+  background: var(--surface); border: 1px dashed color-mix(in srgb, var(--career-fill) 55%, var(--rule));
+  font-size: 14px; line-height: 1.6; color: var(--ink-2); max-width: 78ch;
+}
+.svc-note strong { color: var(--career); }
+
+@media (max-width: 860px) {
+  .svc-grid { grid-template-columns: 1fr; }
+  .svc-body { padding-left: 20px; }
+}
+
+/* ---------- 06 reference support ---------- */
+.refs-grid {
+  display: grid; grid-template-columns: 1fr minmax(0, 470px);
+  gap: clamp(32px, 5vw, 70px); align-items: start;
+  margin-top: clamp(30px, 3.6vw, 46px);
+}
+.refs-copy { display: grid; gap: 14px; }
+.refs-copy p { font-size: 15.5px; line-height: 1.66; color: var(--ink-2); max-width: 60ch; }
+.refs-close {
+  margin-top: 6px; font-family: var(--display); font-weight: 800;
+  font-size: clamp(18px, 1.9vw, 22px); letter-spacing: -.022em; color: var(--ink) !important;
+}
+
+.refs-chain { display: grid; gap: 0; list-style: none; padding: 0; }
+.refs-step {
+  position: relative; display: grid; grid-template-columns: 38px 1fr; gap: 16px;
+  padding: 0 0 26px 0;
+}
+.refs-step::before {
+  content: ""; position: absolute; left: 18px; top: 34px; bottom: -4px; width: 2px;
+  background: linear-gradient(var(--career-fill), color-mix(in srgb, var(--career-fill) 20%, transparent));
+}
+.refs-step.is-last { padding-bottom: 0; }
+.refs-step.is-last::before { display: none; }
+.refs-n {
+  display: grid; place-items: center; width: 38px; height: 38px; border-radius: 50%;
+  background: var(--career-soft); color: var(--career);
+  font-family: var(--display); font-weight: 900; font-size: 15px;
+}
+.refs-step.is-last .refs-n { background: var(--career-fill); color: #2a2100; }
+.refs-lbl { font-family: var(--display); font-weight: 800; font-size: 16px; letter-spacing: -.015em; padding-top: 7px; }
+.refs-b { margin-top: 4px; font-size: 14.5px; line-height: 1.55; color: var(--ink-2); }
+
+@media (max-width: 980px) { .refs-grid { grid-template-columns: 1fr; } }
+
+/* ---------- 07 the journey ---------- */
+.jn {
+  position: relative; list-style: none; padding: 0;
+  margin-top: clamp(36px, 4.4vw, 58px); display: grid; gap: clamp(14px, 1.8vw, 22px);
+}
+.jn-dot {
+  position: relative; z-index: 1; display: grid; place-items: center;
+  width: 44px; height: 44px; border-radius: 50%;
+  background: var(--surface); border: 2px solid var(--career-fill);
+  font-family: var(--display); font-weight: 900; font-size: 15px; color: var(--career);
+}
+.jn-card {
+  padding: 18px 22px; border-radius: 16px;
+  background: var(--surface); border: 1px solid var(--rule); box-shadow: var(--shadow-sm);
+}
+.jn-card h3 {
+  font-family: var(--display); font-size: 12px; font-weight: 800;
+  letter-spacing: .14em; text-transform: uppercase; color: var(--career);
+}
+.jn-card p { margin-top: 7px; font-size: 14.8px; line-height: 1.62; color: var(--ink-2); }
+.jn-note {
+  margin-top: clamp(26px, 3vw, 38px); text-align: center; max-width: 64ch; margin-inline: auto;
+  font-size: 13.5px; line-height: 1.6; color: var(--ink-3);
+}
+
+/* narrow: one rail down the left */
+.jn::before {
+  content: ""; position: absolute; left: 21px; top: 10px; bottom: 10px; width: 2px;
+  background: linear-gradient(color-mix(in srgb, var(--career-fill) 15%, transparent), var(--career-fill) 12%, var(--career-fill) 88%, color-mix(in srgb, var(--career-fill) 15%, transparent));
+}
+.jn-step { display: grid; grid-template-columns: 44px 1fr; gap: 16px; align-items: start; }
+
+@media (min-width: 940px) {
+  .jn::before { left: 50%; transform: translateX(-1px); }
+  .jn-step { grid-template-columns: 1fr 68px 1fr; align-items: center; }
+  .jn-dot { grid-column: 2; grid-row: 1; justify-self: center; }
+  .jn-card { grid-row: 1; max-width: 100%; }
+  .jn-step:nth-child(odd) .jn-card { grid-column: 1; text-align: right; }
+  .jn-step:nth-child(even) .jn-card { grid-column: 3; }
+}
+
+/* ---------- 08 the opportunity network ---------- */
+.cnet-grid { display: grid; grid-template-columns: 1fr minmax(0, 460px); gap: clamp(32px, 5vw, 70px); align-items: center; }
+.cnet-close { font-size: 15px; line-height: 1.62; color: var(--ink-2); max-width: 56ch; }
+
+.cnet-viz {
+  position: relative; width: min(100%, 440px); aspect-ratio: 1; margin-inline: auto;
+  display: grid; place-items: center;
+}
+.cnet-viz::before {
+  content: ""; position: absolute; inset: 14%; border-radius: 50%;
+  border: 1px dashed color-mix(in srgb, var(--career-fill) 55%, transparent);
+}
+.cnet-core {
+  position: relative; z-index: 1; display: grid; place-items: center;
+  width: 104px; height: 104px; border-radius: 50%;
+  background: var(--career-fill); color: #2a2100;
+  font-family: var(--display); font-weight: 900; font-size: 22px; letter-spacing: -.02em;
+  box-shadow: 0 10px 28px color-mix(in srgb, var(--career-fill) 45%, transparent);
+}
+.cnet-ring { position: absolute; inset: 0; list-style: none; padding: 0; margin: 0; }
+.cnet-node {
+  position: absolute; left: 50%; top: 50%; width: 124px;
+  padding: 9px 12px; border-radius: 11px; text-align: center;
+  background: var(--surface); border: 1px solid var(--rule); box-shadow: var(--shadow-sm);
+  font-size: 12.8px; font-weight: 700; line-height: 1.32; color: var(--ink);
+  transform:
+    rotate(calc(var(--i) * 60deg))
+    translate(148px)
+    rotate(calc(var(--i) * -60deg))
+    translate(-50%, -50%);
+}
+
+@media (max-width: 980px) { .cnet-grid { grid-template-columns: 1fr; } }
+/* Below the ring's comfortable size the diagram becomes what it always
+   was underneath: a labelled list. */
+@media (max-width: 480px) {
+  .cnet-viz { aspect-ratio: auto; display: grid; gap: 14px; }
+  .cnet-viz::before { display: none; }
+  .cnet-core { width: auto; height: 56px; border-radius: 14px; justify-self: start; padding-inline: 26px; }
+  .cnet-ring { position: static; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .cnet-node { position: static; width: auto; transform: none; text-align: left; }
+}
+
+/* ---------- 09 the two job actions ---------- */
+.copps {
+  display: grid; grid-template-columns: 1fr 1fr; gap: clamp(18px, 2.4vw, 28px);
+  margin-top: clamp(34px, 4.4vw, 54px);
+}
+.copp {
+  display: flex; flex-direction: column; gap: 10px; align-items: flex-start;
+  padding: clamp(24px, 2.8vw, 34px); border-radius: 18px;
+  background: var(--surface); border: 1px solid var(--rule); box-shadow: var(--shadow-sm);
+}
+.copp--alt { background: linear-gradient(165deg, var(--career-soft), var(--surface) 70%); }
+.copp-ic { display: grid; place-items: center; width: 42px; height: 42px; border-radius: 12px; background: var(--career-soft); color: var(--career); }
+.copp--alt .copp-ic { background: var(--surface); }
+.copp h3 { font-size: clamp(20px, 2.1vw, 25px); letter-spacing: -.024em; }
+.copp p { font-size: 15.2px; line-height: 1.62; color: var(--ink-2); }
+.copp-btn { margin-top: 8px; }
+
+@media (max-width: 760px) { .copps { grid-template-columns: 1fr; } }
+
+/* ---------- 10 candidate success ---------- */
+.cq {
+  margin: clamp(30px, 3.6vw, 46px) 0 0; padding: clamp(26px, 3.2vw, 40px);
+  border-radius: 20px; background: var(--panel); color: var(--panel-ink);
+  display: grid; gap: 16px;
+}
+.cq-before {
+  font-size: 14px; line-height: 1.6; color: var(--panel-ink-2);
+  padding-left: 16px; border-left: 2px solid var(--panel-rule); max-width: 56ch;
+}
+.cq-quote {
+  margin: 0; font-family: var(--display); font-weight: 800;
+  font-size: clamp(20px, 2.5vw, 30px); line-height: 1.32; letter-spacing: -.028em;
+  color: #fff; max-width: 34ch; text-wrap: balance;
+}
+.cq figcaption { display: grid; gap: 2px; }
+.cq figcaption b { font-size: 15px; color: var(--career-fill); }
+.cq figcaption span { font-size: 13.5px; color: var(--panel-ink-2); }
+
+.cq-more { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(14px, 1.8vw, 22px); margin-top: clamp(14px, 1.8vw, 22px); }
+.cq-sm {
+  margin: 0; padding: 22px; border-radius: 16px;
+  background: var(--surface); border: 1px solid var(--rule); box-shadow: var(--shadow-sm);
+  display: grid; gap: 14px; align-content: space-between;
+}
+.cq-sm blockquote { margin: 0; font-size: 14.5px; line-height: 1.62; color: var(--ink-2); }
+.cq-sm figcaption { display: grid; gap: 2px; padding-top: 12px; border-top: 1px solid var(--rule-soft); }
+.cq-sm figcaption b { font-size: 14px; color: var(--ink); }
+.cq-sm figcaption span { font-size: 12.8px; color: var(--ink-3); }
+.cq-link {
+  margin-top: clamp(22px, 2.6vw, 32px); display: inline-flex; align-items: center; gap: 9px;
+  font-size: 14.5px; font-weight: 800; color: var(--accent); text-decoration: none;
+}
+.cq-link:hover .arrow { transform: translateX(4px); }
+.cq-link .arrow { transition: transform .28s var(--ease); }
+
+@media (max-width: 860px) { .cq-more { grid-template-columns: 1fr; } }
+
+/* ---------- 11 FAQ, in the Career gold ----------
+   The base rules live in hiring.css and are painted green; these repaint
+   them for this page only. */
+.pg-career .faq-item[open] { border-color: color-mix(in srgb, var(--career-fill) 55%, var(--rule)); }
+.pg-career .faq-item summary:focus-visible { outline-color: var(--career); }
+.pg-career .faq-ic { background: var(--career-soft); }
+.pg-career .faq-ic::before,
+.pg-career .faq-ic::after { background: var(--career); }
+
+/* ---------- 12 final CTA ---------- */
+.cs-contact { background: linear-gradient(160deg, var(--career-soft), var(--ground) 55%); }
+.cs-contact-grid { display: grid; grid-template-columns: 1fr minmax(0, 440px); gap: clamp(30px, 5vw, 72px); align-items: center; }
+.cs-contact-copy { display: flex; flex-direction: column; gap: 16px; }
+.cs-contact-copy h2 { font-size: clamp(29px, 3.6vw, 46px); text-wrap: balance; }
+.cs-jobs { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 4px; }
+.cs-job {
+  display: inline-flex; align-items: center; gap: 8px;
+  min-height: 46px; padding: 0 20px; border-radius: 10px;
+  background: var(--surface); border: 1px solid var(--rule); box-shadow: var(--shadow-sm);
+  font-size: 14.5px; font-weight: 800; color: var(--ink); text-decoration: none;
+  transition: border-color .25s ease, transform .25s var(--ease);
+}
+.cs-job:hover { border-color: var(--career-fill); transform: translateY(-2px); }
+.cs-job .arrow { transition: transform .28s var(--ease); }
+.cs-job:hover .arrow { transform: translateX(4px); }
+.cs-phone {
+  align-self: flex-start; margin-top: 8px; display: inline-flex; align-items: center; gap: 14px;
+  padding: 12px 20px 12px 12px; border-radius: 14px; text-decoration: none; color: var(--ink);
+  background: var(--surface); border: 1px solid var(--rule); box-shadow: var(--shadow-sm);
+}
+.cs-phone-ic { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 11px; background: var(--career-soft); color: var(--career); }
+.cs-phone span { display: grid; font-family: var(--display); font-weight: 800; font-size: 17px; letter-spacing: -.02em; }
+.cs-phone small { font-size: 11.5px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-3); }
+
+/* the intake outside its hover panel: same form, set in a card */
+.cs-intake {
+  --ac: var(--career); --aw: var(--career-soft);
+  padding: clamp(20px, 2.4vw, 26px); border-radius: 20px;
+  background: var(--surface); border: 1px solid var(--rule); border-top: 4px solid var(--career-fill); box-shadow: var(--shadow-lg);
+}
+/* widgets.css cancels [hidden] only inside .aud-panel, and .aud-step's
+   display:grid beats the browser default — so without this every step of
+   the form renders at once. */
+.cs-intake [hidden] { display: none !important; }
+
+@media (max-width: 980px) { .cs-contact-grid { grid-template-columns: 1fr; } }

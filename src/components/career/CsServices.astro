@@ -1,0 +1,66 @@
+---
+import { SERVICE_GROUPS, SERVICES_REVIEW_NOTE } from "../../data/career";
+import Icon from "../Icon.astro";
+
+/*
+ * 05 The services.
+ *
+ * The live page prints ten services as ten long essays, one after another,
+ * and a professional has to read all of them to find the one they came for.
+ * Here each is a card that opens: the headline and one line are always
+ * visible, the published detail is one click away.
+ *
+ * Native <details>, so it works with no JavaScript and is keyboard- and
+ * screen-reader-accessible for free. Nothing is hidden from search engines
+ * either — the full text is in the HTML.
+ *
+ * The group headings are the homepage's approved Career Solutions menu, so
+ * the site names its services one way. Services the spec asks Michael to
+ * confirm carry a visible note rather than being quietly dropped.
+ */
+---
+
+<section class="sec sec--soft cs-services" id="services">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <p class="eyebrow is-career">Career Solutions</p>
+      <h2>What Career Solutions Do You Need?</h2>
+      <p class="lede">Every professional arrives needing a different part of this. Open the ones that apply to you.</p>
+    </div>
+
+    {SERVICE_GROUPS.map((g, gi) => (
+      <div class="svc-group rv" style={`--d:${Math.min(gi + 1, 3)}`}>
+        <p class="svc-group-t">{g.label}</p>
+
+        <div class="svc-grid">
+          {g.services.map((s) => (
+            <details class="svc-card">
+              <summary>
+                <span class="svc-ic" aria-hidden="true"><Icon name={s.icon} size={19} /></span>
+                <span class="svc-text">
+                  <span class="svc-title">
+                    {s.title}
+                    {s.review && <em class="svc-flag">To confirm</em>}
+                  </span>
+                  <span class="svc-sum">{s.summary}</span>
+                </span>
+                <span class="svc-chev" aria-hidden="true"></span>
+              </summary>
+
+              <div class="svc-body">
+                {s.body.map((p) => <p>{p}</p>)}
+                {s.bullets && (
+                  <ul class="svc-bullets">
+                    {s.bullets.map((b) => <li>{b}</li>)}
+                  </ul>
+                )}
+              </div>
+            </details>
+          ))}
+        </div>
+      </div>
+    ))}
+
+    <p class="svc-note rv"><strong>To confirm</strong> — {SERVICES_REVIEW_NOTE}</p>
+  </div>
+</section>

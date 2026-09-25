@@ -1,0 +1,48 @@
+---
+import { FEATURED_CANDIDATE, CANDIDATE_QUOTES, JOB_LINKS } from "../../data/career";
+
+/*
+ * 10 Candidate success.
+ *
+ * Candidate-side quotes only, per the spec — the employer testimonials that
+ * sit on the live Career Solutions page belong to Hiring Solutions.
+ *
+ * Eric Feinstein leads. The live page embeds his video testimonial but never
+ * prints a word of it; his quote and the line above it are published on
+ * /testimonials/, where almost nobody reading the career page will go.
+ *
+ * Every quote is verbatim. Do not tighten them — they are other people's
+ * words, and HSG did not write them.
+ */
+---
+
+<section class="sec sec--soft cs-success" id="success">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <p class="eyebrow is-career">Candidate Success</p>
+      <h2>Career Solutions in Action</h2>
+    </div>
+
+    <figure class="cq rv" style="--d:1">
+      <p class="cq-before">{FEATURED_CANDIDATE.before}</p>
+      <blockquote class="cq-quote">{FEATURED_CANDIDATE.quote}</blockquote>
+      <figcaption>
+        <b>{FEATURED_CANDIDATE.name}</b>
+        <span>{FEATURED_CANDIDATE.role}</span>
+      </figcaption>
+    </figure>
+
+    <div class="cq-more">
+      {CANDIDATE_QUOTES.map((t, i) => (
+        <figure class="cq-sm rv" style={`--d:${i + 1}`}>
+          <blockquote>{t.quote}</blockquote>
+          <figcaption><b>{t.name}</b><span>{t.role}</span></figcaption>
+        </figure>
+      ))}
+    </div>
+
+    <a class="cq-link rv" href={JOB_LINKS.testimonials}>
+      Read more from professionals HSG has worked with <span class="arrow" aria-hidden="true">→</span>
+    </a>
+  </div>
+</section>

@@ -1,0 +1,152 @@
+---
+/*
+ * /find-a-job/ — Career Solutions.
+ *
+ * Built to HSG_Career_Solutions_Visual_Design_Page_Architecture_Michael_Review.md,
+ * at the live site's existing Career Solutions URL, and audited against the
+ * live page before a line of it was written.
+ *
+ * Where this build departs from the spec, and why — all four are noted again
+ * at the point of use in src/data/career.ts and in the components:
+ *
+ * 1. The services use the homepage's approved Career Solutions group names
+ *    (Direction & Timing, Positioning & Materials, Search & Access,
+ *    Interview & Offer) with the live page's published copy inside them. The
+ *    site had two service vocabularies; this picks the newer one and keeps
+ *    every word of the older one.
+ * 2. The Career Search Journey follows the order HSG's own video transcript
+ *    describes, not the spec's eight stages, so every line can be sourced.
+ * 3. "Current Opportunities" is two actions rather than a board. There are no
+ *    listings to read — HSG's jobs sit in an embedded board behind
+ *    /job-search-2/ — and the spec forbids inventing any.
+ * 4. Candidate Success leads with Eric Feinstein, whose video the live page
+ *    embeds without ever printing his words.
+ *
+ * This page has its own look — a dark, gold-led hero, services that open,
+ * a timeline that is all there at once — so it reads as the Hiring Solutions
+ * page's sibling rather than its copy. Only the proof figures (one ProofBar)
+ * and the professionals intake (one CandidateIntake, the same form the
+ * audience bar opens) are shared components.
+ *
+ * Its words live in src/data/career.ts, tagged SPEC / LIVE / SITE / DRAFT.
+ */
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import MockNote from "../../components/MockNote.astro";
+import Header from "../../components/Header.astro";
+import AudienceBar from "../../components/AudienceBar.astro";
+import Footer from "../../components/Footer.astro";
+import ProofBar from "../../components/ProofBar.astro";
+
+import CsHero from "../../components/career/CsHero.astro";
+import CsDoors from "../../components/career/CsDoors.astro";
+import CsDeepDive from "../../components/career/CsDeepDive.astro";
+import CsMoreThan from "../../components/career/CsMoreThan.astro";
+import CsServices from "../../components/career/CsServices.astro";
+import CsReferences from "../../components/career/CsReferences.astro";
+import CsJourney from "../../components/career/CsJourney.astro";
+import CsNetwork from "../../components/career/CsNetwork.astro";
+import CsOpportunities from "../../components/career/CsOpportunities.astro";
+import CsSuccess from "../../components/career/CsSuccess.astro";
+import CsFaq from "../../components/career/CsFaq.astro";
+import CsContact from "../../components/career/CsContact.astro";
+
+import { PAGE_META, FAQS, SERVICE } from "../../data/career";
+import { SITE } from "../../data/site";
+import { url } from "../../lib/url";
+
+/* The live page publishes no structured data at all. These three nodes are
+   built from this page's own content — the six FAQs verbatim, the service,
+   and the trail — so the rebuild arrives with more than it replaced. */
+const base = Astro.site ?? SITE.url;
+const pageUrl = new URL(url(PAGE_META.path), base).href;
+const homeUrl = new URL(url("/"), base).href;
+
+const schema = [
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "@id": `${pageUrl}#faq`,
+    mainEntity: FAQS.map((f) => ({
+      "@type": "Question",
+      name: f.q,
+      acceptedAnswer: { "@type": "Answer", text: f.a },
+    })),
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "@id": `${pageUrl}#service`,
+    name: SERVICE.name,
+    serviceType: SERVICE.serviceType,
+    description: SERVICE.description,
+    url: pageUrl,
+    slogan: SITE.tagline,
+    provider: { "@type": "EmploymentAgency", name: SITE.name, url: homeUrl, telephone: SITE.phoneHref },
+    areaServed: SERVICE.areaServed.map((name) => ({ "@type": "Place", name })),
+    audience: { "@type": "Audience", audienceType: "Professionals and job seekers" },
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: homeUrl },
+      { "@type": "ListItem", position: 2, name: "Career Solutions", item: pageUrl },
+    ],
+  },
+];
+---
+
+<BaseLayout title={PAGE_META.title} description={PAGE_META.description} path={PAGE_META.path} schema={schema}>
+  {/* Remove MockNote — and src/styles/mock-note.css — at launch. */}
+  <MockNote />
+  <Header home={url("/")} />
+  <AudienceBar />
+
+  <main id="main" class="pg-career">
+    <!-- 01 Hero -->
+    <CsHero />
+
+    <!-- 02 What do you need right now -->
+    <CsDoors />
+
+    <!-- 03 Life & Career Deep Dive Inventory -->
+    <CsDeepDive />
+
+    <!-- 04 You are more than your resume -->
+    <CsMoreThan />
+
+    <!-- 05 The services -->
+    <CsServices />
+
+    <!-- 06 Reference support -->
+    <CsReferences />
+
+    <!-- 07 The career search journey -->
+    <CsJourney />
+
+    <!-- 08 The career opportunity network -->
+    <CsNetwork />
+
+    <!-- Proof strip. The brand figures from facts.ts, drawn as on every
+         other page. The career page's own numbers — 750 placements, 800
+         recruiters, 1,000+ professionals — are unverified and contradict
+         these, so none of them appear. See NETWORK.unconfirmed. -->
+    <section class="sec sec--tight" aria-label="HSG in numbers">
+      <div class="wrap"><ProofBar /></div>
+    </section>
+
+    <!-- 09 Current opportunities -->
+    <CsOpportunities />
+
+    <!-- 10 Candidate success -->
+    <CsSuccess />
+
+    <!-- 11 Career search FAQ -->
+    <CsFaq />
+
+    <!-- 12 Final CTA -->
+    <CsContact />
+  </main>
+
+  <Footer home={url("/")} />
+</BaseLayout>

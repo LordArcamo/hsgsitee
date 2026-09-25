@@ -1,0 +1,43 @@
+---
+import { OPPORTUNITIES } from "../../data/career";
+import Icon from "../Icon.astro";
+
+/*
+ * 09 The two job actions.
+ *
+ * The spec asked for a board of current openings and said, correctly, that
+ * no listing may be invented. There is nothing to list: HSG's jobs live in
+ * an embedded board behind /job-search-2/, which publishes nothing this
+ * build can read. So the section is the two real doors instead — see what is
+ * open, or send a resume for what is not open yet — and both go to the live
+ * board.
+ *
+ * Swap this for a real board the moment there is a feed to read. The shape
+ * is already right: two cards, the second is the catch-all.
+ *
+ * The class family is `copp`, not `opp`: situations.css already owns `.opp`.
+ */
+---
+
+<section class="sec cs-opps" id="opportunities">
+  <div class="wrap">
+    <div class="sec-head sec-head--center rv">
+      <p class="eyebrow is-career">{OPPORTUNITIES.eyebrow}</p>
+      <h2>{OPPORTUNITIES.title}</h2>
+      <p class="lede">{OPPORTUNITIES.lede}</p>
+    </div>
+
+    <div class="copps">
+      {OPPORTUNITIES.cards.map((c, i) => (
+        <div class:list={["copp", "rv", { "copp--alt": i === 1 }]} style={`--d:${i + 1}`}>
+          <span class="copp-ic" aria-hidden="true"><Icon name={c.icon} size={20} /></span>
+          <h3>{c.title}</h3>
+          <p>{c.body}</p>
+          <a class="btn copp-btn" href={c.cta.href}>
+            {c.cta.label} <span class="arrow" aria-hidden="true">→</span>
+          </a>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

@@ -1,0 +1,31 @@
+---
+import { FAQS } from "../../data/career";
+import { sup } from "../../lib/text";
+
+/*
+ * 11 Career Search FAQ — all six questions exactly as the live page
+ * publishes them, which is also what the page's FAQPage structured data
+ * emits. Native <details>, so it needs no script.
+ */
+---
+
+<section class="sec cs-faq" id="faq">
+  <div class="wrap faq-wrap">
+    <div class="sec-head rv">
+      <p class="eyebrow is-career">Career Search Questions</p>
+      <h2>Questions Professionals Ask Us</h2>
+    </div>
+
+    <div class="faq rv" style="--d:1">
+      {FAQS.map((f, i) => (
+        <details class="faq-item" open={i === 0}>
+          <summary>
+            <span set:html={sup(f.q)} />
+            <span class="faq-ic" aria-hidden="true"></span>
+          </summary>
+          <p set:html={sup(f.a)} />
+        </details>
+      ))}
+    </div>
+  </div>
+</section>

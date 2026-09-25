@@ -1,0 +1,47 @@
+---
+import { REFERENCES } from "../../data/career";
+
+/*
+ * 06 Reference support.
+ *
+ * Kept out of the service grid and given a section of its own, because it is
+ * the one Career Solutions service an employer-side visitor would not expect
+ * and the live copy is the page's most persuasive.
+ *
+ * The chain is the spec's visual: the four points a reference passes through
+ * before it becomes someone's decision. Its labels come from the live
+ * section's own nouns. The whole chain is one figure with an aria-label, so
+ * a screen reader gets the sentence rather than four orphaned fragments —
+ * the closing line sits outside it, where it stays readable.
+ */
+const aria = `Your professional history reaches an employer through your references, and through how well those references communicate your strengths. ${REFERENCES.chain[3].body}`;
+---
+
+<section class="sec cs-refs" id="references">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <p class="eyebrow is-career">{REFERENCES.eyebrow}</p>
+      <h2>{REFERENCES.title}</h2>
+      <p class="lede">{REFERENCES.lede}</p>
+    </div>
+
+    <div class="refs-grid">
+      <div class="refs-copy rv" style="--d:1">
+        {REFERENCES.body.map((p) => <p>{p}</p>)}
+        <p class="refs-close">{REFERENCES.close}</p>
+      </div>
+
+      <ol class="refs-chain rv" style="--d:2" role="img" aria-label={aria}>
+        {REFERENCES.chain.map((c, i) => (
+          <li class:list={["refs-step", { "is-last": i === REFERENCES.chain.length - 1 }]}>
+            <span class="refs-n" aria-hidden="true">{i + 1}</span>
+            <div>
+              <p class="refs-lbl">{c.label}</p>
+              <p class="refs-b">{c.body}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </div>
+</section>

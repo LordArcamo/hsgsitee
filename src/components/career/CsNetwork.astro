@@ -1,0 +1,41 @@
+---
+import { NETWORK } from "../../data/career";
+
+/*
+ * 08 The career opportunity network.
+ *
+ * The professional is the centre; the six things HSG reaches on their behalf
+ * sit around them. Drawn in HTML and CSS so the labels stay real text and it
+ * reflows on a phone into a plain list, which is all it ever needs to be.
+ *
+ * No figure appears here. The live transcript claims "a network of over 800
+ * niche market recruiters", the spec says do not reuse it until Michael
+ * confirms, and it disagrees with the 1,600+ in facts.ts — so the section
+ * makes its point without a number rather than with a doubtful one. The
+ * figure is parked in NETWORK.unconfirmed.
+ *
+ * The class family is `cnet`, not `net`: hiring.css already owns `.net-node`
+ * and `.net-ring` for the Hiring page's reach map.
+ */
+const aria = `${NETWORK.centre} at the centre, connected to ${NETWORK.nodes.map((n) => n.label).join(", ")}.`;
+---
+
+<section class="sec sec--soft cs-net" id="network">
+  <div class="wrap cnet-grid">
+    <div class="sec-head rv">
+      <p class="eyebrow is-career">{NETWORK.eyebrow}</p>
+      <h2>{NETWORK.title}</h2>
+      <p class="lede">{NETWORK.lede}</p>
+      <p class="cnet-close">{NETWORK.close}</p>
+    </div>
+
+    <div class="cnet-viz rv" style="--d:1" role="img" aria-label={aria}>
+      <span class="cnet-core">{NETWORK.centre}</span>
+      <ul class="cnet-ring">
+        {NETWORK.nodes.map((n, i) => (
+          <li class="cnet-node" style={`--i:${i}`}>{n.label}</li>
+        ))}
+      </ul>
+    </div>
+  </div>
+</section>

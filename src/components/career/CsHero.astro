@@ -1,0 +1,47 @@
+---
+import { HERO } from "../../data/career";
+
+/*
+ * 01 Hero. The Hiring page's dark hero is led by the green; this one is led
+ * by the gold, so the two read as a pair without reading as copies. The
+ * figure is a single tall portrait frame rather than the Hiring page's
+ * ringed square, and the actions are the two real job-board destinations —
+ * not a form, because a professional who arrives here is usually looking for
+ * openings first.
+ */
+const [before, after] = HERO.title.split(HERO.accent);
+---
+
+<section class="csh" id="top">
+  <div class="wrap csh-grid">
+    <div class="csh-copy">
+      <p class="csh-eyebrow rv">{HERO.eyebrow}</p>
+      <h1 class="rv" style="--d:1">{before}<span class="csh-accent">{HERO.accent}</span>{after}</h1>
+      <p class="csh-kicker rv" style="--d:2">{HERO.kicker}</p>
+      <p class="csh-lede rv" style="--d:2">{HERO.copy}</p>
+
+      <div class="csh-actions rv" style="--d:3">
+        <a class="btn csh-btn" href={HERO.ctaPrimary.href}>
+          {HERO.ctaPrimary.label} <span class="arrow" aria-hidden="true">→</span>
+        </a>
+        <a class="btn btn--onpanel" href={HERO.ctaSecondary.href}>
+          {HERO.ctaSecondary.label} <span class="arrow" aria-hidden="true">→</span>
+        </a>
+      </div>
+
+      <a class="csh-jump rv" style="--d:4" href="#services">
+        Or explore Career Solutions <span class="arrow arrow--down" aria-hidden="true">↓</span>
+      </a>
+    </div>
+
+    <figure class="csh-fig rv" style="--d:2">
+      <div class="csh-img">
+        <span class="csh-ph">
+          <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2.5"/><circle cx="9" cy="10" r="2.2"/><path d="M3 17.5l5-4.2 3.4 2.8L15.6 12 21 16.4"/></svg>
+          <strong>Hero image</strong>
+          <span>{HERO.imageNote}</span>
+        </span>
+      </div>
+    </figure>
+  </div>
+</section>

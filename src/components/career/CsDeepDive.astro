@@ -1,0 +1,55 @@
+---
+import { DEEP_DIVE } from "../../data/career";
+
+/*
+ * 03 Life & Career Deep Dive Inventory.
+ *
+ * The spec sketched a five-step diagram for this. The inventory itself has
+ * a real structure — two columns, thirteen named sections — published on
+ * /life-career-deep-dive-inventory/, so that is what is drawn: it shows a
+ * professional what they would actually be asked about, which is the thing
+ * a page can honestly promise. Nothing here is invented.
+ *
+ * "This is not a test." carries the section, because it is the objection the
+ * live copy answers first.
+ */
+---
+
+<section class="sec sec--soft cs-dd" id="deep-dive">
+  <div class="wrap dd-grid">
+    <div class="dd-copy">
+      <div class="sec-head rv">
+        <p class="eyebrow is-career">{DEEP_DIVE.eyebrow}</p>
+        <h2>{DEEP_DIVE.title}</h2>
+        <p class="dd-kicker">{DEEP_DIVE.kicker}</p>
+        {DEEP_DIVE.lede.map((l) => <p class="lede">{l}</p>)}
+      </div>
+
+      <div class="dd-pull rv" style="--d:1">
+        <p class="dd-pull-t">{DEEP_DIVE.pull}</p>
+        <p class="dd-pull-b">{DEEP_DIVE.pullBody}</p>
+      </div>
+
+      <p class="dd-note rv" style="--d:2">{DEEP_DIVE.note}</p>
+
+      <a class="btn dd-cta rv" style="--d:2" href={DEEP_DIVE.cta.href}>
+        {DEEP_DIVE.cta.label} <span class="arrow" aria-hidden="true">→</span>
+      </a>
+    </div>
+
+    <div class="dd-panel rv" style="--d:1">
+      <p class="dd-panel-t">What the inventory covers</p>
+      <div class="dd-cols">
+        {DEEP_DIVE.columns.map((c, i) => (
+          <div class="dd-col" style={`--i:${i}`}>
+            <p class="dd-col-t">{c.label}</p>
+            <ul>
+              {c.items.map((it) => <li>{it}</li>)}
+            </ul>
+          </div>
+        ))}
+      </div>
+      <p class="dd-promise">{DEEP_DIVE.promise}</p>
+    </div>
+  </div>
+</section>
