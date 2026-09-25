@@ -2,30 +2,28 @@
 import { FACTS } from "../data/facts";
 
 /*
- * The five-figure proof strip. One component so the homepage and the Hiring
- * Solutions page can never disagree about a number or what it is called —
- * edit the figures in src/data/facts.ts.
+ * The five-figure proof strip. One component, one look: the homepage and the
+ * Hiring Solutions page can never disagree about a number, about what it is
+ * called, or about how it is drawn — edit the figures in src/data/facts.ts.
+ *
+ * A page that needs it on a coloured ground styles the SECTION around it
+ * (see .ft-proof in hiring.css); the card itself does not change.
  *
  * The final values are in the HTML. count-up.ts only animates a strip that
  * scrolls into view after load; one already on screen is left alone, so the
  * first paint never shows a zero.
  */
-interface Props {
-  /** "card": the homepage's white card under the hero. "band": a full-width Hiring-green band. */
-  variant?: "card" | "band";
-}
-const { variant = "card" } = Astro.props;
 
 const stats = [
   { value: FACTS.years, label: "Years experience" },
   { value: FACTS.placements, label: "Placements" },
-  { value: FACTS.network, label: "Professional network" },
-  { value: FACTS.resumes, label: "Resumes accessible" },
+  { value: FACTS.network, label: "Professional Network" },
+  { value: FACTS.resumes, label: "Updated Resumes" },
   { value: FACTS.interviews, label: "Interviews" },
 ];
 ---
 
-<div class:list={["proofbar", "rv", { "proofbar--band": variant === "band" }]} data-countup>
+<div class="proofbar rv" data-countup>
   {stats.map((s) => (
     <div><b data-count={s.value}>{s.value}</b><span>{s.label}</span></div>
   ))}

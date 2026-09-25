@@ -83,15 +83,23 @@
   .fth-fig { width: min(76%, 340px); margin-top: 18px; }
 }
 
-/* ---------- 02 proof strip, as a green band ---------- */
+/* ---------- 02 proof strip ----------
+   The same white card as the homepage, with no repainting: the figures are
+   the one thing both pages say, so they are drawn the one way. Only the
+   ground under it belongs to this page — a green band the card lifts out of,
+   the top edge crossing into the dark hero the way the homepage card sits
+   under its hero. */
 .ft-proof {
-  background: var(--hiring-soft); padding-block: clamp(20px, 2.8vw, 32px);
+  background: var(--hiring-soft);
+  padding: 0 0 clamp(26px, 3.4vw, 40px);
   border-bottom: 1px solid color-mix(in srgb, var(--hiring-fill) 28%, transparent);
 }
-.proofbar--band { margin-top: 0; background: transparent; border: 0; border-radius: 0; box-shadow: none; }
-.proofbar--band div { padding-block: 8px; border-color: color-mix(in srgb, var(--hiring-fill) 32%, transparent) !important; }
-.proofbar--band b { color: var(--hiring); }
-.proofbar--band span { color: var(--ink-2); }
+.ft-proof .proofbar {
+  /* The hero above is positioned, so without a stacking order of its own the
+     card is painted behind it and the figures disappear into the dark. */
+  position: relative; z-index: 1;
+  margin-top: calc(-1 * clamp(30px, 4vw, 52px));
+}
 
 /* ---------- 03 the resume is only the beginning ---------- */
 .br-grid {
