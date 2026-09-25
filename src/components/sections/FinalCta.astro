@@ -1,3 +1,6 @@
+---
+import { url } from "../../lib/url";
+---
 <!-- ===== 17. FINAL CTA ===== -->
 <section class="sec close" id="close">
   <div class="wrap">
@@ -11,13 +14,13 @@
         <p class="eyebrow" style="color:var(--hiring)">Employer</p>
         <h3>I'm Hiring.</h3>
         <p>Looking for an executive or specialized professional? Tell us what you're trying to solve so we can make the first conversation productive.</p>
-        <a class="btn btn--onpanel" href="#">Tell Us Who You Need <span class="arrow" aria-hidden="true">→</span></a>
+        <a class="btn btn--onpanel" href={url("/find-talent/#start")}>Tell Us Who You Need <span class="arrow" aria-hidden="true">→</span></a>
       </div>
       <div class="door door--b rv" style="--d:2">
         <p class="eyebrow" style="color:var(--career-fill)">Professional</p>
         <h3>I'm Considering My Next Move.</h3>
         <p>Thinking about changing roles, repositioning your career, or simply understanding your options? Tell us where you are today.</p>
-        <a class="btn btn--onpanel" href="#">Tell Us What's Next <span class="arrow" aria-hidden="true">→</span></a>
+        <a class="btn btn--onpanel" href={url("/find-a-job/#talk")}>Tell Us What's Next <span class="arrow" aria-hidden="true">→</span></a>
       </div>
     </div>
 

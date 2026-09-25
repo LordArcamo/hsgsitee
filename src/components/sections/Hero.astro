@@ -1,4 +1,5 @@
 ---
+import { url } from "../../lib/url";
 import { FACTS } from "../../data/facts";
 import ProofBar from "../ProofBar.astro";
 ---
@@ -18,8 +19,8 @@ import ProofBar from "../ProofBar.astro";
         </div>
 
         <div class="hero-actions rv" style="--d:4">
-          <a class="btn" href="#hiring">Find the Right Talent <span class="arrow" aria-hidden="true">→</span></a>
-          <a class="btn btn--ghost" href="#career">Explore Career Solutions</a>
+          <a class="btn" href={url("/find-talent/")}>Find the Right Talent <span class="arrow" aria-hidden="true">→</span></a>
+          <a class="btn btn--ghost" href={url("/find-a-job/")}>Explore Career Solutions</a>
         </div>
 
         <p class="bridge rv" style="--d:6">

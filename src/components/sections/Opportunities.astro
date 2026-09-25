@@ -1,3 +1,6 @@
+---
+import { url } from "../../lib/url";
+---
 <!-- ===== 14. CURRENT OPPORTUNITIES ===== -->
 <section class="sec" id="jobs">
   <div class="wrap">
@@ -8,8 +11,8 @@
         <p class="lede">Explore opportunities across professional, management, technology, healthcare, finance, operations, and leadership fields.</p>
       </div>
       <div class="jobs-actions">
-        <a class="btn" href="#">View Current Opportunities <span class="arrow" aria-hidden="true">→</span></a>
-        <a class="btn btn--ghost" href="#">Submit Your Resume</a>
+        <a class="btn" href={url("/find-a-job/#opportunities")}>View Current Opportunities <span class="arrow" aria-hidden="true">→</span></a>
+        <a class="btn btn--ghost" href={url("/find-a-job/#opportunities")}>Submit Your Resume</a>
       </div>
     </div>
 

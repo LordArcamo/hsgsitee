@@ -1,3 +1,6 @@
+---
+import { url } from "../../lib/url";
+---
 <!-- ===== 2. TWO AUDIENCES ===== -->
 <section class="sec sec--soft" id="both-sides">
   <div class="wrap">
@@ -16,15 +19,15 @@
         <h3>Find the Right Person, Not Simply the Right Resume.</h3>
         <p>Executive search, deeper candidate evaluation, interviewing support, Collaborative Search<sup>®</sup>, assessments, and guidance throughout the hiring decision.</p>
         <div class="chips">
-          <a class="chip" href="#hiring">Executive Recruiting</a>
-          <a class="chip" href="#hiring">Targeted Search</a>
-          <a class="chip" href="#hiring">Candidate Assessment</a>
-          <a class="chip" href="#collaborative">Collaborative Search<sup>®</sup></a>
-          <a class="chip" href="#hiring">Confidential Search</a>
-          <a class="chip" href="#forensic">Interviewing Support</a>
-          <a class="chip" href="#hiring">Onboarding &amp; Retention</a>
+          <a class="chip" href={url("/find-talent/")}>Executive Recruiting</a>
+          <a class="chip" href={url("/find-talent/")}>Targeted Search</a>
+          <a class="chip" href={url("/find-talent/#evaluates")}>Candidate Assessment</a>
+          <a class="chip" href={url("/find-talent/#collaborative")}>Collaborative Search<sup>®</sup></a>
+          <a class="chip" href={url("/find-talent/")}>Confidential Search</a>
+          <a class="chip" href={url("/find-talent/#evaluation")}>Interviewing Support</a>
+          <a class="chip" href={url("/find-talent/")}>Onboarding &amp; Retention</a>
         </div>
-        <a class="btn" href="#hiring">Explore Hiring Solutions <span class="arrow" aria-hidden="true">→</span></a>
+        <a class="btn" href={url("/find-talent/")}>Explore Hiring Solutions <span class="arrow" aria-hidden="true">→</span></a>
       </article>
 
       <article class="acard acard--career rv" style="--d:2">
@@ -35,17 +38,17 @@
         <h3>Make the Right Career Move, Not Simply the Next Move.</h3>
         <p>Career roadmapping, career assessment, positioning, interview strategy, professional development, opportunity evaluation, Vetting Plus, and guidance designed around who you are, what you want, and when a move truly makes sense.</p>
         <div class="chips">
-          <a class="chip" href="#career">Career Roadmapping</a>
-          <a class="chip" href="#career">Career Assessment</a>
-          <a class="chip" href="#career">Positioning</a>
-          <a class="chip" href="#career">Interview Strategy</a>
-          <a class="chip" href="#career">Professional Development</a>
-          <a class="chip" href="#career">Opportunity Evaluation</a>
+          <a class="chip" href={url("/find-a-job/#direction")}>Career Roadmapping</a>
+          <a class="chip" href={url("/find-a-job/#deep-dive")}>Career Assessment</a>
+          <a class="chip" href={url("/find-a-job/#positioning")}>Positioning</a>
+          <a class="chip" href={url("/find-a-job/#offer")}>Interview Strategy</a>
+          <a class="chip" href={url("/find-a-job/#direction")}>Professional Development</a>
+          <a class="chip" href={url("/find-a-job/")}>Opportunity Evaluation</a>
           <!-- Vetting Plus replaces Reference Guidance (HSG 3-section update);
                same destination as the pill it replaces. -->
-          <a class="chip" href="#vetting">Vetting Plus</a>
+          <a class="chip" href={url("/find-a-job/#references")}>Vetting Plus</a>
         </div>
-        <a class="btn" href="#career">Explore Career Solutions <span class="arrow" aria-hidden="true">→</span></a>
+        <a class="btn" href={url("/find-a-job/")}>Explore Career Solutions <span class="arrow" aria-hidden="true">→</span></a>
       </article>
     </div>
 
