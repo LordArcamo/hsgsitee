@@ -1,7 +1,6 @@
 ---
 import { SELF_CHECK } from "../../data/career-continuum";
 import Icon from "../Icon.astro";
-import { url } from "../../lib/url";
 
 /*
  * "Where Are You Right Now?" — a guided assessment, built to
@@ -101,7 +100,10 @@ const steps = SELF_CHECK.steps;
         {/* Step 5 swaps the button for the page's real closing action. It is
             a link, not a submit: this assessment captures nothing, and the
             intake at #talk is the one place that does. */}
-        <a class="btn as-final" href={url(SELF_CHECK.final.href)} data-as-final hidden>
+        {/* A same-page anchor, so NOT wrapped in url(): that helper adds the
+            Pages base prefix and turned #talk into /#talk, which points at the
+            homepage. */}
+        <a class="btn as-final" href={SELF_CHECK.final.href} data-as-final hidden>
           {SELF_CHECK.final.label} <span class="arrow" aria-hidden="true">→</span>
         </a>
       </div>
