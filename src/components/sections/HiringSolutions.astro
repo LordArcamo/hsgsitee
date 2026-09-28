@@ -1,6 +1,7 @@
 ---
 import { url } from "../../lib/url";
 import { FACTS } from "../../data/facts";
+import { STORIES } from "../../data/client-continuum";
 ---
 
 <!-- ===== 4. HIRING SOLUTIONS ===== -->
@@ -54,6 +55,35 @@ import { FACTS } from "../../data/facts";
           </div>
         </div>
       </div>
+    </div>
+
+    <!-- The client continuum, in miniature. The four situations and nothing
+         else: the stories, the engagement lists and the self-check are on
+         /find-talent/, where there is room for them. Every marker links to
+         the full section rather than opening anything here — the homepage
+         already carries the Career Solutions form, and a second thing to
+         click through would compete with it. -->
+    <div class="hc rv" style="--d:6">
+      <div class="hc-head">
+        <h3>The Position May Be the Same. The Problem Behind It May Be Very Different.</h3>
+        <p>Some companies know exactly who they need. Others have hired the position before and the people don&rsquo;t stay. That&rsquo;s why we don&rsquo;t start by sending resumes.</p>
+      </div>
+
+      <ol class="hc-rail">
+        {STORIES.map((s, i) => (
+          <li style={`--i:${i}`}>
+            <a class:list={["hc-marker", { "is-aside": !!s.aside }]} href={url("/find-talent/#continuum")}>
+              <span class="hc-dot" aria-hidden="true"></span>
+              <span class="hc-t">{s.marker}</span>
+              <span class="hc-a">{s.answer}</span>
+            </a>
+          </li>
+        ))}
+      </ol>
+
+      <a class="hc-more" href={url("/find-talent/#continuum")}>
+        See where your company fits <span class="arrow" aria-hidden="true">→</span>
+      </a>
     </div>
   </div>
 </section>

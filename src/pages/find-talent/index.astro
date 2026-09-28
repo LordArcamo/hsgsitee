@@ -24,6 +24,7 @@ import ProofBar from "../../components/ProofBar.astro";
 
 import FtHero from "../../components/hiring/FtHero.astro";
 import BeyondResume from "../../components/hiring/BeyondResume.astro";
+import ClientContinuum from "../../components/hiring/ClientContinuum.astro";
 import FtCollaborative from "../../components/hiring/FtCollaborative.astro";
 import Evaluates from "../../components/hiring/Evaluates.astro";
 import WhyHsg from "../../components/hiring/WhyHsg.astro";
@@ -98,7 +99,14 @@ const schema = [
     <!-- 03 The best candidate isn't always the best resume -->
     <BeyondResume />
 
-    <!-- 04 Collaborative Search® -->
+    <!-- 04 The client continuum. Placed here on purpose: 03 argues that
+         people are not paper, this argues that no two companies arrive with
+         the same problem, and 05 then shows how HSG works with the client
+         on whichever one it is. Its own closing CTA lands on #start, the
+         same intake as the foot of the page. -->
+    <ClientContinuum />
+
+    <!-- 05 Collaborative Search® -->
     <FtCollaborative />
 
     <!-- 05 What Collaborative Search® evaluates -->

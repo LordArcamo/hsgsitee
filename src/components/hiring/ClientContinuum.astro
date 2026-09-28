@@ -1,0 +1,167 @@
+---
+import { SECTION, STORIES, DISCLAIMER, LEARN, SELF_CHECK, CLOSING } from "../../data/client-continuum";
+
+/*
+ * The client continuum.
+ *
+ * Four client situations on one rail, ordered by how deep the problem goes.
+ * Clicking a marker opens that story below the line — the WAI-ARIA tabs
+ * pattern, one panel at a time, keyboard-operable.
+ *
+ * WHY THE RAIL DESCENDS INSTEAD OF THE MARKERS GROWING
+ *
+ * The concept called for four progressively larger circles. Four circles
+ * that grow left to right is the Bronze/Silver/Gold graphic — people read
+ * size as rank no matter what the caption says — and the career side's
+ * first rule is that none of this may look like pricing tiers. The rail
+ * steps DOWN instead: same markers, increasing depth. That is the stated
+ * intent ("moving deeper into the organization") without the tier read.
+ *
+ * The rail is decorative CSS. Below 900px the markers stack and the steps
+ * flatten, which loses nothing: the order is in the markup either way.
+ */
+---
+
+<section class="sec cc" id="continuum">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <p class="eyebrow is-hire">{SECTION.eyebrow}</p>
+      <h2>{SECTION.title}</h2>
+      {SECTION.lede.map((l) => <p class="lede">{l}</p>)}
+      <p class="cc-turn">{SECTION.turn}</p>
+    </div>
+
+    <div class="cc-rail-head rv" style="--d:1">
+      <h3>{SECTION.railHeading}</h3>
+      <p class="cc-note">{DISCLAIMER}</p>
+    </div>
+
+    <div class="cc-wrap rv" style="--d:1" data-cc>
+      <!-- the rail -->
+      <div class="cc-rail" role="tablist" aria-label={SECTION.railHeading}>
+        {STORIES.map((s, i) => (
+          <button
+            class:list={["cc-marker", { "is-aside": !!s.aside }]}
+            style={`--i:${i}`}
+            role="tab"
+            id={`cc-tab-${s.key}`}
+            aria-controls={`cc-panel-${s.key}`}
+            aria-selected={i === 0 ? "true" : "false"}
+            tabindex={i === 0 ? 0 : -1}
+            type="button"
+          >
+            <span class="cc-dot" aria-hidden="true"></span>
+            <span class="cc-marker-t">{s.marker}</span>
+            <span class="cc-marker-a">{s.answer}</span>
+          </button>
+        ))}
+      </div>
+
+      <!-- the story panels -->
+      {STORIES.map((s, i) => (
+        <div
+          class="cc-panel"
+          id={`cc-panel-${s.key}`}
+          role="tabpanel"
+          aria-labelledby={`cc-tab-${s.key}`}
+          hidden={i !== 0}
+        >
+          {s.aside && (
+            <p class="cc-aside">
+              <span>{s.aside.kicker}</span> {s.aside.title}
+            </p>
+          )}
+
+          <div class="cc-panel-head">
+            <span class="cc-mono" aria-hidden="true">{s.monogram}</span>
+            <div>
+              <p class="cc-co">{s.company}</p>
+              <p class="cc-said">&ldquo;{s.said}&rdquo;</p>
+            </div>
+          </div>
+
+          <div class="cc-body">
+            {s.conditions && (
+              <ul class="cc-conds">
+                {s.conditions.map((c) => <li>{c}</li>)}
+              </ul>
+            )}
+
+            {s.body.map((p) => <p>{p}</p>)}
+
+            {s.callout && (
+              <div class="cc-callout">
+                <p class="cc-callout-l">{s.callout.label}</p>
+                <p class="cc-callout-b">{s.callout.body}</p>
+              </div>
+            )}
+
+            {s.pull && <p class="cc-pull">{s.pull}</p>}
+            {s.after?.map((p) => <p>{p}</p>)}
+          </div>
+
+          <div class="cc-eng">
+            <p class="cc-eng-l">Typical engagement</p>
+            <ul>
+              {s.engagement.map((e) => <li>{e}</li>)}
+            </ul>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <!-- Before we recruit, we learn -->
+    <div class="cc-learn rv" style="--d:2">
+      <div class="cc-learn-copy">
+        <h3>{LEARN.title}</h3>
+        {LEARN.body.map((p) => <p>{p}</p>)}
+        <p class="cc-creed">
+          {LEARN.creed.map((line) => <span>{line}</span>)}
+        </p>
+      </div>
+
+      <div class="cc-stat">
+        <b>{LEARN.stat.value}</b>
+        <span class="cc-stat-l">{LEARN.stat.label}</span>
+        <p>{LEARN.stat.body}</p>
+      </div>
+    </div>
+
+    <!-- Where is your company? Five clicks, no form. -->
+    <div class="cc-check rv" style="--d:2" data-cc-check>
+      <div class="cc-check-head">
+        <h3>{SELF_CHECK.title}</h3>
+        {SELF_CHECK.lede.map((l) => <p>{l}</p>)}
+      </div>
+
+      <ol class="cc-qs">
+        {SELF_CHECK.questions.map((q, i) => (
+          <li class="cc-q">
+            <p class="cc-q-t"><span aria-hidden="true">{i + 1}</span>{q.q}</p>
+            <div class="cc-opts" role="group" aria-label={q.q}>
+              {q.options.map((o) => (
+                <button class="cc-opt" type="button" aria-pressed="false">{o}</button>
+              ))}
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+
+    <!-- closing -->
+    <div class="cc-close rv" style="--d:2">
+      <h3>{CLOSING.title}</h3>
+      <p class="cc-close-l">{CLOSING.lede}</p>
+      {CLOSING.body.map((p) => <p>{p}</p>)}
+      <p class="cc-close-turn">{CLOSING.turn}</p>
+      <a class="btn" href={CLOSING.cta.href}>
+        {CLOSING.cta.label} <span class="arrow" aria-hidden="true">→</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { initClientContinuum } from "../../scripts/client-continuum";
+  initClientContinuum();
+</script>

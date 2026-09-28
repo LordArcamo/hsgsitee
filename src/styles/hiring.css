@@ -535,3 +535,211 @@
   .csv.is-tabs .csv-panel:not([hidden]) { animation: none; }
   .csv.is-tabs .csv-list::after, .cf-dot { transition: none; }
 }
+
+/* ============================================================
+   THE CLIENT CONTINUUM — four client situations on one rail
+
+   The rail STEPS DOWN from left to right. The concept asked for circles
+   that grow; four growing circles read as Bronze/Silver/Gold whatever the
+   caption says, and the career continuum's first rule is that none of this
+   may look like pricing tiers. Same markers, descending line: the same
+   "deeper into the organization" idea, without the tier read.
+   ============================================================ */
+.cc-turn {
+  margin-top: 6px; font-family: var(--display); font-weight: 800;
+  font-size: clamp(18px, 2vw, 23px); letter-spacing: -.022em; color: var(--ink); text-wrap: balance;
+}
+.cc-rail-head {
+  margin-top: clamp(36px, 4.4vw, 58px);
+  display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 12px;
+}
+.cc-rail-head h3 { font-size: clamp(20px, 2.2vw, 27px); letter-spacing: -.024em; }
+.cc-note { font-size: 12.5px; color: var(--ink-3); font-style: italic; max-width: 46ch; }
+
+/* ---------- the rail ---------- */
+.cc-wrap { margin-top: clamp(20px, 2.4vw, 30px); }
+.cc-rail {
+  position: relative; display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: clamp(10px, 1.4vw, 18px); padding-top: 10px;
+}
+.cc-marker {
+  position: relative; display: grid; gap: 7px; justify-items: start; align-content: start; text-align: left;
+  /* each marker sits a little lower than the one before it */
+  margin-top: calc(var(--i) * clamp(10px, 1.3vw, 18px));
+  padding: 16px 16px 16px 0; background: none; border: 0; cursor: pointer;
+  font: inherit; color: inherit;
+  border-top: 2px solid var(--rule);
+  transition: border-color .25s ease;
+}
+.cc-marker:hover { border-top-color: color-mix(in srgb, var(--hiring-fill) 60%, var(--rule)); }
+.cc-marker[aria-selected="true"] { border-top-color: var(--hiring-fill); }
+.cc-marker:focus-visible { outline: 2px solid var(--hiring); outline-offset: 3px; border-radius: 6px; }
+.cc-dot {
+  position: absolute; top: -8px; left: 0; width: 14px; height: 14px; border-radius: 50%;
+  background: var(--surface); border: 2px solid var(--rule);
+  transition: background .25s ease, border-color .25s ease, transform .25s var(--ease);
+}
+.cc-marker[aria-selected="true"] .cc-dot {
+  background: var(--hiring-fill); border-color: var(--hiring-fill); transform: scale(1.18);
+}
+/* Atlas is on the line and also a different kind of case. */
+.cc-marker.is-aside { border-top-style: dashed; }
+.cc-marker.is-aside .cc-dot { border-style: dashed; }
+.cc-marker.is-aside[aria-selected="true"] .cc-dot { border-style: solid; }
+.cc-marker-t {
+  font-family: var(--display); font-weight: 800; font-size: 14.5px;
+  line-height: 1.3; letter-spacing: -.012em; color: var(--ink);
+}
+.cc-marker[aria-selected="true"] .cc-marker-t { color: var(--hiring); }
+.cc-marker-a { font-size: 13px; line-height: 1.4; color: var(--ink-3); }
+
+/* ---------- a story panel ---------- */
+.cc-panel {
+  margin-top: clamp(20px, 2.4vw, 28px); padding: clamp(24px, 3vw, 38px);
+  background: var(--surface); border: 1px solid var(--rule);
+  border-top: 3px solid var(--hiring-fill); border-radius: 18px; box-shadow: var(--shadow);
+}
+.cc-aside {
+  margin-bottom: 18px; padding-bottom: 14px; border-bottom: 1px dashed var(--rule);
+  font-family: var(--display); font-weight: 800; font-size: clamp(17px, 1.9vw, 22px);
+  letter-spacing: -.022em; color: var(--ink); text-wrap: balance;
+}
+.cc-aside span {
+  display: block; font-family: var(--body); font-size: 12px; font-weight: 800;
+  letter-spacing: .14em; text-transform: uppercase; color: var(--hiring); margin-bottom: 5px;
+}
+.cc-panel-head { display: flex; align-items: center; gap: 16px; }
+.cc-mono {
+  flex: none; display: grid; place-items: center; width: 52px; height: 52px; border-radius: 14px;
+  background: var(--hiring-soft); color: var(--hiring);
+  font-family: var(--display); font-weight: 900; font-size: 17px; letter-spacing: .02em;
+}
+.cc-co { font-size: 12px; font-weight: 800; letter-spacing: .13em; text-transform: uppercase; color: var(--ink-3); }
+.cc-said {
+  margin-top: 3px; font-family: var(--display); font-weight: 800;
+  font-size: clamp(18px, 2vw, 24px); line-height: 1.28; letter-spacing: -.024em; color: var(--ink);
+  text-wrap: balance;
+}
+.cc-body { margin-top: 22px; display: grid; gap: 14px; max-width: 72ch; }
+.cc-body p { font-size: 15.6px; line-height: 1.7; color: var(--ink-2); }
+.cc-conds { display: grid; gap: 6px; list-style: none; padding: 0; }
+.cc-conds li {
+  position: relative; padding-left: 18px; font-size: 15px; line-height: 1.5; color: var(--ink-2);
+}
+.cc-conds li::before {
+  content: ""; position: absolute; left: 0; top: .62em; width: 8px; height: 2px;
+  border-radius: 2px; background: var(--hiring-fill);
+}
+.cc-callout {
+  padding: 16px 20px; border-radius: 14px;
+  background: var(--hiring-soft); border-left: 3px solid var(--hiring-fill);
+}
+.cc-callout-l {
+  font-size: 11.5px; font-weight: 800; letter-spacing: .13em; text-transform: uppercase;
+  color: var(--hiring); margin-bottom: 5px;
+}
+.cc-body .cc-callout-b { font-size: 15.4px; line-height: 1.6; color: var(--ink); }
+.cc-body .cc-pull {
+  font-family: var(--display); font-weight: 800;
+  font-size: clamp(17px, 1.85vw, 21px); line-height: 1.38; letter-spacing: -.022em;
+  color: var(--ink); text-wrap: balance;
+}
+.cc-eng {
+  margin-top: 22px; padding-top: 18px; border-top: 1px solid var(--rule-soft);
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: 10px 14px;
+}
+.cc-eng-l { font-size: 11.5px; font-weight: 800; letter-spacing: .13em; text-transform: uppercase; color: var(--ink-3); }
+.cc-eng ul { display: flex; flex-wrap: wrap; gap: 7px; list-style: none; padding: 0; }
+.cc-eng li {
+  font-size: 12.8px; font-weight: 700; border-radius: 999px; padding: 6px 13px;
+  background: var(--soft); color: var(--ink-2); border: 1px solid var(--rule-soft);
+}
+
+@media (max-width: 900px) {
+  .cc-rail { grid-template-columns: 1fr; gap: 0; }
+  /* the descent is a desktop idea; stacked, order carries it */
+  .cc-marker { margin-top: 0; padding: 14px 0 14px 22px; border-top: 0; border-left: 2px solid var(--rule); }
+  .cc-marker:hover { border-left-color: color-mix(in srgb, var(--hiring-fill) 60%, var(--rule)); }
+  .cc-marker[aria-selected="true"] { border-left-color: var(--hiring-fill); }
+  .cc-marker.is-aside { border-top: 0; border-left-style: dashed; }
+  .cc-dot { top: 50%; left: -8px; transform: translateY(-50%); }
+  .cc-marker[aria-selected="true"] .cc-dot { transform: translateY(-50%) scale(1.18); }
+}
+
+/* ---------- before we recruit, we learn ---------- */
+.cc-learn {
+  margin-top: clamp(40px, 5vw, 68px);
+  display: grid; grid-template-columns: 1.05fr .95fr; gap: clamp(28px, 4vw, 56px); align-items: center;
+}
+.cc-learn-copy { display: grid; gap: 14px; }
+.cc-learn-copy h3 { font-size: clamp(22px, 2.5vw, 31px); letter-spacing: -.026em; }
+.cc-learn-copy p { font-size: 15.6px; line-height: 1.7; color: var(--ink-2); max-width: 58ch; }
+.cc-creed { display: grid; gap: 2px; margin-top: 4px; }
+.cc-creed span {
+  font-family: var(--display); font-weight: 900;
+  font-size: clamp(19px, 2.1vw, 25px); letter-spacing: -.028em; color: var(--ink);
+}
+.cc-creed span:last-child { color: var(--hiring); }
+.cc-stat {
+  padding: clamp(24px, 3vw, 34px); border-radius: 20px;
+  background: var(--panel); color: var(--panel-ink);
+}
+.cc-stat b {
+  display: block; font-family: var(--display); font-weight: 900;
+  font-size: clamp(34px, 4.4vw, 52px); letter-spacing: -.035em; color: var(--hiring-panel);
+}
+.cc-stat-l {
+  display: block; margin-top: 6px; font-size: 13px; font-weight: 700;
+  letter-spacing: .04em; color: #fff;
+}
+.cc-stat p {
+  margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--panel-rule);
+  font-size: 14.2px; line-height: 1.62; color: var(--panel-ink-2);
+}
+
+@media (max-width: 900px) { .cc-learn { grid-template-columns: 1fr; } }
+
+/* ---------- where is your company? ---------- */
+.cc-check {
+  margin-top: clamp(40px, 5vw, 68px); padding: clamp(26px, 3.2vw, 40px);
+  background: var(--soft); border: 1px solid var(--rule); border-radius: 20px;
+}
+.cc-check-head h3 { font-size: clamp(22px, 2.5vw, 31px); letter-spacing: -.026em; }
+.cc-check-head p { margin-top: 7px; font-size: 15.5px; line-height: 1.6; color: var(--ink-2); }
+.cc-qs { margin-top: clamp(22px, 2.6vw, 32px); display: grid; gap: clamp(18px, 2.2vw, 26px); list-style: none; padding: 0; }
+.cc-q-t {
+  display: flex; gap: 11px; align-items: baseline;
+  font-family: var(--display); font-weight: 800; font-size: 15.8px;
+  line-height: 1.38; letter-spacing: -.014em; color: var(--ink);
+}
+.cc-q-t span {
+  flex: none; display: grid; place-items: center; width: 22px; height: 22px; border-radius: 50%;
+  background: var(--hiring-soft); color: var(--hiring); font-size: 12px; font-weight: 900;
+  align-self: flex-start; position: relative; top: 1px;
+}
+.cc-opts { margin-top: 11px; margin-left: 33px; display: flex; flex-wrap: wrap; gap: 8px; }
+.cc-opt {
+  font: inherit; font-size: 13.6px; font-weight: 600; cursor: pointer;
+  padding: 9px 15px; border-radius: 999px;
+  background: var(--surface); border: 1px solid var(--rule); color: var(--ink-2);
+  transition: border-color .2s ease, background .2s ease, color .2s ease;
+}
+.cc-opt:hover { border-color: color-mix(in srgb, var(--hiring-fill) 65%, var(--rule)); color: var(--ink); }
+.cc-opt[aria-pressed="true"] {
+  background: var(--hiring-fill); border-color: var(--hiring-fill); color: #14240a; font-weight: 800;
+}
+.cc-opt:focus-visible { outline: 2px solid var(--hiring); outline-offset: 2px; }
+
+@media (max-width: 600px) { .cc-opts { margin-left: 0; } }
+
+/* ---------- closing ---------- */
+.cc-close { margin-top: clamp(40px, 5vw, 68px); display: grid; gap: 13px; max-width: 68ch; }
+.cc-close h3 { font-size: clamp(22px, 2.6vw, 33px); letter-spacing: -.028em; text-wrap: balance; }
+.cc-close-l { font-family: var(--display); font-weight: 800; font-size: 17px; color: var(--hiring); }
+.cc-close p { font-size: 15.6px; line-height: 1.7; color: var(--ink-2); }
+.cc-close .cc-close-turn {
+  font-family: var(--display); font-weight: 800;
+  font-size: clamp(18px, 2vw, 23px); line-height: 1.34; letter-spacing: -.024em;
+  color: var(--ink); text-wrap: balance;
+}
+.cc-close .btn { justify-self: start; margin-top: 8px; }
