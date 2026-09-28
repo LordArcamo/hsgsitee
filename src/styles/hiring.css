@@ -749,6 +749,11 @@
    them. Renders straight after the funnel; the funnel gets to three, this
    says what HSG can tell you about each one.
    ============================================================ */
+/* The funnel and this are one argument, so they are not given the full
+   section gap between them: getting to three, then what we can say about
+   those three, should read as one breath. */
+#funnel { padding-bottom: clamp(30px, 3.6vw, 52px); }
+.md { padding-top: clamp(42px, 5vw, 72px); }
 .md-head { max-width: 68ch; }
 .md-kicker {
   font-family: var(--display); font-weight: 900;
