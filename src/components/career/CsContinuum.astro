@@ -1,0 +1,140 @@
+---
+import { SECTION, DISCLAIMER, STORIES, NICOLE, SELF_CHECK } from "../../data/career-continuum";
+
+/*
+ * The career-needs continuum: Adam, Rachel, David on one flat line, and
+ * Nicole beside it.
+ *
+ * WHY NICOLE IS NOT A TAB
+ *
+ * The handoff says twice that she must not read as the expensive end of the
+ * line — her problem was access and advocacy, and the engagement cost the
+ * candidate nothing. A fourth marker on the rail would say the opposite
+ * whatever the copy underneath it said. So she is a card of her own, always
+ * open, visually detached: on a wide screen beside the rail, on a phone
+ * immediately after Adam → Rachel → David, which is exactly the order the
+ * handoff's note 3 asks for.
+ *
+ * WHY THE LINE IS FLAT
+ *
+ * /find-talent/ has a rail that descends, because a client's problem gets
+ * deeper. This one is a range of different problems, not deeper ones, so
+ * the three markers are identical and level. The two sections are siblings
+ * and should not be the same drawing.
+ *
+ * Colour: Adam → Rachel → David run one gold ramp, light to deep, and
+ * Nicole is brand purple. The handoff colours them blue, green and orange —
+ * but green means Hiring everywhere else on this site, so a green marker on
+ * the career page would read as the wrong practice. Say the word and I will
+ * switch to the handoff's four.
+ */
+---
+
+<section class="sec sec--soft csc" id="continuum">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <p class="eyebrow is-career">{SECTION.eyebrow}</p>
+      <h2>{SECTION.title}</h2>
+      <p class="lede">{SECTION.lede}</p>
+      <p class="csc-intro">{SECTION.intro}</p>
+    </div>
+
+    <p class="csc-disc rv" style="--d:1">{DISCLAIMER}</p>
+
+    <div class="csc-grid rv" style="--d:1" data-cc>
+      <div class="csc-main">
+        <p class="csc-rail-l">{SECTION.railLabel}</p>
+
+        <div class="csc-rail" role="tablist" aria-label={SECTION.railLabel}>
+          {STORIES.map((s, i) => (
+            <button
+              class="csc-marker"
+              style={`--i:${i}`}
+              role="tab"
+              id={`csc-tab-${s.key}`}
+              aria-controls={`csc-panel-${s.key}`}
+              aria-selected={i === 0 ? "true" : "false"}
+              tabindex={i === 0 ? 0 : -1}
+              data-prefill={s.prefill === undefined ? undefined : `1:${s.prefill}`}
+              type="button"
+            >
+              <span class="csc-name">{s.name}</span>
+              <span class="csc-said">&ldquo;{s.said}&rdquo;</span>
+              <span class="csc-dot" aria-hidden="true"></span>
+              <span class="csc-tag">{s.tagline}</span>
+            </button>
+          ))}
+        </div>
+
+        {STORIES.map((s, i) => (
+          <div
+            class="csc-panel"
+            id={`csc-panel-${s.key}`}
+            role="tabpanel"
+            aria-labelledby={`csc-tab-${s.key}`}
+            hidden={i !== 0}
+          >
+            <p class="csc-panel-t">{s.name} &mdash; {s.tagline}</p>
+            <p class="csc-body">{s.body}</p>
+            <ul class="csc-work">
+              {s.work.map((w) => <li>{w}</li>)}
+            </ul>
+            <p class="csc-inv">
+              <span>{s.investment.label}</span>
+              <b>{s.investment.value}</b>
+            </p>
+          </div>
+        ))}
+      </div>
+
+      <!-- Nicole: off the line, always open. -->
+      <aside class="csc-nicole">
+        <p class="csc-kicker">{NICOLE.kicker}</p>
+        <p class="csc-name csc-name--n">{NICOLE.name}</p>
+        <p class="csc-said csc-said--n">&ldquo;{NICOLE.said}&rdquo;</p>
+        <p class="csc-note">{NICOLE.note}</p>
+        <p class="csc-body">{NICOLE.body}</p>
+        <ul class="csc-work">
+          {NICOLE.work.map((w) => <li>{w}</li>)}
+        </ul>
+        <p class="csc-inv csc-inv--n">
+          <span>{NICOLE.investment.label}</span>
+          <b>{NICOLE.investment.value}</b>
+        </p>
+      </aside>
+    </div>
+
+    <!-- Where are you right now? -->
+    <div class="csc-check rv" style="--d:2" id="where-now" data-cc-check>
+      <div class="csc-check-head">
+        <h3>{SELF_CHECK.title}</h3>
+        <p class="csc-check-l">{SELF_CHECK.lede}</p>
+        <p class="csc-micro">{SELF_CHECK.micro}</p>
+      </div>
+
+      <ol class="csc-qs">
+        {SELF_CHECK.questions.map((q, i) => (
+          <li class="csc-q">
+            <p class="csc-q-t"><span aria-hidden="true">{i + 1}</span>{q.q}</p>
+            <div class="cc-opts" role="group" aria-label={q.q}>
+              {q.options.map((o) => (
+                <button class="cc-opt" type="button" aria-pressed="false">{o}</button>
+              ))}
+            </div>
+          </li>
+        ))}
+      </ol>
+
+      <div class="csc-actions">
+        <a class="btn" href={SELF_CHECK.ctaSecondary.href}>
+          {SELF_CHECK.ctaSecondary.label} <span class="arrow" aria-hidden="true">→</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { initContinuum } from "../../scripts/continuum";
+  initContinuum();
+</script>

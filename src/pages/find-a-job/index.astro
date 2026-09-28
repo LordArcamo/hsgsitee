@@ -41,6 +41,7 @@ import CsHero from "../../components/career/CsHero.astro";
 import CsDoors from "../../components/career/CsDoors.astro";
 import CsDeepDive from "../../components/career/CsDeepDive.astro";
 import CsMoreThan from "../../components/career/CsMoreThan.astro";
+import CsContinuum from "../../components/career/CsContinuum.astro";
 import CsServices from "../../components/career/CsServices.astro";
 import CsReferences from "../../components/career/CsReferences.astro";
 import CsJourney from "../../components/career/CsJourney.astro";
@@ -115,7 +116,14 @@ const schema = [
     <!-- 04 You are more than your resume -->
     <CsMoreThan />
 
-    <!-- 05 The services -->
+    <!-- 05 The career-needs continuum. The handoff's own running order is
+         intro → continuum → "Where Are You Right Now?" → the five questions
+         → the service categories, and that is exactly the seam here: the
+         stories run before the services rather than after, so a visitor
+         recognises their situation before being shown a menu. -->
+    <CsContinuum />
+
+    <!-- 06 The services -->
     <CsServices />
 
     <!-- 06 Reference support -->
