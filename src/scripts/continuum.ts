@@ -87,7 +87,9 @@ function prefill(tab: HTMLElement): void {
 
 /* ---------- the self-check: one answer per question, nothing scored ---------- */
 function setupCheck(root: HTMLElement): void {
-  root.querySelectorAll<HTMLElement>(".cc-opts").forEach((group) => {
+  const groups = Array.from(root.querySelectorAll<HTMLElement>(".cc-opts"));
+
+  groups.forEach((group) => {
     const opts = Array.from(group.querySelectorAll<HTMLButtonElement>(".cc-opt"));
     opts.forEach((b) =>
       b.addEventListener("click", () => {
@@ -96,7 +98,52 @@ function setupCheck(root: HTMLElement): void {
         const was = b.getAttribute("aria-pressed") === "true";
         opts.forEach((o) => o.setAttribute("aria-pressed", "false"));
         b.setAttribute("aria-pressed", String(!was));
+        report(root, groups);
       }),
     );
   });
+
+  report(root, groups);
+}
+
+/**
+ * How many are answered, drawn as a ring.
+ *
+ * Still no score and no conclusion — this counts, it does not judge. It
+ * exists because five rows of untouched buttons give a visitor no sense
+ * that anything is happening, which is what made the old version feel like
+ * a form rather than a conversation.
+ *
+ * `data-cc-progress` opts a section in. The client self-check on
+ * /find-talent/ does not carry it, and everything here no-ops for it.
+ */
+function report(root: HTMLElement, groups: HTMLElement[]): void {
+  if (!("ccProgress" in root.dataset)) return;
+
+  groups.forEach((g) => {
+    const answered = !!g.querySelector('.cc-opt[aria-pressed="true"]');
+    g.closest<HTMLElement>("[data-q]")?.classList.toggle("is-answered", answered);
+  });
+
+  const done = groups.filter((g) => g.querySelector('.cc-opt[aria-pressed="true"]')).length;
+  const total = groups.length;
+
+  const n = root.querySelector<HTMLElement>("[data-ring-n]");
+  if (n) n.textContent = String(done);
+
+  const ring = root.querySelector<SVGCircleElement>("[data-ring]");
+  if (ring) {
+    // r=19 in the SVG's own units; the dash array is the full circumference.
+    const c = 2 * Math.PI * 19;
+    ring.style.strokeDasharray = String(c);
+    ring.style.strokeDashoffset = String(c * (1 - done / total));
+  }
+
+  const label = root.querySelector<HTMLElement>("[data-ring-label]");
+  if (label) {
+    label.textContent =
+      done === 0 ? `${total} questions`
+      : done === total ? "That is enough to start"
+      : `${done} of ${total}`;
+  }
 }
