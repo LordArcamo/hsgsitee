@@ -1,0 +1,114 @@
+---
+import { CANDIDATES } from "../../data/candidates";
+import { DEFENSES, DEFENSE_COPY, CONVERSATIONS } from "../../data/meaningful-defense";
+import { FUNNEL } from "../../data/hiring";
+import { url } from "../../lib/url";
+
+/*
+ * The payoff of the funnel, added after Michael's note that a narrowing
+ * funnel "is what everyone does" and that the section needs a comparison of
+ * the three candidates and the conversations that follow.
+ *
+ * It renders directly after the funnel, inside the same argument: getting
+ * to three is the part anyone can do; what we can tell you about those
+ * three is not.
+ *
+ * The three profiles are read from candidates.ts — the same fifty the
+ * funnel narrows — so the comparison can never disagree with the dots above
+ * it. Each carries the strength and watch-point that file already holds,
+ * plus the two things Michael asked for.
+ *
+ * The watch-point is deliberately on every card, including the strongest.
+ * A shortlist where nobody has a drawback is a sales sheet, which is the
+ * thing this section exists to not be.
+ */
+const finalists = CANDIDATES.filter((c) => c.exitsAt === 0);
+---
+
+<section class="sec sec--soft md" id="defense">
+  <div class="wrap">
+    <div class="md-head rv">
+      <p class="md-kicker">{DEFENSE_COPY.kicker}</p>
+      <p class="md-lede">{DEFENSE_COPY.lede}</p>
+    </div>
+
+    <p class="md-compare-h rv" style="--d:1">{DEFENSE_COPY.compareHeading}</p>
+
+    <div class="md-grid">
+      {finalists.map((c, i) => {
+        const d = DEFENSES[c.id];
+        return (
+          <article class="md-card rv" style={`--d:${i + 1}`}>
+            <header class="md-card-h">
+              <p class="md-n" aria-hidden="true">{i + 1}</p>
+              <div>
+                <h3>{c.role}</h3>
+                <p class="md-meta">{c.years} years &middot; {c.industry}</p>
+              </div>
+            </header>
+
+            <dl class="md-facts">
+              <div><dt>Team</dt><dd>{c.teamSize}</dd></div>
+              <div><dt>Scope</dt><dd>{c.scope}</dd></div>
+            </dl>
+
+            <div class="md-row">
+              <p class="md-lbl">{DEFENSE_COPY.strengthLabel}</p>
+              <p class="md-val">{c.strength}</p>
+            </div>
+
+            <div class="md-row md-row--watch">
+              <p class="md-lbl">{DEFENSE_COPY.watchLabel}</p>
+              <p class="md-val">{c.watchPoint}</p>
+            </div>
+
+            {d && (
+              <>
+                <div class="md-why">
+                  <p class="md-lbl">{DEFENSE_COPY.whyLabel}</p>
+                  <p>{d.why}</p>
+                </div>
+
+                <div class="md-conv">
+                  <p class="md-lbl">{DEFENSE_COPY.conversationsLabel}</p>
+                  <ul>
+                    {d.conversations.map((line) => <li>{line}</li>)}
+                  </ul>
+                </div>
+              </>
+            )}
+          </article>
+        );
+      })}
+    </div>
+
+    <p class="md-note rv">{FUNNEL.note}</p>
+
+    <!-- The conversations that follow -->
+    <div class="md-conv-block rv" style="--d:2">
+      <div class="md-conv-head">
+        <p class="eyebrow is-hire">{CONVERSATIONS.eyebrow}</p>
+        <h3>{CONVERSATIONS.title}</h3>
+        <p class="md-conv-lede">{CONVERSATIONS.lede}</p>
+      </div>
+
+      <ul class="md-conv-list">
+        {CONVERSATIONS.items.map((it) => (
+          <li>
+            <h4>{it.title}</h4>
+            <p>{it.body}</p>
+          </li>
+        ))}
+      </ul>
+
+      <div class="md-close">
+        <p>
+          {CONVERSATIONS.close.map((line) => <span>{line}</span>)}
+        </p>
+        <a class="btn" href={url(CONVERSATIONS.cta.href)}>
+          {CONVERSATIONS.cta.label} <span class="arrow" aria-hidden="true">→</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
