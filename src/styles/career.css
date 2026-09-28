@@ -646,3 +646,14 @@
 .pg-career .cc-opt:focus-visible { outline-color: var(--career); }
 .pg-career .cc-opts { margin-left: 33px; }
 @media (max-width: 600px) { .pg-career .cc-opts { margin-left: 0; } }
+
+/* ---------- a service group named but not yet described ----------
+   Plain text, deliberately not a card. A card that opens onto nothing
+   promises detail the site does not have. */
+.svc-named { margin-top: 16px; }
+.svc-named ul { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; padding: 0; }
+.svc-named li {
+  font-size: 13.6px; font-weight: 700; border-radius: 999px; padding: 9px 15px;
+  background: var(--surface); border: 1px dashed var(--rule); color: var(--ink-2);
+}
+.svc-named-note { margin-top: 11px; font-size: 13.2px; line-height: 1.55; color: var(--ink-3); max-width: 62ch; }

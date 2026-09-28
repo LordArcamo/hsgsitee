@@ -192,10 +192,11 @@ export const MORE_THAN = {
    - The networking pages of Career Coaching are split out as their own
      card, because the live copy gives them three paragraphs of their own.
 
-   The homepage menu's fifth group, Growing Where You Are (Promotion
-   Strategy, Internal Career Strategy, Leadership Development Planning), has
-   no published copy on the live page, so it has no cards and is omitted
-   rather than written from scratch. */
+   The fifth group, Growing Where You Are, has no published copy on the
+   live page — but the handoff names it as one of the five categories and
+   its three service names are already approved on the homepage menu. So it
+   renders with its names and nothing else. Do not write descriptions for
+   them; ask Michael. */
 export interface Service {
   key: string;
   title: string;
@@ -212,6 +213,14 @@ export interface ServiceGroup {
   key: string;
   label: string;
   services: Service[];
+  /**
+   * Service names with no published description yet. They render as plain
+   * text, not as cards that open onto nothing. Move one into `services`
+   * the moment HSG has copy for it.
+   */
+  namesOnly?: string[];
+  /** Shown under a names-only group. */
+  note?: string;
 }
 
 export const SERVICE_GROUPS: ServiceGroup[] = [
@@ -359,6 +368,14 @@ export const SERVICE_GROUPS: ServiceGroup[] = [
         icon: "chart",
       },
     ],
+  },
+  {
+    key: "growing",
+    label: "Growing Where You Are", // SITE — homepage Career Solutions menu
+    services: [],
+    // SITE — the three names exactly as the homepage menu lists them
+    namesOnly: ["Promotion Strategy", "Internal Career Strategy", "Leadership Development Planning"],
+    note: "Not every career move is a move. These three are part of Career Solutions; the detail is with Michael.",
   },
 ];
 

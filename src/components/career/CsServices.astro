@@ -58,6 +58,17 @@ import Icon from "../Icon.astro";
             </details>
           ))}
         </div>
+
+        {/* Named but not yet described. Plain text, not a card that opens
+            onto nothing — and no description written on HSG's behalf. */}
+        {g.namesOnly && (
+          <div class="svc-named">
+            <ul>
+              {g.namesOnly.map((n) => <li>{n}</li>)}
+            </ul>
+            {g.note && <p class="svc-named-note">{g.note}</p>}
+          </div>
+        )}
       </div>
     ))}
 
