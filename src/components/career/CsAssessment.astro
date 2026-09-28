@@ -1,0 +1,115 @@
+---
+import { SELF_CHECK } from "../../data/career-continuum";
+import Icon from "../Icon.astro";
+import { url } from "../../lib/url";
+
+/*
+ * "Where Are You Right Now?" — a guided assessment, built to
+ * hsg_modern_survey_redesign_instructions.md.
+ *
+ * WHY REAL RADIOS
+ *
+ * The spec asks for "actual radio inputs or accessible equivalents". They
+ * are actual radios, visually hidden inside the card label. That is not a
+ * detail: a native radio group gives arrow-key navigation, roving focus,
+ * the correct screen-reader announcement ("2 of 4"), and form semantics for
+ * free — all of which a div with aria-checked has to reimplement badly.
+ * The card is the label, so the whole card is the hit target.
+ *
+ * WHY EVERY STEP IS IN THE HTML
+ *
+ * All five render; four are `hidden`. Nothing is built at runtime, so the
+ * questions exist for search engines and for a visitor whose JavaScript
+ * fails — they would see all five at once, which is the old design, and
+ * still usable. The script's only job is to hide four of them and move
+ * between.
+ *
+ * Selection is NOT auto-advance, per the spec: choose, see the choice,
+ * then press Continue. Continue stays disabled until there is one.
+ */
+const steps = SELF_CHECK.steps;
+---
+
+<section class="sec sec--soft as-sec" id="where-now">
+  <div class="wrap">
+    <div class="as-head rv">
+      <p class="as-eyebrow">{SELF_CHECK.eyebrow}</p>
+      <h2>{SELF_CHECK.title}</h2>
+      <p class="as-lede">{SELF_CHECK.lede}</p>
+    </div>
+
+    {/* Progress. Buttons, not links — a visitor may go back to a step they
+        have answered, and never forward past one they have not. */}
+    <ol class="as-steps rv" style="--d:1" data-as-steps aria-label="Progress">
+      {steps.map((st, i) => (
+        <li>
+          <button
+            class="as-step"
+            type="button"
+            data-goto={i}
+            aria-current={i === 0 ? "step" : undefined}
+            disabled={i !== 0}
+          >
+            <span class="as-step-n"><i>{String(i + 1).padStart(2, "0")}</i></span>
+            <span class="as-step-l">{st.nav}</span>
+          </button>
+        </li>
+      ))}
+    </ol>
+
+    <div class="as-card rv" style="--d:1" data-as>
+      <p class="as-hint">
+        <span class="as-hint-ic" aria-hidden="true">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 21h4"/><path d="M12 3a6 6 0 0 0-3.5 10.9c.5.4.8 1 .9 1.6h5.2c.1-.6.4-1.2.9-1.6A6 6 0 0 0 12 3Z"/></svg>
+        </span>
+        {SELF_CHECK.micro}
+      </p>
+
+      {steps.map((st, i) => (
+        <fieldset class="as-panel" data-panel={i} hidden={i !== 0}>
+          <legend class="as-q">
+            <span class="as-q-n" aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
+            <span class="as-q-t">{st.q}</span>
+          </legend>
+
+          <div class="as-grid">
+            {st.options.map((o) => (
+              <label class="as-opt">
+                <input type="radio" name={`q${i + 1}`} value={o.value} />
+                <span class="as-opt-ic" aria-hidden="true"><Icon name={o.icon} size={19} /></span>
+                <span class="as-opt-body">
+                  <span class="as-opt-t">{o.value}</span>
+                  {o.desc && <span class="as-opt-d">{o.desc}</span>}
+                </span>
+                <span class="as-opt-mark" aria-hidden="true"></span>
+              </label>
+            ))}
+          </div>
+        </fieldset>
+      ))}
+
+      <div class="as-nav">
+        <button class="as-back" type="button" data-as-back hidden>
+          <span class="arrow" aria-hidden="true">←</span> {SELF_CHECK.back}
+        </button>
+
+        <button class="btn as-next" type="button" data-as-next disabled>
+          <span data-as-next-label>{SELF_CHECK.next}</span>
+          <span class="arrow" aria-hidden="true">→</span>
+        </button>
+
+        {/* Step 5 swaps the button for the page's real closing action. It is
+            a link, not a submit: this assessment captures nothing, and the
+            intake at #talk is the one place that does. */}
+        <a class="btn as-final" href={url(SELF_CHECK.final.href)} data-as-final hidden>
+          {SELF_CHECK.final.label} <span class="arrow" aria-hidden="true">→</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { initAssessment } from "../../scripts/assessment";
+  initAssessment();
+</script>

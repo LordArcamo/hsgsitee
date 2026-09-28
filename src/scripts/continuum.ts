@@ -77,8 +77,23 @@ function prefill(tab: HTMLElement): void {
   const target = tab.dataset.prefill;
   if (!target) return;
   const [qi, oi] = target.split(":").map(Number);
-  const check = document.querySelector<HTMLElement>("[data-cc-check]");
-  const group = check?.querySelectorAll<HTMLElement>(".cc-opts")[qi];
+
+  /* The career assessment (real radios, one step at a time) and the client
+     self-check (buttons, all on screen) are different controls, so try both.
+     Whichever is on the page takes the answer. */
+  const panel = document.querySelector<HTMLElement>(`[data-as] [data-panel="${qi}"]`);
+  if (panel) {
+    const radios = Array.from(panel.querySelectorAll<HTMLInputElement>('input[type="radio"]'));
+    if (!radios[oi]) return;
+    radios[oi].checked = true;
+    // The assessment listens for change to re-enable Continue and to work
+    // out how far the visitor may jump.
+    radios[oi].dispatchEvent(new Event("change", { bubbles: true }));
+    return;
+  }
+
+  const group = document.querySelector<HTMLElement>("[data-cc-check]")
+    ?.querySelectorAll<HTMLElement>(".cc-opts")[qi];
   const opts = group ? Array.from(group.querySelectorAll<HTMLButtonElement>(".cc-opt")) : [];
   if (!opts[oi]) return;
   opts.forEach((o) => o.setAttribute("aria-pressed", "false"));

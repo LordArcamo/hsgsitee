@@ -1,5 +1,5 @@
 ---
-import { SECTION, DISCLAIMER, STORIES, NICOLE, SELF_CHECK } from "../../data/career-continuum";
+import { SECTION, DISCLAIMER, STORIES, NICOLE } from "../../data/career-continuum";
 
 /*
  * The career-needs continuum: Adam, Rachel, David on one flat line, and
@@ -104,54 +104,6 @@ import { SECTION, DISCLAIMER, STORIES, NICOLE, SELF_CHECK } from "../../data/car
       </aside>
     </div>
 
-    <!-- Where are you right now? -->
-    {/* All five stay on screen — this is the scannable one; the client
-        self-check on /find-talent/ asks one at a time. What makes it feel
-        answered rather than filled in is the progress ring and the way a
-        question settles once it has an answer: the choice stays lit and the
-        rest of that row recedes. */}
-    <div class="csc-check rv" style="--d:2" id="where-now" data-cc-check data-cc-progress>
-      <div class="csc-check-top">
-        <div class="csc-check-head">
-          <h3>{SELF_CHECK.title}</h3>
-          <p class="csc-check-l">{SELF_CHECK.lede}</p>
-        </div>
-
-        <div class="csc-meter">
-          <div class="csc-ring" aria-hidden="true">
-            <svg viewBox="0 0 44 44">
-              <circle class="csc-ring-bg" cx="22" cy="22" r="19" />
-              <circle class="csc-ring-fg" cx="22" cy="22" r="19" data-ring />
-            </svg>
-            <b data-ring-n>0</b>
-          </div>
-          <p class="csc-ring-l" aria-live="polite" data-ring-label>
-            {SELF_CHECK.questions.length} questions
-          </p>
-        </div>
-      </div>
-
-      <p class="csc-micro">{SELF_CHECK.micro}</p>
-
-      <ol class="csc-qs">
-        {SELF_CHECK.questions.map((q, i) => (
-          <li class="csc-q" data-q>
-            <p class="csc-q-t"><span aria-hidden="true">{i + 1}</span>{q.q}</p>
-            <div class="cc-opts" role="group" aria-label={q.q}>
-              {q.options.map((o) => (
-                <button class="cc-opt" type="button" aria-pressed="false">{o}</button>
-              ))}
-            </div>
-          </li>
-        ))}
-      </ol>
-
-      <div class="csc-actions">
-        <a class="btn" href={SELF_CHECK.ctaSecondary.href}>
-          {SELF_CHECK.ctaSecondary.label} <span class="arrow" aria-hidden="true">→</span>
-        </a>
-      </div>
-    </div>
   </div>
 </section>
 

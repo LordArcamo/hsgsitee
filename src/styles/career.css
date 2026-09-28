@@ -715,3 +715,231 @@
   background: var(--surface); border: 1px dashed var(--rule); color: var(--ink-2);
 }
 .svc-named-note { margin-top: 11px; font-size: 13.2px; line-height: 1.55; color: var(--ink-3); max-width: 62ch; }
+
+/* ============================================================
+   THE GUIDED ASSESSMENT — "Where Are You Right Now?"
+
+   Built to hsg_modern_survey_redesign_instructions.md. Its own rules, taken
+   literally: clean, premium, corporate, spacious. No heavy gradient, no
+   oversized shadow, no pill-shaped everything, nothing bright or unrelated.
+
+   Purple, not the Career gold, because the spec names HSG purple for the
+   eyebrow, the active step, the selected card and the Continue button. That
+   is the brand colour and the primary-button colour everywhere else on the
+   site, so the assessment reads as HSG rather than as one page's accent.
+   The rest of /find-a-job/ stays gold; if that reads as a clash, the
+   swap is --accent to --career-fill here and nothing else.
+   ============================================================ */
+.as-sec { padding-block: clamp(56px, 7vw, 96px); }
+
+/* ---------- heading, centred ---------- */
+.as-head { max-width: 62ch; margin-inline: auto; text-align: center; }
+.as-eyebrow {
+  display: flex; align-items: center; justify-content: center; gap: 14px;
+  font-size: 12px; font-weight: 800; letter-spacing: .18em; text-transform: uppercase;
+  color: var(--accent);
+}
+.as-eyebrow::before,
+.as-eyebrow::after {
+  content: ""; width: 34px; height: 1px;
+  background: color-mix(in srgb, var(--accent) 45%, transparent);
+}
+.as-head h2 {
+  margin-top: 18px; font-size: clamp(30px, 4.4vw, 56px); line-height: 1.06;
+  letter-spacing: -.034em; text-wrap: balance;
+}
+.as-lede {
+  margin-top: 16px; font-size: clamp(15.5px, 1.5vw, 18px); line-height: 1.66;
+  color: var(--ink-2); max-width: 58ch; margin-inline: auto;
+}
+
+/* ---------- the five-step rail ---------- */
+.as-steps {
+  margin: clamp(30px, 3.6vw, 46px) auto 0; max-width: 1180px;
+  display: grid; grid-template-columns: repeat(5, 1fr); list-style: none; padding: 0;
+}
+.as-steps li { position: relative; }
+/* connector, drawn behind the circles */
+.as-steps li + li::before {
+  content: ""; position: absolute; left: -50%; right: 50%; top: 19px; height: 1px;
+  background: var(--rule);
+}
+.as-steps li.is-lit::before { background: color-mix(in srgb, var(--accent) 45%, transparent); }
+.as-step {
+  position: relative; z-index: 1; width: 100%;
+  display: grid; justify-items: center; gap: 9px;
+  padding: 0 6px; background: none; border: 0; font: inherit; cursor: pointer;
+}
+.as-step:disabled { cursor: default; }
+.as-step-n {
+  display: grid; place-items: center; width: 38px; height: 38px; border-radius: 50%;
+  background: var(--surface); border: 1px solid var(--rule); color: var(--ink-3);
+  font-family: var(--display); font-weight: 800; font-size: 13px; letter-spacing: -.01em;
+  transition: background .22s ease, border-color .22s ease, color .22s ease;
+}
+.as-step-l {
+  font-size: 12.5px; font-weight: 700; line-height: 1.3; color: var(--ink-3);
+  text-align: center; max-width: 14ch;
+  transition: color .22s ease;
+}
+.as-step:hover:not(:disabled) .as-step-n { border-color: var(--accent); color: var(--accent); }
+.as-step:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; border-radius: 10px; }
+
+.as-step.is-done .as-step-n {
+  background: color-mix(in srgb, var(--accent) 10%, var(--surface));
+  border-color: color-mix(in srgb, var(--accent) 55%, transparent);
+  color: var(--accent);
+}
+.as-step[aria-current="step"] .as-step-n {
+  background: var(--accent); border-color: var(--accent); color: #fff;
+}
+.as-step[aria-current="step"] .as-step-l { color: var(--ink); font-weight: 800; }
+
+/* ---------- the card ---------- */
+.as-card {
+  margin: clamp(22px, 2.6vw, 32px) auto 0; max-width: 1180px;
+  padding: clamp(22px, 3vw, 46px);
+  background: var(--surface); border: 1px solid var(--rule); border-radius: 18px;
+  box-shadow: 0 10px 30px -18px rgba(24, 21, 43, .22);
+}
+
+/* ---------- helper strip ---------- */
+.as-hint {
+  display: flex; align-items: flex-start; gap: 11px;
+  padding: 14px 18px; border-radius: 11px;
+  background: color-mix(in srgb, var(--career-fill) 11%, var(--surface));
+  border-left: 3px solid var(--career-fill);
+  font-size: 14.2px; line-height: 1.58; color: var(--ink-2);
+}
+.as-hint-ic { flex: none; color: var(--career); margin-top: 1px; }
+
+/* ---------- question header ---------- */
+.as-panel { border: 0; padding: 0; margin: clamp(26px, 3vw, 38px) 0 0; min-width: 0; }
+.as-panel[hidden] { display: none; }
+.as-q { display: flex; align-items: center; gap: 18px; padding: 0; }
+.as-q:focus { outline: none; }
+.as-q-n {
+  font-family: var(--display); font-weight: 900; font-size: clamp(26px, 3vw, 38px);
+  letter-spacing: -.04em; color: var(--accent); line-height: 1;
+  padding-right: 18px; border-right: 1px solid var(--rule);
+}
+.as-q-t {
+  font-family: var(--display); font-weight: 800; font-size: clamp(19px, 2.2vw, 27px);
+  line-height: 1.24; letter-spacing: -.028em; color: var(--ink); text-wrap: balance;
+}
+
+/* ---------- answer cards ---------- */
+.as-grid {
+  margin-top: clamp(20px, 2.4vw, 28px);
+  display: grid; grid-template-columns: 1fr 1fr; gap: clamp(12px, 1.4vw, 16px);
+}
+.as-opt {
+  position: relative; display: grid; grid-template-columns: auto 1fr auto;
+  align-items: start; gap: 15px;
+  padding: 20px 20px; border-radius: 14px; cursor: pointer;
+  background: var(--surface); border: 1px solid var(--rule);
+  transition: border-color .2s ease, background .2s ease, box-shadow .2s ease;
+}
+.as-opt:hover {
+  border-color: color-mix(in srgb, var(--accent) 45%, var(--rule));
+  background: color-mix(in srgb, var(--accent) 4%, var(--surface));
+  box-shadow: 0 6px 16px -10px rgba(24, 21, 43, .25);
+}
+/* The radio is the state; it is only visually hidden, never display:none,
+   so it keeps focus, arrow-key navigation and its announced position. */
+.as-opt input {
+  position: absolute; width: 1px; height: 1px; margin: 0; padding: 0;
+  overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap;
+}
+.as-opt-ic {
+  display: grid; place-items: center; width: 38px; height: 38px; border-radius: 11px;
+  background: var(--soft); color: var(--ink-3);
+  transition: background .2s ease, color .2s ease;
+}
+.as-opt-body { display: grid; gap: 5px; min-width: 0; }
+.as-opt-t {
+  font-family: var(--display); font-weight: 800; font-size: 15.6px;
+  letter-spacing: -.018em; line-height: 1.28; color: var(--ink);
+}
+.as-opt-d { font-size: 13.6px; line-height: 1.52; color: var(--ink-2); }
+.as-opt-mark {
+  flex: none; width: 21px; height: 21px; border-radius: 50%;
+  border: 1.5px solid var(--rule); margin-top: 2px;
+  display: grid; place-items: center;
+  transition: border-color .2s ease, background .2s ease;
+}
+.as-opt-mark::after {
+  content: ""; width: 9px; height: 5px; border: 2px solid #fff;
+  border-top: 0; border-right: 0; transform: rotate(-45deg) scale(.4); margin-top: -2px;
+  opacity: 0; transition: opacity .18s ease, transform .22s cubic-bezier(.34, 1.56, .64, 1);
+}
+
+/* selected — border, wash, icon and a filled check, so selection is never
+   carried by colour alone */
+.as-opt:has(input:checked) {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 7%, var(--surface));
+  box-shadow: 0 8px 22px -14px color-mix(in srgb, var(--accent) 80%, transparent);
+}
+.as-opt:has(input:checked) .as-opt-ic {
+  background: color-mix(in srgb, var(--accent) 14%, transparent); color: var(--accent);
+}
+.as-opt:has(input:checked) .as-opt-mark { background: var(--accent); border-color: var(--accent); }
+.as-opt:has(input:checked) .as-opt-mark::after { opacity: 1; transform: rotate(-45deg) scale(1); }
+.as-opt:has(input:focus-visible) { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+/* ---------- step transition ---------- */
+.as-panel { transition: opacity .18s ease, transform .18s ease; }
+.as-panel.is-out-left { opacity: 0; transform: translateX(-14px); }
+.as-panel.is-out-right { opacity: 0; transform: translateX(14px); }
+.as-panel.is-in-right { animation: as-in-right .24s ease both; }
+.as-panel.is-in-left { animation: as-in-left .24s ease both; }
+@keyframes as-in-right { from { opacity: 0; transform: translateX(16px); } }
+@keyframes as-in-left { from { opacity: 0; transform: translateX(-16px); } }
+
+/* ---------- back / continue ---------- */
+.as-nav {
+  margin-top: clamp(24px, 2.8vw, 34px); padding-top: clamp(18px, 2.2vw, 26px);
+  border-top: 1px solid var(--rule);
+  display: flex; align-items: center; justify-content: space-between; gap: 14px;
+}
+.as-back {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: none; border: 0; padding: 10px 4px; cursor: pointer;
+  font: inherit; font-size: 14.5px; font-weight: 700; color: var(--ink-3);
+  transition: color .2s ease;
+}
+.as-back:hover { color: var(--ink); }
+.as-back:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 8px; }
+.as-back[hidden] { display: none; }
+.as-next, .as-final { margin-left: auto; border-radius: 9px; }
+.as-next:disabled {
+  opacity: .42; cursor: not-allowed; transform: none;
+  background: var(--accent); border-color: var(--accent);
+}
+.as-next[hidden], .as-final[hidden] { display: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .as-panel, .as-opt, .as-opt-mark, .as-opt-mark::after, .as-step-n, .as-step-l { transition: none; }
+  .as-panel.is-in-right, .as-panel.is-in-left { animation: none; }
+}
+
+/* ---------- responsive ---------- */
+@media (max-width: 900px) {
+  .as-grid { grid-template-columns: 1fr; }
+  .as-steps { grid-template-columns: repeat(5, 1fr); }
+  .as-step-l { font-size: 11px; max-width: 10ch; }
+  .as-q-n { padding-right: 14px; }
+  .as-q { gap: 14px; }
+}
+@media (max-width: 560px) {
+  .as-card { padding: 22px 18px; }
+  /* Labels stop fitting; the numbers carry the progress and the question
+     header already says which step this is. */
+  .as-step-l { display: none; }
+  .as-steps li + li::before { top: 17px; }
+  .as-step-n { width: 34px; height: 34px; font-size: 12px; }
+  .as-opt { padding: 16px 15px; gap: 12px; }
+  .as-nav { gap: 10px; }
+  .as-next, .as-final { min-height: 48px; padding: 0 20px; }
+}

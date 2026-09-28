@@ -123,55 +123,101 @@ export const NICOLE: CareerStory & { kicker: string; note: string } = {
 };
 
 /* ---------- Where are you right now? ----------
-   The handoff's five questions, verbatim. On the WordPress homepage these
-   should drive the five-step form your developer already built rather than
-   sit beside it; here there is no such form on the page, so this is it. */
+   The five questions, verbatim. Rebuilt to hsg_modern_survey_redesign_instructions.md,
+   which turns the wall of questions into a guided, one-at-a-time assessment.
+
+   WHAT IS THE SPEC'S AND WHAT IS NOT
+
+   - The five questions and every answer value are the original handoff's,
+     unchanged. The spec is explicit that answer values must survive, so
+     nothing here is reworded — the strings are what a form would submit.
+   - The five `nav` labels are the spec's.
+   - Step 1's four descriptions are the spec's, written there word for word.
+   - Steps 2 to 5 have NO descriptions. The spec permits adding them "only
+     if they improve UX and do not change meaning", which is not permission
+     to write nineteen lines of client copy. Ask Michael; the cards are
+     built to work with or without.
+   - Icons are chosen from the project's existing set, as the spec asks.
+     Nothing new was introduced beyond three missing glyphs. */
+export interface CheckOption {
+  value: string;
+  icon: string;
+  /** Only step 1 has these — the spec wrote them. Do not invent the rest. */
+  desc?: string;
+}
+
+export interface CheckStep {
+  /** The label on the progress rail. */
+  nav: string;
+  q: string;
+  options: CheckOption[];
+}
+
+const STEPS: CheckStep[] = [
+  {
+    nav: "Current Situation",
+    q: "Where are you now?",
+    options: [
+      { value: "Happy where I am", icon: "user", desc: "I’m doing well, but I want to understand what could be next." },
+      { value: "Open to the right move", icon: "briefcase", desc: "I’m not actively looking, but I’d consider the right opportunity." },
+      { value: "Actively looking", icon: "search", desc: "I’m ready to make a change now." },
+      { value: "Between roles", icon: "resume", desc: "I’m deciding what my next move should be." },
+    ],
+  },
+  {
+    nav: "What’s in the Way",
+    q: "What is getting in your way?",
+    options: [
+      { value: "Getting interviews", icon: "target" },
+      { value: "Advancing once I interview", icon: "chart" },
+      { value: "Moving into leadership", icon: "star" },
+      { value: "Confidence / presentation", icon: "talk" },
+      { value: "I am not sure", icon: "compass" },
+    ],
+  },
+  {
+    nav: "Where You Want to Go",
+    q: "Where do you actually want to go?",
+    options: [
+      { value: "Better company", icon: "building" },
+      { value: "Bigger role", icon: "chart" },
+      { value: "New industry / function", icon: "globe" },
+      { value: "Ownership / consulting", icon: "flag" },
+      { value: "Help me figure it out", icon: "compass" },
+    ],
+  },
+  {
+    nav: "What Would Help",
+    q: "What kind of help would matter most right now?",
+    options: [
+      { value: "Resume / LinkedIn", icon: "resume" },
+      { value: "Search and access", icon: "network" },
+      { value: "Interviewing / presentation", icon: "talk" },
+      { value: "Deeper coaching / assessment", icon: "people" },
+      { value: "A full career roadmap", icon: "compass" },
+    ],
+  },
+  {
+    nav: "Timing",
+    q: "When would you ideally make a move?",
+    options: [
+      { value: "Now", icon: "flag" },
+      { value: "Next 3–6 months", icon: "clock" },
+      { value: "Within a year", icon: "calendar" },
+      { value: "No deadline — planning ahead", icon: "compass" },
+    ],
+  },
+];
+
 export const SELF_CHECK = {
+  eyebrow: "Career Solutions",
   title: "Where Are You Right Now?",
   lede: "You do not need to know what service you need. That is our job. Start by telling us where you are, and we will help you think through what would actually move you forward.",
   micro:
     "You do not need to fit one of these stories exactly. Most careers do not. The point is to help us understand which part sounds familiar.",
-  questions: [
-    {
-      q: "Where are you now?",
-      options: ["Happy where I am", "Open to the right move", "Actively looking", "Between roles"],
-    },
-    {
-      q: "What is getting in your way?",
-      options: [
-        "Getting interviews",
-        "Advancing once I interview",
-        "Moving into leadership",
-        "Confidence / presentation",
-        "I am not sure",
-      ],
-    },
-    {
-      q: "Where do you actually want to go?",
-      options: [
-        "Better company",
-        "Bigger role",
-        "New industry / function",
-        "Ownership / consulting",
-        "Help me figure it out",
-      ],
-    },
-    {
-      q: "What kind of help would matter most right now?",
-      options: [
-        "Resume / LinkedIn",
-        "Search and access",
-        "Interviewing / presentation",
-        "Deeper coaching / assessment",
-        "A full career roadmap",
-      ],
-    },
-    {
-      q: "When would you ideally make a move?",
-      options: ["Now", "Next 3–6 months", "Within a year", "No deadline — planning ahead"],
-    },
-  ],
-  /* The handoff is explicit: never "Buy a Package" or "Choose a Plan". */
-  ctaPrimary: { label: "Answer 5 Quick Questions", href: "#where-now" },
-  ctaSecondary: { label: "Talk Through My Situation", href: "#talk" },
+  back: "Back",
+  next: "Continue",
+  /* Step 5 swaps Continue for the page's real closing action. */
+  final: { label: "Talk Through My Situation", href: "#talk" },
+  steps: STEPS,
 };
