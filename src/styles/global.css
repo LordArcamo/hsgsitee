@@ -21,4 +21,5 @@
 @import "./situations.css";  /* Situations Wanted results page                 */
 @import "./hiring.css";      /* Hiring Solutions page, /find-talent/           */
 @import "./career.css";      /* Career Solutions page, /find-a-job/            */
+@import "./editorial.css";   /* long-form editorial pages                      */
 @import "./mock-note.css";   /* delete with components/MockNote.astro at launch */

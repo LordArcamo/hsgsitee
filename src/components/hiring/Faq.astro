@@ -1,6 +1,7 @@
 ---
 import { FAQS } from "../../data/hiring";
 import { sup } from "../../lib/text";
+import { url } from "../../lib/url";
 
 /*
  * 12 FAQ — native <details>, so it opens and closes with no script and is
@@ -29,6 +30,14 @@ import { sup } from "../../lib/text";
           <p set:html={sup(f.a)} />
         </details>
       ))}
+
+      {/* These twelve answer what executive search is. The ten on the other
+          page answer what a sceptical owner actually wants to know before
+          handing a recruiter a hire, at length and in Michael's voice. */}
+      <a class="faq-more" href={url("/questions-to-ask-an-executive-recruiter/")}>
+        Ten harder questions worth asking before you hire any recruiter
+        <span class="arrow" aria-hidden="true">→</span>
+      </a>
     </div>
   </div>
 </section>

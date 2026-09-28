@@ -1,0 +1,141 @@
+---
+/*
+ * /questions-to-ask-an-executive-recruiter/
+ *
+ * Built to Client_Solutions_Questions_Handoff_Full.pdf and its two companion
+ * documents. Its own page rather than a section: ten long answers is more
+ * than /find-talent/ can absorb, and this is the strongest thing HSG has to
+ * say to a sceptical owner — it deserves a URL that can be sent, linked and
+ * cited on its own.
+ *
+ * The answers are also FAQPage structured data. That matters more here than
+ * anywhere else on the site: these are exactly the questions people type
+ * into a search box before hiring a recruiter, answered at length in HSG's
+ * own voice, which is what AI search engines quote.
+ *
+ * Its words live in src/data/recruiter-questions.ts, which also records the
+ * four new HSG phrases that need Michael's sign-off and why the optional
+ * quote strip was not built.
+ */
+import { Image } from "astro:assets";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import MockNote from "../../components/MockNote.astro";
+import Header from "../../components/Header.astro";
+import AudienceBar from "../../components/AudienceBar.astro";
+import Footer from "../../components/Footer.astro";
+
+import classroom from "../../assets/editorial/hiring-classroom.png";
+import { PAGE_META, HERO, INTRO, QUESTIONS, CLOSING } from "../../data/recruiter-questions";
+import { SITE } from "../../data/site";
+import { url } from "../../lib/url";
+
+const base = Astro.site ?? SITE.url;
+const pageUrl = new URL(url(PAGE_META.path), base).href;
+const homeUrl = new URL(url("/"), base).href;
+const hiringUrl = new URL(url("/find-talent/"), base).href;
+
+const schema = [
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "@id": `${pageUrl}#faq`,
+    mainEntity: QUESTIONS.map((f) => ({
+      "@type": "Question",
+      name: f.q,
+      acceptedAnswer: { "@type": "Answer", text: f.a.join(" ") },
+    })),
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: homeUrl },
+      { "@type": "ListItem", position: 2, name: "Hiring Solutions", item: hiringUrl },
+      { "@type": "ListItem", position: 3, name: "Questions to Ask an Executive Recruiter", item: pageUrl },
+    ],
+  },
+];
+---
+
+<BaseLayout title={PAGE_META.title} description={PAGE_META.description} path={PAGE_META.path} schema={schema}>
+  {/* Remove MockNote — and src/styles/mock-note.css — at launch. */}
+  <MockNote />
+  <Header home={url("/")} />
+  <AudienceBar />
+
+  <main id="main" class="pg-qs">
+    <!-- Hero: title, subtitle, then the image. On a phone the words come
+         first, so the page opens with something to read. -->
+    <section class="qs-hero" id="top">
+      <div class="wrap">
+        <p class="qs-eyebrow rv">Before You Hire a Recruiter</p>
+        <h1 class="rv" style="--d:1">{HERO.title}</h1>
+        <p class="qs-sub rv" style="--d:2">{HERO.subtitle}</p>
+
+        <figure class="qs-fig rv" style="--d:3">
+          <Image
+            src={classroom}
+            alt={HERO.imageAlt}
+            widths={[640, 960, 1448]}
+            sizes="(max-width: 900px) 92vw, 1040px"
+            loading="eager"
+            fetchpriority="high"
+          />
+          <figcaption>{HERO.imageCaption}</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- The sceptical-owner intro -->
+    <section class="sec sec--tight qs-intro">
+      <div class="wrap qs-narrow">
+        <div class="sec-head rv">
+          <h2>{INTRO.title}</h2>
+        </div>
+        <p class="qs-lead rv" style="--d:1">{INTRO.lead}</p>
+        <p class="qs-body rv" style="--d:1">{INTRO.body}</p>
+      </div>
+    </section>
+
+    <!-- The ten. Native <details>, first one open, per the implementation
+         notes. No script, keyboard- and screen-reader-accessible for free,
+         and the full text is in the HTML whether it is open or not. -->
+    <section class="sec sec--soft qs-list" id="questions">
+      <div class="wrap qs-narrow">
+        <ol class="qs-qs">
+          {QUESTIONS.map((item, i) => (
+            <li>
+              <details class="qs-q" open={i === 0}>
+                <summary>
+                  <span class="qs-n" aria-hidden="true">{i + 1}</span>
+                  <span class="qs-title">{item.q}</span>
+                  <span class="qs-ic" aria-hidden="true"></span>
+                </summary>
+                <div class="qs-a">
+                  {item.a.map((p) => <p>{p}</p>)}
+                </div>
+              </details>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <!-- Closing pull-quote and the two ways on -->
+    <section class="sec qs-close" id="talk">
+      <div class="wrap qs-narrow">
+        <blockquote class="qs-quote rv">{CLOSING.quote}</blockquote>
+        <div class="qs-actions rv" style="--d:1">
+          <a class="btn" href={url(CLOSING.cta.href)}>
+            {CLOSING.cta.label} <span class="arrow" aria-hidden="true">→</span>
+          </a>
+          <a class="btn btn--ghost" href={url(CLOSING.secondary.href)}>
+            {CLOSING.secondary.label} <span class="arrow" aria-hidden="true">→</span>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer home={url("/")} />
+</BaseLayout>
