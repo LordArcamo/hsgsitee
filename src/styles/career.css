@@ -943,3 +943,102 @@
   .as-nav { gap: 10px; }
   .as-next, .as-final { min-height: 48px; padding: 0 20px; }
 }
+
+/* ---------- faces, the extra examples, and the connector ----------
+   Michael's call: two more examples under each of Adam, Rachel and David;
+   a small round face in the UPPER RIGHT of each card; and a line from the
+   live marker down to the story so people know which one it belongs to. */
+
+.csc-col { display: grid; align-content: start; gap: 0; }
+
+/* the portrait */
+.face {
+  width: var(--face, 44px); height: var(--face, 44px);
+  border-radius: 50%; object-fit: cover; display: block;
+  background: var(--surface);
+  box-shadow: 0 0 0 2px var(--surface), 0 0 0 3px color-mix(in srgb, var(--career-fill) 45%, transparent);
+}
+/* until the portrait file exists */
+.face--wait {
+  display: grid; place-items: center;
+  background: color-mix(in srgb, var(--career-fill) 20%, var(--surface));
+  color: var(--career);
+  font-family: var(--display); font-weight: 900;
+  font-size: calc(var(--face, 44px) * .42); line-height: 1;
+}
+
+/* upper right of the marker card, overlapping the corner */
+.csc-marker { position: relative; }
+.csc-face { position: absolute; top: -10px; right: -8px; z-index: 2; }
+.csc-marker[aria-selected="true"] .face {
+  box-shadow: 0 0 0 2px var(--surface), 0 0 0 3px var(--m, var(--career-fill));
+}
+
+/* ---------- the two extra rows under each lead ---------- */
+.csc-also { margin-top: 12px; display: grid; gap: 6px; }
+.csc-also-l {
+  font-size: 10.5px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--ink-3); margin-bottom: 1px;
+}
+.csc-row {
+  display: grid; grid-template-columns: auto 1fr; align-items: center; gap: 10px;
+  width: 100%; text-align: left; padding: 8px 10px; border-radius: 11px;
+  background: none; border: 1px solid transparent; cursor: pointer; font: inherit;
+  transition: background .2s ease, border-color .2s ease;
+}
+.csc-row:hover {
+  background: color-mix(in srgb, var(--career-fill) 10%, var(--surface));
+  border-color: color-mix(in srgb, var(--career-fill) 35%, transparent);
+}
+.csc-row[aria-selected="true"] {
+  background: color-mix(in srgb, var(--career-fill) 16%, var(--surface));
+  border-color: var(--career-fill);
+}
+.csc-row:focus-visible { outline: 2px solid var(--career); outline-offset: 2px; }
+.csc-row-face { display: block; }
+.csc-row-said {
+  font-size: 12.8px; line-height: 1.38; color: var(--ink-2); font-weight: 600;
+}
+.csc-row[aria-selected="true"] .csc-row-said { color: var(--ink); font-weight: 700; }
+
+/* the whole column lifts when one of its three is live */
+.csc-col.is-live .csc-also-l { color: var(--career); }
+
+/* ---------- the connector from the live column to the panel ---------- */
+.csc-main { position: relative; }
+.csc-panel { position: relative; }
+/* A caret sitting on the panel's top edge, under the live column. Three
+   columns, so each centre is at (col + 0.5) / 3 of the width. */
+.csc-panel::before {
+  content: ""; position: absolute; top: -9px;
+  left: calc((var(--cc-col, 0) + .5) / 3 * 100%);
+  width: 18px; height: 18px; margin-left: -9px;
+  background: var(--surface);
+  border-left: 1px solid var(--rule); border-top: 1px solid var(--rule);
+  transform: rotate(45deg);
+  transition: left .3s cubic-bezier(.22, 1, .36, 1);
+}
+@media (prefers-reduced-motion: reduce) { .csc-panel::before { transition: none; } }
+
+/* an example panel says so, quietly */
+.csc-ex-note {
+  margin-top: 16px; padding-top: 13px; border-top: 1px solid var(--rule-soft);
+  font-size: 12.8px; line-height: 1.5; color: var(--ink-3); font-style: italic;
+}
+
+/* Nicole's face sits inside her card, upper right, same as the rest */
+.csc-nicole { position: relative; }
+.csc-face--n { position: absolute; top: 16px; right: 16px; }
+.csc-face--n .face {
+  box-shadow: 0 0 0 2px var(--surface), 0 0 0 3px color-mix(in srgb, var(--accent) 55%, transparent);
+}
+.csc-face--n .face--wait {
+  background: color-mix(in srgb, var(--accent) 16%, var(--surface)); color: var(--accent);
+}
+/* keep her kicker clear of it */
+.csc-nicole .csc-kicker { padding-right: 58px; }
+
+@media (max-width: 620px) {
+  .csc-face { top: -8px; right: -4px; }
+  .csc-panel::before { left: 50%; }
+}

@@ -1,5 +1,6 @@
 ---
 import { SECTION, DISCLAIMER, STORIES, NICOLE } from "../../data/career-continuum";
+import Face from "./Face.astro";
 
 /*
  * The career-needs continuum: Adam, Rachel, David on one flat line, and
@@ -45,33 +46,69 @@ import { SECTION, DISCLAIMER, STORIES, NICOLE } from "../../data/career-continuu
       <div class="csc-main">
         <p class="csc-rail-l">{SECTION.railLabel}</p>
 
+        {/* Three columns, three people each. The lead carries the real case
+            study; the two under it are recognition examples with no outcome
+            and no figure. All nine are selectable — Michael wanted people
+            able to "move the little thing" and find the description that
+            sounds like them, and the two extra lines are there so more
+            people find one. */}
         <div class="csc-rail" role="tablist" aria-label={SECTION.railLabel}>
           {STORIES.map((s, i) => (
-            <button
-              class="csc-marker"
-              style={`--i:${i}`}
-              role="tab"
-              id={`csc-tab-${s.key}`}
-              aria-controls={`csc-panel-${s.key}`}
-              aria-selected={i === 0 ? "true" : "false"}
-              tabindex={i === 0 ? 0 : -1}
-              data-prefill={s.prefill === undefined ? undefined : `1:${s.prefill}`}
-              type="button"
-            >
-              <span class="csc-name">{s.name}</span>
-              <span class="csc-said">&ldquo;{s.said}&rdquo;</span>
-              <span class="csc-dot" aria-hidden="true"></span>
-              <span class="csc-tag">{s.tagline}</span>
-            </button>
+            <div class="csc-col" style={`--i:${i}`} data-col={i}>
+              <button
+                class="csc-marker"
+                role="tab"
+                id={`csc-tab-${s.key}`}
+                aria-controls={`csc-panel-${s.key}`}
+                aria-selected={i === 0 ? "true" : "false"}
+                tabindex={i === 0 ? 0 : -1}
+                data-prefill={s.prefill === undefined ? undefined : `1:${s.prefill}`}
+                data-col-of={i}
+                type="button"
+              >
+                {/* Upper right, as Michael asked. */}
+                <span class="csc-face"><Face who={s.key} name={s.name} size={40} /></span>
+                <span class="csc-name">{s.name}</span>
+                <span class="csc-said">&ldquo;{s.said}&rdquo;</span>
+                <span class="csc-dot" aria-hidden="true"></span>
+                <span class="csc-tag">{s.tagline}</span>
+              </button>
+
+              {s.examples && (
+                <div class="csc-also">
+                  <p class="csc-also-l">Or any of these</p>
+                  {s.examples.map((e) => (
+                    <button
+                      class="csc-row"
+                      role="tab"
+                      id={`csc-tab-${e.key}`}
+                      aria-controls={`csc-panel-${e.key}`}
+                      aria-selected="false"
+                      tabindex={-1}
+                      data-prefill={e.prefill === undefined ? undefined : `1:${e.prefill}`}
+                      data-col-of={i}
+                      type="button"
+                    >
+                      <span class="csc-row-face"><Face who={e.key} name={e.name} size={28} /></span>
+                      <span class="csc-row-said">&ldquo;{e.said}&rdquo;</span>
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
           ))}
         </div>
 
-        {STORIES.map((s, i) => (
+        {/* One panel per person. The caret under the panel slides to sit
+            below whichever column is live — Michael asked for "a line from
+            the top... to let people know this is Adam down here". */}
+        {STORIES.flatMap((s, i) => [
           <div
             class="csc-panel"
             id={`csc-panel-${s.key}`}
             role="tabpanel"
             aria-labelledby={`csc-tab-${s.key}`}
+            data-of-col={i}
             hidden={i !== 0}
           >
             <p class="csc-panel-t">{s.name} &mdash; {s.tagline}</p>
@@ -83,12 +120,31 @@ import { SECTION, DISCLAIMER, STORIES, NICOLE } from "../../data/career-continuu
               <span>{s.investment.label}</span>
               <b>{s.investment.value}</b>
             </p>
-          </div>
-        ))}
+          </div>,
+          ...(s.examples ?? []).map((e) => (
+            <div
+              class="csc-panel csc-panel--ex"
+              id={`csc-panel-${e.key}`}
+              role="tabpanel"
+              aria-labelledby={`csc-tab-${e.key}`}
+              data-of-col={i}
+              hidden
+            >
+              <p class="csc-panel-t">{e.name} &mdash; {e.tagline}</p>
+              <p class="csc-body">{e.body}</p>
+              <ul class="csc-work">
+                {e.work.map((w) => <li>{w}</li>)}
+              </ul>
+              {/* No investment line. These are situations, not engagements. */}
+              <p class="csc-ex-note">An example of the kind of situation {STORIES[i].name}&rsquo;s work started from.</p>
+            </div>
+          )),
+        ])}
       </div>
 
       <!-- Nicole: off the line, always open. -->
       <aside class="csc-nicole">
+        <span class="csc-face csc-face--n"><Face who={NICOLE.key} name={NICOLE.name} size={44} /></span>
         <p class="csc-kicker">{NICOLE.kicker}</p>
         <p class="csc-name csc-name--n">{NICOLE.name}</p>
         <p class="csc-said csc-said--n">&ldquo;{NICOLE.said}&rdquo;</p>

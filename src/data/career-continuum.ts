@@ -27,6 +27,18 @@
       Rachel answers question 2 for the visitor; David and Nicole have no
       honest match in those five options, so clicking them answers nothing.
       Do not invent one to make the feature look complete.
+
+   6. THE SIX EXAMPLES CARRY NO OUTCOME AND NO PRICE, and that is the whole
+      point of them. Adam, Rachel, David and Nicole are real anonymised
+      clients with real results. The six are recognition examples — a
+      situation to see yourself in — written to Michael's note that he
+      wanted "a few more examples under Adam's category... I'll talk to
+      people that'll describe things a little bit differently". Giving one
+      an investment figure would turn it into a case study HSG never had.
+      Every one maps to an option already in SELF_CHECK and to service copy
+      already published on the live /find-a-job/ page.
+
+      DRAFT until Michael redlines them. The lines are mine, not his.
    ============================================================ */
 
 export const SECTION = {
@@ -41,6 +53,24 @@ export const SECTION = {
 export const DISCLAIMER =
   "Names and certain identifying details have been changed to protect client confidentiality. Individual results are examples and are not guarantees of future outcomes.";
 
+/**
+ * A recognition example. Deliberately has no `investment` and no outcome —
+ * see note 6. Rendered under its category's lead, as a compact row.
+ */
+export interface CareerExample {
+  key: string;
+  name: string;
+  /** The "sounds like me" line, shown on the row. */
+  said: string;
+  tagline: string;
+  /** Two or three sentences. No result, no figure. */
+  body: string;
+  /** Services that already exist in HSG's published copy. */
+  work: string[];
+  /** Index of the option in SELF_CHECK.questions[1] this example answers. */
+  prefill?: number;
+}
+
 export interface CareerStory {
   key: string;
   name: string;
@@ -54,6 +84,8 @@ export interface CareerStory {
   investment: { label: string; value: string };
   /** Index of the option in SELF_CHECK.questions[1] this story answers. */
   prefill?: number;
+  /** Two more ways the same problem gets described. See note 6. */
+  examples?: CareerExample[];
 }
 
 export const STORIES: CareerStory[] = [
@@ -71,6 +103,25 @@ export const STORIES: CareerStory[] = [
     ],
     investment: { label: "Approximate investment", value: "$1,200" },
     prefill: 0, // Getting interviews
+    examples: [
+      {
+        key: "marcus",
+        name: "Marcus",
+        said: "I\u2019m applying and hearing nothing back.",
+        tagline: "Qualified on paper. Invisible in the system.",
+        body: "Three years in, applying steadily, barely a reply. His resume reads like a job description instead of a record of what he actually did \u2014 and the screening software filters it out before a person ever sees it.",
+        work: ["Professional Resume Services", "Crafting an Online Presence"],
+        prefill: 0, // Getting interviews
+      },
+      {
+        key: "priya",
+        name: "Priya",
+        said: "I\u2019ve outgrown my first job and I don\u2019t know what I\u2019m worth.",
+        tagline: "Doing more than the title says.",
+        body: "She has quietly taken on work well beyond what she was hired for. Nobody wrote any of it down, including her \u2014 so when she reads a job posting she cannot tell which level she belongs at.",
+        work: ["Career Roadmapping", "Resume Strategy & Development", "Compensation & Negotiation Preparation"],
+      },
+    ],
   },
   {
     key: "rachel",
@@ -86,6 +137,26 @@ export const STORIES: CareerStory[] = [
     ],
     investment: { label: "Approximate investment", value: "$5,700 over 6 months" },
     prefill: 3, // Confidence / presentation
+    examples: [
+      {
+        key: "dana",
+        name: "Dana",
+        said: "I keep reaching the final round and not getting the offer.",
+        tagline: "Strong on paper. Something happens in the room.",
+        body: "She gets interviews easily and gets close. The feedback, when it comes at all, is vague \u2014 \u201Cculture\u201D, \u201Cnot quite the right fit\u201D. Nobody has ever told her what actually goes wrong in the last conversation.",
+        work: ["Simulated Interviews and Skills Practice", "Post-interview debriefing", "Vetting Your References"],
+        prefill: 1, // Advancing once I interview
+      },
+      {
+        key: "omar",
+        name: "Omar",
+        said: "I\u2019m the one they rely on, and someone else gets the title.",
+        tagline: "Trusted with the work. Passed over for the role.",
+        body: "He is who the team goes to when something breaks. When the management job opened, it went to someone with less tenure and a better story about themselves.",
+        work: ["Career Coaching, Analysis & Strategy", "Presentation and persuasion development", "Networking Strategy"],
+        prefill: 2, // Moving into leadership
+      },
+    ],
   },
   {
     key: "david",
@@ -100,6 +171,25 @@ export const STORIES: CareerStory[] = [
       "Ongoing coaching and accountability",
     ],
     investment: { label: "Approximate investment", value: "$13,000 over 8 months" },
+    examples: [
+      {
+        key: "elaine",
+        name: "Elaine",
+        said: "I\u2019m doing well and I dread Monday.",
+        tagline: "Successful by every measure but one.",
+        body: "Good title, good money, no complaint anyone would take seriously. What she cannot answer is whether the problem is this company or this kind of work.",
+        work: ["Life & Career Deep Dive Inventory", "Career Coaching, Analysis & Strategy"],
+        prefill: 4, // I am not sure
+      },
+      {
+        key: "ray",
+        name: "Ray",
+        said: "People keep telling me to go out on my own. I don\u2019t know if they\u2019re right.",
+        tagline: "The next step might not be a job.",
+        body: "Former colleagues and clients keep asking whether he consults. He has never tested whether that is a real business or just a compliment, and he is not willing to find out by quitting first.",
+        work: ["Career reinvention and business exploration", "Opportunity Evaluation"],
+      },
+    ],
   },
 ];
 

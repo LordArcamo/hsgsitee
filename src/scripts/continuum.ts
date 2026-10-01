@@ -27,6 +27,13 @@ function setupRail(root: HTMLElement): void {
   const panels = tabs.map((t) => document.getElementById(t.getAttribute("aria-controls") ?? ""));
   if (!tabs.length) return;
 
+  /* The career rail is three columns of three. Michael asked that choosing
+     a person light up its column AND the story below it, so the column
+     index travels with the selection: --cc-col moves the caret under the
+     live column, and .is-live marks the column itself. The client rail on
+     /find-talent/ has no columns and all of this no-ops for it. */
+  const cols = Array.from(root.querySelectorAll<HTMLElement>("[data-col]"));
+
   const select = (i: number, focus = false) => {
     tabs.forEach((t, k) => {
       const on = k === i;
@@ -35,6 +42,13 @@ function setupRail(root: HTMLElement): void {
       const p = panels[k];
       if (p) p.hidden = !on;
     });
+
+    const col = tabs[i].dataset.colOf;
+    if (col !== undefined) {
+      root.style.setProperty("--cc-col", col);
+      cols.forEach((c) => c.classList.toggle("is-live", c.dataset.col === col));
+    }
+
     root.style.setProperty("--cc-i", String(i));
     if (focus) tabs[i].focus();
   };

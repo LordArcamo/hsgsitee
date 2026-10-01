@@ -1,0 +1,52 @@
+---
+import { Image } from "astro:assets";
+
+/*
+ * The small round portrait Michael asked for — "almost like a Facebook
+ * thing, a little round picture of a face in the upper right-hand corner".
+ *
+ * The ten portraits do not exist yet; they are being generated from the
+ * prompts in the handoff. So this renders the image if the file is there
+ * and the person's initial if it is not, rather than a broken image or a
+ * grey box. Drop a file into src/assets/people/<key>.png — adam.png,
+ * marcus.png, priya.png, rachel.png, dana.png, omar.png, david.png,
+ * elaine.png, ray.png, nicole.png — and it appears. Nothing else to change.
+ *
+ * import.meta.glob is eager so Astro can process each one at build time;
+ * a key with no file simply resolves to undefined.
+ */
+interface Props {
+  /** Matches the file name in src/assets/people/. */
+  who: string;
+  name: string;
+  size?: number;
+}
+const { who, name, size = 44 } = Astro.props;
+
+const files = import.meta.glob<{ default: ImageMetadata }>(
+  "../../assets/people/*.{png,jpg,jpeg,webp}",
+  { eager: true },
+);
+const found = files[`../../assets/people/${who}.png`]
+  ?? files[`../../assets/people/${who}.webp`]
+  ?? files[`../../assets/people/${who}.jpg`]
+  ?? files[`../../assets/people/${who}.jpeg`];
+---
+
+{found ? (
+  <Image
+    class="face"
+    src={found.default}
+    alt=""
+    width={size * 2}
+    height={size * 2}
+    style={`--face:${size}px`}
+    loading="lazy"
+  />
+) : (
+  /* Placeholder. Decorative either way — the name is right beside it in
+     real text, so neither state needs to be announced. */
+  <span class="face face--wait" style={`--face:${size}px`} aria-hidden="true">
+    {name.slice(0, 1)}
+  </span>
+)}
