@@ -5,12 +5,11 @@ import { Image } from "astro:assets";
  * The small round portrait Michael asked for — "almost like a Facebook
  * thing, a little round picture of a face in the upper right-hand corner".
  *
- * The ten portraits do not exist yet; they are being generated from the
- * prompts in the handoff. So this renders the image if the file is there
- * and the person's initial if it is not, rather than a broken image or a
- * grey box. Drop a file into src/assets/people/<key>.png — adam.png,
- * marcus.png, priya.png, rachel.png, dana.png, omar.png, david.png,
- * elaine.png, ray.png, nicole.png — and it appears. Nothing else to change.
+ * The ten portraits are in src/assets/people/. This still renders the
+ * initial when a file is missing rather than a broken image or a grey box,
+ * so a renamed or dropped file degrades quietly rather than erroring. The
+ * keys are adam, marcus, priya, rachel, dana, omar, david, elaine, ray and
+ * nicole; add src/assets/people/<key>.png and it appears, nothing else.
  *
  * import.meta.glob is eager so Astro can process each one at build time;
  * a key with no file simply resolves to undefined.
