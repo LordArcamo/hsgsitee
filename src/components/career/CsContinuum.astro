@@ -62,7 +62,7 @@ import Face from "./Face.astro";
                 aria-controls={`csc-panel-${s.key}`}
                 aria-selected={i === 0 ? "true" : "false"}
                 tabindex={i === 0 ? 0 : -1}
-                data-prefill={s.prefill === undefined ? undefined : `1:${s.prefill}`}
+                data-prefill={s.prefill === undefined ? undefined : `blocker:${s.prefill}`}
                 data-col-of={i}
                 type="button"
               >
@@ -85,7 +85,7 @@ import Face from "./Face.astro";
                       aria-controls={`csc-panel-${e.key}`}
                       aria-selected="false"
                       tabindex={-1}
-                      data-prefill={e.prefill === undefined ? undefined : `1:${e.prefill}`}
+                      data-prefill={e.prefill === undefined ? undefined : `blocker:${e.prefill}`}
                       data-col-of={i}
                       type="button"
                     >

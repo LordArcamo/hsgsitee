@@ -1,107 +1,134 @@
 import { prefersReducedMotion } from "./prefers-reduced-motion";
 
 /**
- * The guided assessment: one question at a time, Back and Continue.
+ * "Where Are You Right Now?" — the sheet behaviour.
  *
- * The markup already contains all five steps; this hides four of them and
- * moves between. Without it a visitor sees the whole questionnaire at once
- * — the old design, but still answerable — so nothing is lost when the
- * script does not run.
+ * It holds no answers of its own. The inputs are the state, which is the
+ * point: what is on screen and what a form would submit are the same thing,
+ * so they cannot drift apart.
  *
- * It holds no answers of its own. The radios are the state, which is the
- * point: the choice on screen and the value a form would submit cannot
- * drift apart, because they are the same thing.
+ * Without this script the sheet is still a working questionnaire — every
+ * question is in the HTML, every chip is a real input. The script only adds
+ * the running summary, the "why" box once something is chosen, and the
+ * send action. Nothing is built at runtime.
  */
-export function initAssessment(): void {
-  document.querySelectorAll<HTMLElement>("[data-as]").forEach(setup);
+
+/** One answered question, in the order it appears on the page. */
+interface Answer {
+  q: string;
+  values: string[];
 }
 
-function setup(card: HTMLElement): void {
-  const panels = Array.from(card.querySelectorAll<HTMLFieldSetElement>("[data-panel]"));
-  if (!panels.length) return;
+export function initAssessment(): void {
+  document.querySelectorAll<HTMLFormElement>("[data-wn]").forEach(setup);
+}
 
-  const section = card.closest("section") ?? document;
-  const crumbs = Array.from(section.querySelectorAll<HTMLButtonElement>(".as-step"));
-  const back = card.querySelector<HTMLButtonElement>("[data-as-back]");
-  const next = card.querySelector<HTMLButtonElement>("[data-as-next]");
-  const nextLabel = card.querySelector<HTMLElement>("[data-as-next-label]");
-  const final = card.querySelector<HTMLElement>("[data-as-final]");
-  const last = panels.length - 1;
+function setup(form: HTMLFormElement): void {
+  const groups = Array.from(form.querySelectorAll<HTMLFieldSetElement>("[data-q]"));
+  if (!groups.length) return;
 
-  let at = 0;
+  const why = form.querySelector<HTMLElement>("[data-wn-why]");
+  const text = form.querySelector<HTMLTextAreaElement>("#wn-why-text");
+  const out = form.querySelector<HTMLElement>("[data-wn-out]");
+  const list = form.querySelector<HTMLElement>("[data-wn-list]");
+  const send = form.querySelector<HTMLButtonElement>("[data-wn-send]");
+  const clear = form.querySelector<HTMLButtonElement>("[data-wn-clear]");
 
-  const answered = (i: number) => !!panels[i].querySelector<HTMLInputElement>("input:checked");
+  const read = (): Answer[] =>
+    groups
+      .map((g) => ({
+        q: g.querySelector<HTMLElement>(".wn-q-t")?.textContent?.trim() ?? "",
+        values: Array.from(
+          g.querySelectorAll<HTMLInputElement>("input:checked"),
+        ).map((i) => i.value),
+      }))
+      .filter((a) => a.values.length > 0);
 
-  /** The furthest step a visitor may jump to: the first unanswered one. */
-  const reachable = () => {
-    let i = 0;
-    while (i < last && answered(i)) i += 1;
-    return i;
+  /* Question 1 carries descriptions the chip is too thin to hold. Show the
+     chosen one under the row, so the row stays thin and the copy survives. */
+  const echo = (g: HTMLFieldSetElement) => {
+    const line = g.querySelector<HTMLElement>("[data-wn-echo]");
+    if (!line) return;
+    const picked = Array.from(g.querySelectorAll<HTMLInputElement>("input:checked"))
+      .map((i) => i.dataset.desc)
+      .filter(Boolean);
+    line.textContent = picked.join(" ");
+    line.hidden = picked.length === 0;
   };
 
   const paint = () => {
-    crumbs.forEach((c, i) => {
-      const reach = reachable();
-      c.disabled = i > reach;
-      c.classList.toggle("is-done", answered(i) && i !== at);
-      if (i === at) c.setAttribute("aria-current", "step");
-      else c.removeAttribute("aria-current");
-    });
+    groups.forEach(echo);
 
-    if (back) back.hidden = at === 0;
+    const answers = read();
+    const any = answers.length > 0;
 
-    const ok = answered(at);
-    const onLast = at === last;
+    if (why) why.hidden = !any;
+    if (out) out.hidden = !any;
+    if (clear) clear.hidden = !any;
+    if (send) send.disabled = !any;
 
-    // On the last step the button becomes the page's real closing action,
-    // and only once there is an answer — an empty assessment has nothing
-    // to talk through.
-    if (next) {
-      next.hidden = onLast && ok;
-      next.disabled = !ok;
-    }
-    if (final) final.hidden = !(onLast && ok);
-    if (nextLabel) nextLabel.textContent = onLast ? "Continue" : "Continue";
+    if (!list) return;
+    list.replaceChildren(
+      ...answers.map((a) => {
+        const li = document.createElement("li");
+        const q = document.createElement("span");
+        q.className = "wn-out-q";
+        q.textContent = a.q;
+        const v = document.createElement("span");
+        v.className = "wn-out-v";
+        v.textContent = a.values.join(", ");
+        li.append(q, v);
+        return li;
+      }),
+    );
   };
 
-  const show = (to: number, dir: 1 | -1) => {
-    if (to < 0 || to > last || to === at) return;
-    const from = panels[at];
-    const target = panels[to];
+  /** The plain-text body Michael reads. Same shape whether it is mailed or posted. */
+  const summary = (): string => {
+    const lines = read().map((a) => `${a.q}\n  ${a.values.join(", ")}`);
+    const note = text?.value.trim();
+    if (note) lines.push(`Why I picked these\n  ${note}`);
+    return lines.join("\n\n");
+  };
 
-    const move = () => {
-      from.hidden = true;
-      target.hidden = false;
-      at = to;
-      paint();
-      // Focus the question, not the first option: announcing the question
-      // is what a screen-reader user needs on arrival, and it does not
-      // preselect anything by accident.
-      target.querySelector<HTMLElement>(".as-q")?.setAttribute("tabindex", "-1");
-      target.querySelector<HTMLElement>(".as-q")?.focus();
-    };
+  form.addEventListener("change", paint);
+  form.addEventListener("input", (e) => {
+    if (e.target === text) paint();
+  });
 
-    if (prefersReducedMotion()) {
-      move();
+  clear?.addEventListener("click", () => {
+    form.reset();
+    paint();
+    form.querySelector<HTMLElement>(".wn-instruct")?.scrollIntoView({
+      behavior: prefersReducedMotion() ? "auto" : "smooth",
+      block: "start",
+    });
+  });
+
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    if (!read().length) return;
+
+    /* Lord sets data-wn-endpoint in WordPress and this posts instead. Until
+       then the summary goes to the visitor's mail app, which is also the
+       quickest way for Michael to read the email he would be getting. */
+    const endpoint = form.dataset.wnEndpoint;
+    if (endpoint) {
+      void fetch(endpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          source: "where-are-you-right-now",
+          answers: read(),
+          why: text?.value.trim() ?? "",
+        }),
+      });
       return;
     }
 
-    from.classList.add(dir === 1 ? "is-out-left" : "is-out-right");
-    window.setTimeout(() => {
-      from.classList.remove("is-out-left", "is-out-right");
-      move();
-      target.classList.add(dir === 1 ? "is-in-right" : "is-in-left");
-      window.setTimeout(() => target.classList.remove("is-in-right", "is-in-left"), 240);
-    }, 170);
-  };
-
-  card.addEventListener("change", (e) => {
-    if ((e.target as HTMLElement)?.matches?.('input[type="radio"]')) paint();
+    const base = form.dataset.wnMail ?? "mailto:";
+    window.location.href = `${base}&body=${encodeURIComponent(summary())}`;
   });
-
-  next?.addEventListener("click", () => show(at + 1, 1));
-  back?.addEventListener("click", () => show(at - 1, -1));
-  crumbs.forEach((c, i) => c.addEventListener("click", () => show(i, i > at ? 1 : -1)));
 
   paint();
 }

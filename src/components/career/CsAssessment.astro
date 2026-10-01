@@ -3,111 +3,140 @@ import { SELF_CHECK } from "../../data/career-continuum";
 import Icon from "../Icon.astro";
 
 /*
- * "Where Are You Right Now?" — a guided assessment, built to
- * hsg_modern_survey_redesign_instructions.md.
+ * "Where Are You Right Now?" — rebuilt from Michael's call.
  *
- * WHY REAL RADIOS
+ * WHY THIS IS NOT A WIZARD ANY MORE
  *
- * The spec asks for "actual radio inputs or accessible equivalents". They
- * are actual radios, visually hidden inside the card label. That is not a
- * detail: a native radio group gives arrow-key navigation, roving focus,
- * the correct screen-reader announcement ("2 of 4"), and form semantics for
- * free — all of which a div with aria-checked has to reimplement badly.
- * The card is the label, so the whole card is the hit target.
+ * It was five steps, one question per screen, Back and Continue. Michael's
+ * complaints were that there is too much space between options, that the
+ * rows should be thinner "so when it's on mobile they can see more at once
+ * and check it off", and that it is not clear "whether they're making a
+ * choice or following a path".
  *
- * WHY EVERY STEP IS IN THE HTML
+ * That last one is the wizard's own fault. A numbered rail with Continue
+ * buttons reads as a path. A sheet you tick reads as a choice. So: one
+ * sheet, nine questions, chips instead of cards, one action at the end.
  *
- * All five render; four are `hidden`. Nothing is built at runtime, so the
- * questions exist for search engines and for a visitor whose JavaScript
- * fails — they would see all five at once, which is the old design, and
- * still usable. The script's only job is to hide four of them and move
- * between.
+ * WHY REAL INPUTS
  *
- * Selection is NOT auto-advance, per the spec: choose, see the choice,
- * then press Continue. Continue stays disabled until there is one.
+ * Every chip is a visually hidden radio or checkbox inside its label. A
+ * native group gives arrow keys, roving focus, the "2 of 4" announcement
+ * and form semantics for free. It also means the thing on screen and the
+ * thing a form would submit cannot drift apart — they are the same thing.
+ *
+ * WHY data-q
+ *
+ * The continuum prefills an answer when you open one of its stories. It
+ * used to find the question by position, which breaks the moment a
+ * question moves. It now looks up data-q by the question's stable id.
+ *
+ * WHAT HAPPENS ON SUBMIT
+ *
+ * Nothing posts anywhere, because nothing on this site posts anywhere yet.
+ * Michael's actual ask — "if the summary comes to me in the email, I know
+ * a much better way to start" — needs a backend that does not exist. So
+ * the button builds the summary and hands it to the visitor's mail app,
+ * which lets him read the exact email he would receive. Lord replaces this
+ * with a POST by setting data-wn-endpoint; the script prefers it when set.
  */
-const steps = SELF_CHECK.steps;
+const S = SELF_CHECK;
 ---
 
-<section class="sec sec--soft as-sec" id="where-now">
+<section class="sec sec--soft wn-sec" id="where-now">
   <div class="wrap">
-    <div class="as-head rv">
-      <p class="as-eyebrow">{SELF_CHECK.eyebrow}</p>
-      <h2>{SELF_CHECK.title}</h2>
-      <p class="as-lede">{SELF_CHECK.lede}</p>
+    <div class="wn-head rv">
+      <p class="wn-eyebrow">{S.eyebrow}</p>
+      <h2>{S.title}</h2>
+      <p class="wn-lede">{S.lede}</p>
     </div>
 
-    {/* Progress. Buttons, not links — a visitor may go back to a step they
-        have answered, and never forward past one they have not. */}
-    <ol class="as-steps rv" style="--d:1" data-as-steps aria-label="Progress">
-      {steps.map((st, i) => (
-        <li>
-          <button
-            class="as-step"
-            type="button"
-            data-goto={i}
-            aria-current={i === 0 ? "step" : undefined}
-            disabled={i !== 0}
-          >
-            <span class="as-step-n"><i>{String(i + 1).padStart(2, "0")}</i></span>
-            <span class="as-step-l">{st.nav}</span>
-          </button>
-        </li>
-      ))}
-    </ol>
-
-    <div class="as-card rv" style="--d:1" data-as>
-      <p class="as-hint">
-        <span class="as-hint-ic" aria-hidden="true">
-          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 21h4"/><path d="M12 3a6 6 0 0 0-3.5 10.9c.5.4.8 1 .9 1.6h5.2c.1-.6.4-1.2.9-1.6A6 6 0 0 0 12 3Z"/></svg>
-        </span>
-        {SELF_CHECK.micro}
+    <form
+      class="wn-sheet rv"
+      style="--d:1"
+      data-wn
+      data-wn-endpoint=""
+      data-wn-mail={`mailto:?subject=${encodeURIComponent(S.send.subject)}`}
+      novalidate
+    >
+      {/* Michael: "tell people what to do — choose what applies to you",
+          with arrows. The arrow points at the first group, not decoration. */}
+      <p class="wn-instruct">
+        <span class="wn-instruct-t">{S.instruction}</span>
+        <span class="wn-instruct-s">{S.instructionSub}</span>
+        <span class="wn-arrow" aria-hidden="true">↓</span>
       </p>
 
-      {steps.map((st, i) => (
-        <fieldset class="as-panel" data-panel={i} hidden={i !== 0}>
-          <legend class="as-q">
-            <span class="as-q-n" aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
-            <span class="as-q-t">{st.q}</span>
-          </legend>
+      <p class="wn-micro">
+        <span class="wn-micro-ic" aria-hidden="true">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 21h4"/><path d="M12 3a6 6 0 0 0-3.5 10.9c.5.4.8 1 .9 1.6h5.2c.1-.6.4-1.2.9-1.6A6 6 0 0 0 12 3Z"/></svg>
+        </span>
+        {S.micro}
+      </p>
 
-          <div class="as-grid">
-            {st.options.map((o) => (
-              <label class="as-opt">
-                <input type="radio" name={`q${i + 1}`} value={o.value} />
-                <span class="as-opt-ic" aria-hidden="true"><Icon name={o.icon} size={19} /></span>
-                <span class="as-opt-body">
-                  <span class="as-opt-t">{o.value}</span>
-                  {o.desc && <span class="as-opt-d">{o.desc}</span>}
-                </span>
-                <span class="as-opt-mark" aria-hidden="true"></span>
-              </label>
-            ))}
-          </div>
-        </fieldset>
+      {S.groups.map((g) => (
+        <div class="wn-group" data-draft={g.draft ? "" : undefined}>
+          <p class="wn-group-l">
+            <span>{g.label}</span>
+            {g.draft && <span class="wn-draft" title={S.draftNote}>Draft</span>}
+          </p>
+
+          {g.questions.map((q) => (
+            <fieldset class="wn-q" data-q={q.id} data-pick={q.pick}>
+              <legend class="wn-q-head">
+                <span class="wn-q-t">{q.q}</span>
+                <span class="wn-q-hint">{q.pick === "one" ? S.pickOne : S.pickAny}</span>
+              </legend>
+
+              <div class="wn-chips">
+                {q.options.map((o) => (
+                  <label class="wn-chip">
+                    <input
+                      type={q.pick === "one" ? "radio" : "checkbox"}
+                      name={q.id}
+                      value={o.value}
+                      data-desc={o.desc}
+                    />
+                    <span class="wn-chip-ic" aria-hidden="true"><Icon name={o.icon} size={15} /></span>
+                    <span class="wn-chip-t">{o.value}</span>
+                  </label>
+                ))}
+              </div>
+
+              {/* Question 1's descriptions are real copy from the spec, but
+                  they will not fit in a chip. They appear here once that
+                  chip is chosen, so the row stays thin and nothing is lost. */}
+              <p class="wn-echo" data-wn-echo hidden></p>
+            </fieldset>
+          ))}
+        </div>
       ))}
 
-      <div class="as-nav">
-        <button class="as-back" type="button" data-as-back hidden>
-          <span class="arrow" aria-hidden="true">←</span> {SELF_CHECK.back}
-        </button>
-
-        <button class="btn as-next" type="button" data-as-next disabled>
-          <span data-as-next-label>{SELF_CHECK.next}</span>
-          <span class="arrow" aria-hidden="true">→</span>
-        </button>
-
-        {/* Step 5 swaps the button for the page's real closing action. It is
-            a link, not a submit: this assessment captures nothing, and the
-            intake at #talk is the one place that does. */}
-        {/* A same-page anchor, so NOT wrapped in url(): that helper adds the
-            Pages base prefix and turned #talk into /#talk, which points at the
-            homepage. */}
-        <a class="btn as-final" href={SELF_CHECK.final.href} data-as-final hidden>
-          {SELF_CHECK.final.label} <span class="arrow" aria-hidden="true">→</span>
-        </a>
+      {/* His question, verbatim, and the reason the whole thing exists:
+          "if they don't write something, I don't know who they are." */}
+      <div class="wn-why" data-wn-why hidden>
+        <label class="wn-why-q" for="wn-why-text">{S.why.q}</label>
+        <p class="wn-why-hint">{S.why.hint}</p>
+        <textarea id="wn-why-text" name="why" rows="4" placeholder={S.why.placeholder}></textarea>
       </div>
-    </div>
+
+      <div class="wn-out" data-wn-out hidden>
+        <p class="wn-out-l">{S.recap.title}</p>
+        <ul class="wn-out-list" data-wn-list></ul>
+      </div>
+
+      <div class="wn-act">
+        <button class="btn wn-send" type="submit" data-wn-send disabled>
+          {S.send.label} <span class="arrow" aria-hidden="true">→</span>
+        </button>
+        <button class="wn-clear" type="button" data-wn-clear hidden>{S.clear}</button>
+        <p class="wn-act-note">{S.send.note}</p>
+      </div>
+
+      {/* A same-page anchor, so NOT wrapped in url(): that helper adds the
+          Pages base prefix and turned #talk into /#talk, which points at
+          the homepage. */}
+      <a class="wn-talk" href={S.final.href}>{S.final.label} <span class="arrow" aria-hidden="true">→</span></a>
+    </form>
   </div>
 </section>
 
