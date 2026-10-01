@@ -58,15 +58,25 @@ export interface ClientStory {
   marker: string;
   /** The marker's one-line answer. */
   answer: string;
-  /** Short lines that set the scene, before the prose. */
+  /** Short lines that set the scene. Rendered in the panel's side column. */
   conditions?: string[];
+  /** What that list IS. Parker's five are conditions that have to hold;
+      Summit's seven are examples of the thing being owned. One label for
+      both would be wrong, so it travels with the story. */
+  conditionsLabel?: string;
   body: string[];
   /** A line the panel sets apart. */
   pull?: string;
   /** Prose that follows the pull quote. */
   after?: string[];
-  /** Shown as its own panel — the thing competitors cannot do. */
-  callout?: { label: string; body: string };
+  /** Shown as its own panel — the thing competitors cannot do.
+      `where` decides which column it sits in, and it is a judgement about
+      what the callout IS. Meridian's is a statement about how HSG works, so
+      it belongs inside the story. Atlas's is a number, so it belongs in the
+      side rail where a number can be seen without reading. Getting this
+      wrong leaves one column much longer than the other and puts a hole in
+      the panel. */
+  callout?: { label: string; body: string; where?: "body" | "side" };
   engagement: string[];
   /** Atlas only: its own heading, because it is a different kind of case. */
   aside?: { kicker: string; title: string };
@@ -80,6 +90,7 @@ export const STORIES: ClientStory[] = [
     said: "We know exactly who we need.",
     marker: "We know who we need",
     answer: "Find the right person.",
+    conditionsLabel: "When this is true",
     conditions: [
       "The department is established.",
       "The position is clearly defined.",
@@ -107,11 +118,20 @@ export const STORIES: ClientStory[] = [
     said: "We can hire people. We just can’t seem to keep them.",
     marker: "We’ve hired before, but they don’t stay",
     answer: "Find out what’s really happening.",
+    conditionsLabel: "What we sometimes find",
+    conditions: [
+      "Compensation changed after someone joined.",
+      "A promised benefit never materialized.",
+      "The responsibilities shifted dramatically from the position originally presented.",
+      "Sales changed the commission structure and Human Resources never knew.",
+      "Employees were prevented from having proper exit conversations.",
+      "The company loved hearing a candidate’s ideas during the interview — but once hired, wasn’t willing to let that person implement them.",
+    ],
     body: [
       "The company has filled the position before. Sometimes several times.",
       "The new employee looked great during the interview. Then something happened. They resigned. They stopped performing. The manager became frustrated. Projects stalled. The department fell behind. And everyone went back to recruiting again.",
       "When this happens repeatedly, the answer may not be another pile of resumes. We start asking questions.",
-      "Sometimes candidates and former employees tell us things the company hasn’t heard. Perhaps compensation changed after someone joined. Perhaps a promised benefit never materialized. Maybe the responsibilities shifted dramatically from the position originally presented. Maybe Sales changed the commission structure and Human Resources never knew. Maybe employees were prevented from having proper exit conversations. Or perhaps a company loved hearing a candidate’s ideas during the interview — but once hired, wasn’t willing to let that person actually implement them.",
+      "Sometimes candidates and former employees tell us things the company hasn’t heard.",
       "Those details matter.",
     ],
     pull: "Why does this position keep becoming vacant?",
@@ -137,6 +157,7 @@ export const STORIES: ClientStory[] = [
     said: "We don’t just need another employee. We need this person to change something.",
     marker: "This person needs to own something important",
     answer: "Find the Anchor.",
+    conditionsLabel: "A few examples",
     conditions: [
       "A stalled project.",
       "A new department.",
@@ -170,6 +191,15 @@ export const STORIES: ClientStory[] = [
     marker: "The business itself needs to move",
     answer: "Sometimes recruiting and strategy become one conversation.",
     aside: { kicker: "And sometimes…", title: "The Hiring Problem Is Really a Business Problem." },
+    /* Michael's four, from the call. Related to the Anchor Hire, he said,
+       but not the same thing. */
+    conditionsLabel: "A few examples",
+    conditions: [
+      "The company was just acquired.",
+      "Ownership has changed.",
+      "The business has changed direction.",
+      "Someone is needed to support new branding.",
+    ],
     body: [
       "This company had watched major retailers reduce its presence SKU after SKU. Competition from overseas manufacturing, online sellers and major national players was changing the economics of the business.",
       "At one point, its presence with an important big-box customer had declined from approximately 14 SKUs to 9. Anyone who sells through major retailers understands what that can mean.",
@@ -181,6 +211,7 @@ export const STORIES: ClientStory[] = [
     callout: {
       label: "The result",
       body: "From approximately 14 SKUs… down to 9… and ultimately up to 37.",
+      where: "side",
     },
     pull: "Sometimes the right hire fills a position. Sometimes the right person helps change the trajectory of the company.",
     engagement: [
@@ -217,13 +248,35 @@ export const LEARN = {
   creed: ["We don’t guess.", "We get to know both sides.", "Then we match."],
 };
 
-/* ---------- Where is your company? ----------
-   Five questions, five clicks. No email, no score, no diagnosis: an owner
-   will not fill in a survey that says his company has a problem, but he
-   will click the line that sounds like him and draw his own conclusion. */
+/* ---------- Where's your company right now? ----------
+   Five questions, no email, no score, no diagnosis: an owner will not fill
+   in a survey that says his company has a problem, but he will click the
+   line that sounds like him and draw his own conclusion.
+
+   FROM MICHAEL'S CALL
+
+   - The heading becomes "Where's your company right now?" with
+     "(a few examples)" under it, so it reads as examples rather than as a
+     complete list of everything HSG handles.
+   - An "Other" box they can fill in — "saves you from doing another 10
+     examples."
+   - "Ask AI for 20 different things a company might need in a new hire"
+     that differ from last time. That is question 6 below.
+
+   WHAT IS HIS AND WHAT IS MINE
+
+   The first five questions and all their options are the original handoff's,
+   unchanged. QUESTION 6 IS DRAFT: the question is Michael's instruction, the
+   twenty answers are mine and he has not seen them. It carries draft: true
+   so it is one block to redline or pull. */
 export const SELF_CHECK = {
-  title: "Where Is Your Company?",
-  lede: ["You don’t need to complete a 30-question assessment.", "Start with five simple questions."],
+  title: "Where’s Your Company Right Now?",
+  /* His phrase. The point of it is that nobody reads this as the whole
+     catalogue of what HSG does. */
+  sub: "(a few examples)",
+  /* "Five" was right until question 6 was added. If Michael pulls the draft
+     question, this goes back to five. */
+  lede: ["You don’t need to complete a 30-question assessment.", "Start with six simple questions."],
   questions: [
     {
       q: "Is everyone involved in the hire clear about what this person needs to accomplish?",
@@ -254,7 +307,41 @@ export const SELF_CHECK = {
         "Acquisition or major business change",
       ],
     },
+    {
+      q: "What does this person need to do that the last one didn’t?",
+      draft: true,
+      options: [
+        "Hold the team together",
+        "Actually close business",
+        "Bring a book of relationships",
+        "Fix what the last person left",
+        "Make decisions without being asked twice",
+        "Work without being managed",
+        "Run the department, not just work in it",
+        "Say no to the owner when it matters",
+        "Understand the numbers, not just the product",
+        "Build a process where there isn’t one",
+        "Carry the technical depth we’ve been renting",
+        "Open a market we have never sold into",
+        "Handle a customer we cannot afford to lose",
+        "Bring systems or software we don’t have",
+        "Stay longer than eighteen months",
+        "Get on with a difficult manager",
+        "Train the people underneath them",
+        "Travel the way this job really requires",
+        "Represent us in front of a national account",
+        "Grow into the job above this one",
+      ],
+    },
   ],
+  /* Michael: "add an Other box they can fill in — saves you from doing
+     another 10 examples." */
+  other: {
+    q: "Something else?",
+    hint: "If none of these sound like you, tell us in your own words. That is usually the more interesting answer.",
+    placeholder: "What’s actually going on…",
+  },
+  draftNote: "Draft — the question is Michael’s; the twenty answers under it are not his yet.",
 };
 
 /* ---------- closing ---------- */

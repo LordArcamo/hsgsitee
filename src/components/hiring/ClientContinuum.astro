@@ -80,26 +80,45 @@ import { SECTION, STORIES, DISCLAIMER, LEARN, SELF_CHECK, CLOSING } from "../../
             </div>
           </div>
 
-          <div class="cc-body">
-            {s.conditions && (
-              <ul class="cc-conds">
-                {s.conditions.map((c) => <li>{c}</li>)}
-              </ul>
-            )}
+          <div class="cc-cols">
+            <div class="cc-body">
+              {s.body.map((p) => <p>{p}</p>)}
 
-            {s.body.map((p) => <p>{p}</p>)}
+              {s.callout && s.callout.where !== "side" && (
+                <div class="cc-callout">
+                  <p class="cc-callout-l">{s.callout.label}</p>
+                  <p class="cc-callout-b">{s.callout.body}</p>
+                </div>
+              )}
 
-            {s.callout && (
-              <div class="cc-callout">
-                <p class="cc-callout-l">{s.callout.label}</p>
-                <p class="cc-callout-b">{s.callout.body}</p>
-              </div>
-            )}
+              {s.pull && <p class="cc-pull">{s.pull}</p>}
+              {s.after?.map((p) => <p>{p}</p>)}
+            </div>
 
-            {s.pull && <p class="cc-pull">{s.pull}</p>}
-            {s.after?.map((p) => <p>{p}</p>)}
+            {/* The side column. Everything in it was already on the page —
+                it was stacked underneath, leaving the right third blank. */}
+            <aside class="cc-side">
+              {s.conditions && (
+                <div class="cc-side-b">
+                  <p class="cc-side-l">{s.conditionsLabel ?? "A few examples"}</p>
+                  <ul class="cc-conds">
+                    {s.conditions.map((c) => <li>{c}</li>)}
+                  </ul>
+                </div>
+              )}
+
+              {s.callout?.where === "side" && (
+                <div class="cc-callout cc-callout--side">
+                  <p class="cc-callout-l">{s.callout.label}</p>
+                  <p class="cc-callout-b">{s.callout.body}</p>
+                </div>
+              )}
+            </aside>
           </div>
 
+          {/* Full width, under both columns: it is a row of chips, and in a
+              320px side column it ran so long that the side became taller
+              than the story and the gap just moved to the other side. */}
           <div class="cc-eng">
             <p class="cc-eng-l">Typical engagement</p>
             <ul>
@@ -131,13 +150,22 @@ import { SECTION, STORIES, DISCLAIMER, LEARN, SELF_CHECK, CLOSING } from "../../
     <div class="cc-check rv" style="--d:2" data-cc-check>
       <div class="cc-check-head">
         <h3>{SELF_CHECK.title}</h3>
+        {/* Michael's phrase, and the whole point of it: nobody should read
+            this as the complete catalogue of what HSG handles. */}
+        <p class="cc-check-sub">{SELF_CHECK.sub}</p>
         {SELF_CHECK.lede.map((l) => <p>{l}</p>)}
       </div>
 
       <ol class="cc-qs">
         {SELF_CHECK.questions.map((q, i) => (
-          <li class="cc-q">
-            <p class="cc-q-t"><span aria-hidden="true">{i + 1}</span>{q.q}</p>
+          <li class="cc-q" data-draft={q.draft ? "" : undefined}>
+            <p class="cc-q-t">
+              <span class="cc-q-n" aria-hidden="true">{i + 1}</span>
+              <span class="cc-q-x">
+                {q.q}
+                {q.draft && <span class="cc-draft" title={SELF_CHECK.draftNote}>Draft</span>}
+              </span>
+            </p>
             <div class="cc-opts" role="group" aria-label={q.q}>
               {q.options.map((o) => (
                 <button class="cc-opt" type="button" aria-pressed="false">{o}</button>
@@ -146,6 +174,15 @@ import { SECTION, STORIES, DISCLAIMER, LEARN, SELF_CHECK, CLOSING } from "../../
           </li>
         ))}
       </ol>
+
+      {/* "Add an Other box they can fill in — saves you from doing another
+          10 examples." Nothing on this site posts anywhere yet, so this
+          captures nothing; it is here so the shape is right when it does. */}
+      <div class="cc-other">
+        <label class="cc-other-q" for="cc-other-text">{SELF_CHECK.other.q}</label>
+        <p class="cc-other-h">{SELF_CHECK.other.hint}</p>
+        <textarea id="cc-other-text" name="other" rows="3" placeholder={SELF_CHECK.other.placeholder}></textarea>
+      </div>
     </div>
 
     <!-- closing -->
