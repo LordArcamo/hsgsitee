@@ -33,6 +33,10 @@ function setup(form: HTMLFormElement): void {
   const list = form.querySelector<HTMLElement>("[data-wn-list]");
   const send = form.querySelector<HTMLButtonElement>("[data-wn-send]");
   const clear = form.querySelector<HTMLButtonElement>("[data-wn-clear]");
+  const bar = form.querySelector<HTMLElement>("[data-wn-bar]");
+  const done = form.querySelector<HTMLElement>("[data-wn-done]");
+  const fill = form.querySelector<HTMLElement>("[data-wn-fill]");
+  const act = form.querySelector<HTMLElement>("[data-wn-act]");
 
   const read = (): Answer[] =>
     groups
@@ -56,11 +60,30 @@ function setup(form: HTMLFormElement): void {
     line.hidden = picked.length === 0;
   };
 
+  /* Two gates on the sticky bar, both set by the observers below.
+     - actSeen: the real Send button is on screen, so a sticky one would be a
+       second live copy of it.
+     - inView: the survey itself is on screen. Without this the bar followed
+       the visitor down the FAQ and back up to the hero, still offering to
+       send a survey they had scrolled away from. */
+  let actSeen = false;
+  let inView = false;
+
   const paint = () => {
     groups.forEach(echo);
 
     const answers = read();
     const any = answers.length > 0;
+
+    /* Mark each question answered, so there is feedback at the question and
+       not only in the summary at the bottom. */
+    groups.forEach((g) =>
+      g.classList.toggle("is-done", !!g.querySelector("input:checked")),
+    );
+
+    if (done) done.textContent = String(answers.length);
+    if (fill) fill.style.setProperty("--wn-p", String(answers.length / groups.length));
+    if (bar) bar.hidden = !any || actSeen || !inView;
 
     if (why) why.hidden = !any;
     if (out) out.hidden = !any;
@@ -90,6 +113,31 @@ function setup(form: HTMLFormElement): void {
     if (note) lines.push(`Why I picked these\n  ${note}`);
     return lines.join("\n\n");
   };
+
+  /* No IntersectionObserver (an old browser, a test harness) leaves inView
+     false, so the bar simply never appears. The sheet still works without
+     it; a bar stuck to the bottom of an unrelated section would not. */
+  const section = form.closest("section");
+  if ("IntersectionObserver" in window) {
+    if (act) {
+      new IntersectionObserver(
+        (entries) => {
+          actSeen = entries[0].isIntersecting;
+          paint();
+        },
+        { rootMargin: "0px 0px -40px 0px" },
+      ).observe(act);
+    }
+    if (section) {
+      new IntersectionObserver(
+        (entries) => {
+          inView = entries[0].isIntersecting;
+          paint();
+        },
+        { rootMargin: "-10% 0px -10% 0px" },
+      ).observe(section);
+    }
+  }
 
   form.addEventListener("change", paint);
   form.addEventListener("input", (e) => {

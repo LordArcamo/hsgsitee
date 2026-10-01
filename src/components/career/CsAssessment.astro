@@ -40,6 +40,11 @@ import Icon from "../Icon.astro";
  * with a POST by setting data-wn-endpoint; the script prefers it when set.
  */
 const S = SELF_CHECK;
+
+/* Questions are numbered 01-09 across both groups, not restarted per group:
+   nine is the number a visitor is being asked to get through. */
+const OFFSET = S.groups.map((_, i) => S.groups.slice(0, i).reduce((n, p) => n + p.questions.length, 0));
+const NUM = (gi: number, qi: number) => OFFSET[gi] + qi + 1;
 ---
 
 <section class="sec sec--soft wn-sec" id="where-now">
@@ -73,18 +78,26 @@ const S = SELF_CHECK;
         {S.micro}
       </p>
 
-      {S.groups.map((g) => (
+      {S.groups.map((g, gi) => (
         <div class="wn-group" data-draft={g.draft ? "" : undefined}>
           <p class="wn-group-l">
             <span>{g.label}</span>
             {g.draft && <span class="wn-draft" title={S.draftNote}>Draft</span>}
           </p>
 
-          {g.questions.map((q) => (
+          {g.questions.map((q, qi) => (
             <fieldset class="wn-q" data-q={q.id} data-pick={q.pick}>
               <legend class="wn-q-head">
-                <span class="wn-q-t">{q.q}</span>
-                <span class="wn-q-hint">{q.pick === "one" ? S.pickOne : S.pickAny}</span>
+                {/* The number and the tick sit inside the head row, so the
+                    structure they add costs no height. */}
+                <span class="wn-q-n" aria-hidden="true">{String(NUM(gi, qi)).padStart(2, "0")}</span>
+                <span class="wn-q-body">
+                  <span class="wn-q-t">{q.q}</span>
+                  <span class="wn-q-hint">{q.pick === "one" ? S.pickOne : S.pickAny}</span>
+                  <span class="wn-q-ok" aria-hidden="true">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="m20 6-11 11-5-5"/></svg>
+                  </span>
+                </span>
               </legend>
 
               <div class="wn-chips">
@@ -124,7 +137,22 @@ const S = SELF_CHECK;
         <ul class="wn-out-list" data-wn-list></ul>
       </div>
 
-      <div class="wn-act">
+      {/* Appears once something is answered and hides again when the real
+          action block scrolls into view, so there are never two live Send
+          buttons on screen at the same time. */}
+      <div class="wn-bar" data-wn-bar hidden>
+        <div class="wn-bar-in">
+          <p class="wn-bar-count">
+            <span data-wn-done>0</span> of {S.groups.reduce((n, g) => n + g.questions.length, 0)} answered
+          </p>
+          <span class="wn-bar-track" aria-hidden="true"><span class="wn-bar-fill" data-wn-fill></span></span>
+          <button class="btn wn-bar-send" type="submit">
+            {S.send.label} <span class="arrow" aria-hidden="true">→</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="wn-act" data-wn-act>
         <button class="btn wn-send" type="submit" data-wn-send disabled>
           {S.send.label} <span class="arrow" aria-hidden="true">→</span>
         </button>

@@ -958,6 +958,159 @@
   .wn-send { width: 100%; justify-content: center; min-height: 48px; }
 }
 
+
+/* ---------- making it look designed, without giving the height back ----------
+   The first pass was dense but flat: nine identical rows, no feedback when
+   you answered one, the two groups indistinguishable, and the Send button
+   2,200px below where you start. Dense and plain are not the same thing.
+
+   Everything here either costs no height (numbers and ticks sit inside the
+   head row that already exists) or buys something back (the sticky bar
+   removes a 2,200px scroll). */
+
+/* ---------- each group is its own panel ---------- */
+.wn-group {
+  margin-top: clamp(18px, 2.2vw, 26px);
+  padding: clamp(15px, 1.8vw, 20px) clamp(14px, 1.8vw, 20px) clamp(17px, 2vw, 22px);
+  border-radius: 15px;
+  background: var(--ground);
+  border: 1px solid var(--rule-soft);
+}
+/* The draft group reads as provisional rather than as a second helping of
+   the same thing. */
+.wn-group[data-draft] {
+  background: color-mix(in srgb, var(--career-fill) 7%, var(--surface));
+  border-color: color-mix(in srgb, var(--career-fill) 30%, transparent);
+  border-style: dashed;
+}
+.wn-group-l { margin-bottom: 2px; }
+
+/* ---------- the question head: number, title, type, tick ---------- */
+.wn-q-head {
+  /* Two columns, not one wrapping row: a long question used to push the
+     number onto a line of its own. The number owns column one; the title,
+     the rule pill and the tick wrap inside column two. */
+  display: grid; grid-template-columns: auto minmax(0, 1fr);
+  align-items: baseline; gap: 3px 9px;
+}
+.wn-q-body {
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: 3px 9px;
+  min-width: 0;
+}
+.wn-q-n {
+  font-family: var(--display); font-weight: 900; font-size: 11.5px;
+  letter-spacing: .06em; color: var(--ink-3);
+  font-variant-numeric: tabular-nums;
+  transition: color .2s ease;
+}
+/* "Pick one" / "pick as many as apply" becomes a quiet pill — it is a rule,
+   and a rule reads better as a token than as more small caps. */
+.wn-q-hint {
+  padding: 2px 8px; border-radius: 999px; font-size: 10.4px;
+  background: color-mix(in srgb, var(--ink-3) 11%, transparent);
+  color: var(--ink-3); letter-spacing: .07em;
+}
+/* The tick is the feedback that was missing: answer a question and the
+   question itself says so, rather than only the summary at the bottom. */
+.wn-q-ok {
+  display: inline-flex; width: 17px; height: 17px; border-radius: 50%;
+  align-items: center; justify-content: center; flex: none;
+  background: var(--accent); color: #fff;
+  opacity: 0; transform: scale(.4);
+  transition: opacity .2s ease, transform .22s cubic-bezier(.2, 1.5, .4, 1);
+}
+.wn-q.is-done .wn-q-ok { opacity: 1; transform: scale(1); }
+.wn-q.is-done .wn-q-n { color: var(--accent); }
+.wn-q.is-done .wn-q-hint { opacity: .5; }
+
+/* A rail down the left of an answered question. Desktop only: on a phone the
+   indent would eat the chip width that the whole brief was about. */
+@media (min-width: 621px) {
+  .wn-q {
+    padding-left: 14px;
+    border-left: 2px solid transparent;
+    transition: border-color .22s ease;
+  }
+  .wn-q.is-done { border-left-color: var(--accent); }
+}
+
+/* ---------- chips with some weight to them ---------- */
+.wn-chip {
+  background: var(--surface);
+  box-shadow: 0 1px 2px rgb(16 12 32 / .04);
+  transition: border-color .18s ease, background .18s ease, color .18s ease,
+              box-shadow .18s ease, transform .18s cubic-bezier(.2, 1.4, .4, 1);
+}
+.wn-chip:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 3px 8px rgb(16 12 32 / .07);
+}
+.wn-chip:has(input:checked) {
+  box-shadow: 0 2px 10px color-mix(in srgb, var(--accent) 34%, transparent);
+  transform: translateY(-1px);
+}
+.wn-chip:active { transform: translateY(0); }
+
+/* ---------- the sticky bar ----------
+   One sheet beats a wizard everywhere except here: the action ends up a long
+   way from where the visitor is working. This keeps the progress and the
+   button in thumb reach, and gets out of the way when the real one arrives. */
+.wn-bar {
+  position: fixed; inset: auto 0 0 0; z-index: 40;
+  padding: 10px clamp(12px, 3vw, 20px) calc(10px + env(safe-area-inset-bottom, 0px));
+  background: color-mix(in srgb, var(--surface) 92%, transparent);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid var(--rule);
+  box-shadow: 0 -6px 24px rgb(16 12 32 / .09);
+  animation: wn-bar-up .26s cubic-bezier(.22, 1, .36, 1) both;
+}
+.wn-bar[hidden] { display: none; }
+@keyframes wn-bar-up { from { transform: translateY(100%); } to { transform: translateY(0); } }
+.wn-bar-in {
+  max-width: 920px; margin-inline: auto;
+  display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 12px 14px;
+}
+.wn-bar-count {
+  margin: 0; font-size: 12.6px; font-weight: 800; color: var(--ink-2);
+  font-variant-numeric: tabular-nums; white-space: nowrap;
+}
+.wn-bar-track {
+  height: 4px; border-radius: 999px; overflow: hidden;
+  background: color-mix(in srgb, var(--ink-3) 20%, transparent);
+}
+.wn-bar-fill {
+  display: block; height: 100%; border-radius: inherit;
+  width: calc(var(--wn-p, 0) * 100%);
+  background: var(--accent);
+  transition: width .32s cubic-bezier(.22, 1, .36, 1);
+}
+.wn-bar-send { border-radius: 9px; padding: 0 16px; min-height: 40px; font-size: 13.4px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .wn-q-ok, .wn-chip, .wn-bar-fill, .wn-q { transition: none; }
+  .wn-bar { animation: none; }
+  .wn-chip:hover, .wn-chip:has(input:checked) { transform: none; }
+}
+
+@media (max-width: 620px) {
+  /* The panel's side padding cost 41px per question in extra chip wrapping,
+     which is the opposite of the brief. The negative margin pulls it back out
+     to the sheet's own padding, so the panel is still visible and the chips
+     get every pixel of line they had before. */
+  .wn-group {
+    padding: 13px 12px 15px; border-radius: 13px;
+    margin-inline: -12px;
+  }
+  .wn-q-hint { font-size: 9.8px; padding: 2px 7px; }
+  /* The count is the one thing worth keeping beside the button on a phone;
+     the bar itself carries the rest of the story. */
+  .wn-bar-in { grid-template-columns: 1fr auto; gap: 8px 10px; }
+  .wn-bar-track { grid-column: 1 / -1; order: 2; }
+  .wn-bar-send { min-height: 42px; }
+  /* The sticky bar covers the bottom of the sheet, so give the page room to
+     scroll past it. */
+  .wn-sec { padding-bottom: calc(clamp(56px, 7vw, 96px) + 72px); }
+}
 /* ---------- faces, the extra examples, and the connector ----------
    Michael's call: two more examples under each of Adam, Rachel and David;
    a small round face in the UPPER RIGHT of each card; and a line from the
