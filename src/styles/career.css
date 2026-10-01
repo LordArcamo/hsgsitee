@@ -499,10 +499,14 @@
   padding: 0; background: none; border: 0; cursor: pointer; font: inherit;
   text-align: left; color: inherit;
 }
-.csc-marker:nth-child(1) { --m: #ffd84d; }
-.csc-marker:nth-child(2) { --m: var(--career-fill); }
-.csc-marker:nth-child(3) { --m: #c08d00; }
-.csc-marker > span:first-child,
+/* The tint belongs to the COLUMN, not to the marker's position among its
+   siblings: each marker is now the first child of its own column, so an
+   :nth-child() rule here painted all three the same yellow. On the column
+   it also reaches the two example rows underneath. */
+.csc-col[data-col="0"] { --m: #ffd84d; }
+.csc-col[data-col="1"] { --m: var(--career-fill); }
+.csc-col[data-col="2"] { --m: #c08d00; }
+.csc-marker .csc-name,
 .csc-marker .csc-said {
   /* the quote card */
   background: var(--surface); border: 1px solid var(--rule);
@@ -987,12 +991,12 @@
   transition: background .2s ease, border-color .2s ease;
 }
 .csc-row:hover {
-  background: color-mix(in srgb, var(--career-fill) 10%, var(--surface));
-  border-color: color-mix(in srgb, var(--career-fill) 35%, transparent);
+  background: color-mix(in srgb, var(--m, var(--career-fill)) 10%, var(--surface));
+  border-color: color-mix(in srgb, var(--m, var(--career-fill)) 35%, transparent);
 }
 .csc-row[aria-selected="true"] {
-  background: color-mix(in srgb, var(--career-fill) 16%, var(--surface));
-  border-color: var(--career-fill);
+  background: color-mix(in srgb, var(--m, var(--career-fill)) 16%, var(--surface));
+  border-color: var(--m, var(--career-fill));
 }
 .csc-row:focus-visible { outline: 2px solid var(--career); outline-offset: 2px; }
 .csc-row-face { display: block; }
