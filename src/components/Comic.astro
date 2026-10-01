@@ -1,0 +1,76 @@
+---
+import { Image } from "astro:assets";
+import type { ComicStrip } from "../data/comics";
+
+/*
+ * A comic strip, as six panels rather than one picture.
+ *
+ * WHY SIX FILES
+ *
+ * The strips are generated as a single 1448px image with the panels already
+ * laid out 3x2. Shipped that way, each panel gets a third of the column —
+ * 119px on a phone — and every word in the artwork disappears. Measured, the
+ * largest lettering in the strip renders at 4.9px on a phone. Six files in a
+ * responsive grid give one panel the whole column instead, which is three
+ * times the size with no change to the artwork.
+ *
+ * WHY THE CAPTION IS TYPE
+ *
+ * It was a yellow bar inside each panel. As type it stays sharp at any
+ * width, it is readable by a screen reader and by Google, and the wording
+ * can change without regenerating a picture. The panel keeps the yellow bar
+ * look; the bar is now a div.
+ *
+ * The drawn speech bubbles stay in the art, because they are lettering and
+ * part of the joke. The alt text carries what they say.
+ */
+interface Props {
+  strip: ComicStrip;
+  /** Leave the heading off where the section above already says it. */
+  bare?: boolean;
+}
+const { strip, bare = false } = Astro.props;
+
+/* eager so Astro processes each one at build; a key with no file is a build
+   error rather than a silently missing panel, which is what we want here. */
+const files = import.meta.glob<{ default: ImageMetadata }>(
+  "../assets/comics/*.{png,jpg,jpeg,webp}",
+  { eager: true },
+);
+---
+
+<section class="sec cmc" id={strip.id}>
+  <div class="wrap">
+    {!bare && (
+      <div class="cmc-head rv">
+        <p class="cmc-eyebrow">{strip.eyebrow}</p>
+        <h2>{strip.title}</h2>
+        <p class="cmc-lede">{strip.lede}</p>
+      </div>
+    )}
+
+    <ol class="cmc-grid rv" style="--d:1">
+      {strip.panels.map((p, i) => {
+        const found = files[`../assets/comics/${p.key}.png`];
+        return (
+          <li class="cmc-panel">
+            <p class="cmc-cap">
+              <span class="cmc-n" aria-hidden="true">{i + 1}</span>
+              <span class="cmc-cap-t">{p.caption}</span>
+            </p>
+            {found && (
+              <Image
+                class="cmc-img"
+                src={found.default}
+                alt={p.alt}
+                widths={[380, 560, 760]}
+                sizes="(max-width: 620px) 92vw, (max-width: 1040px) 44vw, 30vw"
+                loading="lazy"
+              />
+            )}
+          </li>
+        );
+      })}
+    </ol>
+  </div>
+</section>

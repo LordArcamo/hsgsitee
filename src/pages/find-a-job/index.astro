@@ -44,6 +44,8 @@ import CsMoreThan from "../../components/career/CsMoreThan.astro";
 import CsContinuum from "../../components/career/CsContinuum.astro";
 import CsAssessment from "../../components/career/CsAssessment.astro";
 import CsServices from "../../components/career/CsServices.astro";
+import Comic from "../../components/Comic.astro";
+import { NET } from "../../data/comics";
 import CsReferences from "../../components/career/CsReferences.astro";
 import CsJourney from "../../components/career/CsJourney.astro";
 import CsNetwork from "../../components/career/CsNetwork.astro";
@@ -130,6 +132,11 @@ const schema = [
 
     <!-- 06 The services -->
     <CsServices />
+
+    <!-- The comic, candidate side: what happens to your name after the
+         conversation. Sits after the services for the same reason the
+         employer one sits after the continuum. -->
+    <Comic strip={NET} />
 
     <!-- 06 Reference support -->
     <CsReferences />

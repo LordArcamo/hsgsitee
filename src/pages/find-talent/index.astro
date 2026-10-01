@@ -36,6 +36,8 @@ import SearchReach from "../../components/hiring/SearchReach.astro";
 import ClientSuccess from "../../components/hiring/ClientSuccess.astro";
 import Faq from "../../components/hiring/Faq.astro";
 import FtContact from "../../components/hiring/FtContact.astro";
+import Comic from "../../components/Comic.astro";
+import { DIG } from "../../data/comics";
 
 import { PAGE_META, FAQS, SERVICE } from "../../data/hiring";
 import { SITE } from "../../data/site";
@@ -106,6 +108,12 @@ const schema = [
          on whichever one it is. Its own closing CTA lands on #start, the
          same intake as the foot of the page. -->
     <ClientContinuum />
+
+    <!-- The comic. Michael's note: "a comic strip on almost every page",
+         because the HR people at his convention were burnt out and a comic
+         gives them somewhere comfortable to land. Placed after the continuum
+         so the argument lands before the joke does. -->
+    <Comic strip={DIG} />
 
     <!-- 05 Collaborative Search® -->
     <FtCollaborative />
