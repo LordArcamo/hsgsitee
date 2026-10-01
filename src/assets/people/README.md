@@ -10,8 +10,11 @@ a broken image.
     nicole.png
 
 PNG, JPG or WebP all work. Square, 400x400 or larger, with headroom around
-the shoulders — they are cropped to a circle at 40px (28px for the two
+the shoulders — they are cropped to a circle at 48px (28px for the two
 examples under each lead), so anything tight to the edges loses its ears.
 
-The prompts that generated them are in the handoff document. Keep the shared
-style block at the top of every prompt or the ten faces will not match.
+Each person has their own pose and their own background tint, so the ten
+tell apart at a glance even at this size. The prompts are in
+HSG-CAREER-CONTINUUM-9-PEOPLE.md. Keep the shared style block at the top of
+every prompt, and generate them in one chat — a fresh chat per image is the
+usual reason a set stops matching.
