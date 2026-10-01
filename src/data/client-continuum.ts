@@ -44,7 +44,10 @@ export const SECTION = {
   ],
   /** Set apart: it is the section's actual argument. */
   turn: "That’s why we don’t start by sending resumes. We start by understanding the company.",
-  railHeading: "Where Is Your Company Right Now?",
+  railHeading: "Where’s Your Company Right Now?",
+  /* Michael's phrase. Four stories can read as the full catalogue of what HSG
+     handles, and this is the line that stops them. */
+  railSub: "(a few examples)",
 };
 
 export interface ClientStory {
@@ -270,10 +273,7 @@ export const LEARN = {
    twenty answers are mine and he has not seen them. It carries draft: true
    so it is one block to redline or pull. */
 export const SELF_CHECK = {
-  title: "Where’s Your Company Right Now?",
-  /* His phrase. The point of it is that nobody reads this as the whole
-     catalogue of what HSG does. */
-  sub: "(a few examples)",
+  title: "Where Is Your Company?",
   /* "Five" was right until question 6 was added. If Michael pulls the draft
      question, this goes back to five. */
   lede: ["You don’t need to complete a 30-question assessment.", "Start with six simple questions."],

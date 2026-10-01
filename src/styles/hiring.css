@@ -794,10 +794,10 @@
 }
 
 /* ---------- "(a few examples)" ---------- */
-.cc-check-sub {
-  margin-top: 4px !important;
+.cc-rail-sub {
+  margin-top: 3px;
   font-family: var(--display); font-weight: 700;
-  font-size: 15px; color: var(--hiring);
+  font-size: 14.6px; color: var(--hiring);
 }
 
 /* ---------- a question whose answers are not Michael's yet ---------- */
