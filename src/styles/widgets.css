@@ -147,16 +147,20 @@
 /* ============================================================
    AUDIENCE JUMP BAR
    ============================================================ */
+/* Michael asked for this bar three times over three days, and it still was
+   not there when he opened the site at his conference. It was fixed, opacity
+   0, and revealed only once you had scrolled past the hero — so on arrival,
+   the one moment that matters, it did not exist.
+
+   Sticky and in flow instead of fixed and hidden: on screen the instant the
+   page loads, pushing the hero down rather than covering it, and still
+   riding the top of the viewport as you scroll. */
 .audbar {
-  position: fixed; left: 0; right: 0; top: var(--hdr-h, 72px); z-index: 55;
-  background: color-mix(in srgb, var(--surface) 94%, transparent);
+  position: sticky; top: var(--hdr-h, 72px); z-index: 55;
+  background: color-mix(in srgb, var(--surface) 96%, transparent);
   backdrop-filter: blur(14px);
   border-bottom: 1px solid var(--rule);
-  transform: translateY(-115%); opacity: 0;
-  transition: transform .38s var(--ease), opacity .38s var(--ease);
-  pointer-events: none;
 }
-.audbar.show { transform: none; opacity: 1; pointer-events: auto; }
 .audbar-in {
   max-width: var(--wrap); margin-inline: auto; padding: 9px var(--gut);
   display: flex; align-items: center; gap: 10px; flex-wrap: wrap;

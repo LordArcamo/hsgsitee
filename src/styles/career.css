@@ -1209,3 +1209,12 @@
   .csc-face { top: -8px; right: -4px; }
   .csc-panel::before { left: 50%; }
 }
+
+/* ---------- the tagline ----------
+   "We sort of lost it here" — it was on the homepage and nowhere else. */
+.csh-brandline {
+  margin-top: 15px;
+  font-family: var(--display); font-weight: 800;
+  font-size: clamp(17px, 1.8vw, 22px); letter-spacing: -.022em;
+  color: var(--career);
+}

@@ -980,3 +980,14 @@
 .md-close span:last-child { color: var(--hiring-panel); }
 
 @media (max-width: 760px) { .md-conv-list { grid-template-columns: 1fr; } }
+
+/* ---------- the tagline, pointed at this side ----------
+   Michael: it is a double entendre and it reverses per audience. On a dark
+   hero it takes the pale panel green rather than --hiring, which would sink
+   into the background. */
+.fth-brandline {
+  margin-top: 16px;
+  font-family: var(--display); font-weight: 800;
+  font-size: clamp(17px, 1.8vw, 22px); letter-spacing: -.022em;
+  color: var(--hiring-panel);
+}

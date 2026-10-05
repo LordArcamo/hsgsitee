@@ -1,5 +1,6 @@
 ---
 import { HERO } from "../../data/career";
+import { SITE } from "../../data/site";
 
 /*
  * 01 Hero. The Hiring page's dark hero is led by the green; this one is led
@@ -17,7 +18,8 @@ const [before, after] = HERO.title.split(HERO.accent);
     <div class="csh-copy">
       <p class="csh-eyebrow rv">{HERO.eyebrow}</p>
       <h1 class="rv" style="--d:1">{before}<span class="csh-accent">{HERO.accent}</span>{after}</h1>
-      <p class="csh-kicker rv" style="--d:2">{HERO.kicker}</p>
+      <p class="csh-brandline rv" style="--d:2">{SITE.taglineCareer}</p>
+      <p class="csh-kicker rv" style="--d:3">{HERO.kicker}</p>
       <p class="csh-lede rv" style="--d:2">{HERO.copy}</p>
 
       <div class="csh-actions rv" style="--d:3">

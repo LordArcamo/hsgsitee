@@ -9,7 +9,13 @@
 export const SITE = {
   name: "Hiring Solutions Group",
   shortName: "HSG",
+  /* The double entendre Michael says several people called brilliant. It
+     reverses per side, which is his instruction: an employer should be read
+     the promise pointed at them, a professional the one pointed at them. The
+     homepage and the schema keep the canonical direction. */
   tagline: "Leading Candidates to Leading Companies.",
+  taglineHire: "Leading Companies to Leading Candidates.",
+  taglineCareer: "Leading Candidates to Leading Companies.",
   title: "Hiring Solutions Group — Executive Recruiting & Career Solutions in New Jersey",
   description:
     "Executive recruiting and career solutions in New Jersey. Hiring Solutions Group helps companies identify, evaluate and hire exceptional talent, and helps accomplished professionals find where they create the greatest value.",

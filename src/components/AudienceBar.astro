@@ -4,8 +4,11 @@ import CompanyIntake from "./CompanyIntake.astro";
 import CandidateIntake from "./CandidateIntake.astro";
 ---
 
-<!-- Audience jump bar: appears once the hero scrolls away, so professional
-     visitors can reach Career Solutions without travelling the employer path.
+<!-- Audience jump bar. On screen from the moment the page loads and sticky
+     to the top thereafter, so a professional who landed on the employer path
+     can always reach Career Solutions. It used to reveal itself only after
+     the hero had scrolled away, which meant it was missing at the one moment
+     it mattered.
      It owns the words "For Companies" and "For Professionals" — the nav above
      uses "Hiring" and "Careers" for its menus so the two rows never echo.
 
@@ -52,8 +55,6 @@ import CandidateIntake from "./CandidateIntake.astro";
 </div>
 
 <script>
-  import { initAudienceBar } from "../scripts/audience-bar";
   import { initAudienceMenu } from "../scripts/audience-menu";
-  initAudienceBar();
   initAudienceMenu();
 </script>

@@ -1,5 +1,6 @@
 ---
 import { HERO } from "../../data/hiring";
+import { SITE } from "../../data/site";
 import { FACTS, type FactKey } from "../../data/facts";
 
 /*
@@ -17,7 +18,10 @@ const proofValue = FACTS[HERO.proof.fact as FactKey];
     <div class="fth-copy">
       <p class="fth-eyebrow rv">{HERO.eyebrow}</p>
       <h1 class="rv" style="--d:1">{before}<span class="fth-accent">{HERO.accent}</span>{after}</h1>
-      <p class="fth-lede rv" style="--d:2">{HERO.copy}</p>
+      {/* Reversed for this side, per Michael: an employer is read the
+          promise pointed at them. */}
+      <p class="fth-brandline rv" style="--d:2">{SITE.taglineHire}</p>
+      <p class="fth-lede rv" style="--d:3">{HERO.copy}</p>
       <div class="fth-actions rv" style="--d:3">
         <a class="btn fth-btn" href="#start">Start a Search <span class="arrow" aria-hidden="true">→</span></a>
         <a class="btn btn--onpanel" href="#collaborative">See How We Search <span class="arrow arrow--down" aria-hidden="true">↓</span></a>
