@@ -734,7 +734,17 @@
 }
 .cc-opt:focus-visible { outline: 2px solid var(--hiring); outline-offset: 2px; }
 
-@media (max-width: 600px) { .cc-opts { margin-left: 0; } }
+/* Six questions and forty-two options is 3151px of phone — 3.7 screens for
+   one block, and nearly half the whole continuum section. The chips were
+   13.6px type in 9x15 padding while the career side's are 12.8px in 7x11;
+   matching them is both smaller and more consistent. Nothing is removed. */
+@media (max-width: 600px) {
+  .cc-opts { margin-left: 0; margin-top: 9px; gap: 7px; }
+  .cc-opt { font-size: 12.8px; padding: 7px 11px; }
+  .cc-qs { gap: 16px; margin-top: 18px; }
+  .cc-q-t { font-size: 14.8px; gap: 9px; }
+  .cc-q[data-draft] .cc-opts { padding: 11px 11px; margin-top: 11px; }
+}
 
 
 /* ---------- the panel's side column ----------

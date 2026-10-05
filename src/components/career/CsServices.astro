@@ -7,8 +7,10 @@ import Icon from "../Icon.astro";
  *
  * The live page prints ten services as ten long essays, one after another,
  * and a professional has to read all of them to find the one they came for.
- * Here each is a card that opens: the headline and one line are always
- * visible, the published detail is one click away.
+ * Here each is a row that opens: the headline is always visible, the
+ * summary and the published detail are one tap away. Michael called the
+ * section "way too big" — it was 2556px on a phone, three screens, and the
+ * closed rows were most of it.
  *
  * Native <details>, so it works with no JavaScript and is keyboard- and
  * screen-reader-accessible for free. Nothing is hidden from search engines
@@ -42,12 +44,13 @@ import Icon from "../Icon.astro";
                     {s.title}
                     {s.review && <em class="svc-flag">To confirm</em>}
                   </span>
-                  <span class="svc-sum">{s.summary}</span>
                 </span>
                 <span class="svc-chev" aria-hidden="true"></span>
               </summary>
 
               <div class="svc-body">
+                {/* Was on the closed card. Ten of those cost 790px of phone. */}
+                <p class="svc-sum">{s.summary}</p>
                 {s.body.map((p) => <p>{p}</p>)}
                 {s.bullets && (
                   <ul class="svc-bullets">
