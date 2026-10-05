@@ -22,6 +22,6 @@ the WebP. Keep the source under about 1.5MB — these live in the repo, and the
 served file ends up around 1-2kB after conversion.
 
 The prompts that produced this set are in the appendix of
-HSG-CAREER-CONTINUUM-9-PEOPLE.md. Keep the shared style block at the top of
+HSG-Instructions-for-Lord/HSG-CAREER-CONTINUUM-9-PEOPLE.md. Keep the shared style block at the top of
 every prompt and generate in one chat; a fresh chat per image is the usual
 reason a set stops matching.
