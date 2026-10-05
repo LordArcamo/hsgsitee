@@ -25,7 +25,15 @@ import AudienceBar from "../../components/AudienceBar.astro";
 import Footer from "../../components/Footer.astro";
 
 import classroom from "../../assets/editorial/hiring-classroom.png";
-import { PAGE_META, HERO, INTRO, QUESTIONS, CLOSING } from "../../data/recruiter-questions";
+
+/* The speaking photograph does not exist yet; eager so a dropped-in file is
+   processed at build, and undefined until Michael sends one. */
+const speakingFiles = import.meta.glob<{ default: ImageMetadata }>(
+  "../../assets/editorial/michael-speaking.{png,jpg,jpeg,webp}",
+  { eager: true },
+);
+const speaking = Object.values(speakingFiles)[0]?.default;
+import { PAGE_META, HERO, INTRO, SPEAKS, QUESTIONS, CLOSING } from "../../data/recruiter-questions";
 import { SITE } from "../../data/site";
 import { url } from "../../lib/url";
 
@@ -83,6 +91,42 @@ const schema = [
           />
           <figcaption>{HERO.imageCaption}</figcaption>
         </figure>
+      </div>
+    </section>
+
+    <!-- "In all seriousness…" — Michael's own turn after the joke. He asked
+         for this to be text on the page, not only inside a picture. -->
+    <section class="sec sec--tight qs-speaks" id="speaks">
+      <div class="wrap qs-narrow">
+        <div class="qs-sp">
+          <div class="qs-sp-copy rv">
+            <p class="qs-sp-eyebrow">
+              {SPEAKS.eyebrow}
+              {SPEAKS.draft && <span class="qs-draft" title={SPEAKS.draftNote}>Draft</span>}
+            </p>
+            <h2>{SPEAKS.title}</h2>
+            {SPEAKS.body.map((t) => <p class="qs-sp-b">{t}</p>)}
+
+            <p class="qs-sp-l">{SPEAKS.availableLabel}</p>
+            <ul class="qs-sp-list">
+              {SPEAKS.available.map((a) => <li>{a}</li>)}
+            </ul>
+
+            <p class="qs-sp-cred">{SPEAKS.credential}</p>
+          </div>
+
+          <figure class="qs-sp-fig rv" style="--d:1">
+            {speaking ? (
+              <Image src={speaking} alt={SPEAKS.photo.alt} widths={[420, 640, 900]} sizes="(max-width: 860px) 92vw, 420px" loading="lazy" />
+            ) : (
+              <div class="qs-sp-wait">
+                <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2.5"/><circle cx="9" cy="10" r="2.2"/><path d="M3 17.5l5-4.2 3.4 2.8L15.6 12 21 16.4"/></svg>
+                <span>{SPEAKS.photo.waiting}</span>
+              </div>
+            )}
+            <figcaption>{SPEAKS.photo.caption}</figcaption>
+          </figure>
+        </div>
       </div>
     </section>
 

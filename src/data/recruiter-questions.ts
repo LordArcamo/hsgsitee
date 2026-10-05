@@ -48,6 +48,55 @@ export const HERO = {
   imageCaption: "Conceptual image for editorial use.",
 };
 
+/* ---------- "In all seriousness…" ----------
+   Michael's own turn on the call, straight after the classroom joke:
+   "In all seriousness — Michael has spoken at numerous companies, one of
+   which was Microsoft, and here's a breakdown of what he did."
+
+   He also asked for this to be TEXT ON THE PAGE, not only inside a picture:
+   that he speaks at companies, that he is available for mentor programming,
+   cross-training and other HR work, and the Rutgers certification.
+
+   WHAT IS HIS AND WHAT IS MINE
+
+   - The facts are his, from the call.
+   - The CREDENTIAL WORDING is HSG's own, lifted from the live About page:
+     "certified by Rutgers in Next Generation Human Resources". My note from
+     the call said "Rutgers School of Labor and Relations", which does not
+     match what HSG publishes, so the published version wins.
+   - THE SENTENCES ARE MINE. He has not read them. draft: true.
+   - The named company is his — he said Microsoft on the call — but a client
+     name on a public page is a different thing from a name in a meeting, so
+     it needs his explicit yes. See `nameNeedsSignOff`. */
+export const SPEAKS = {
+  draft: true,
+  nameNeedsSignOff: true,
+  eyebrow: "In all seriousness",
+  title: "Michael Speaks at Companies About Hiring Well",
+  body: [
+    "The classroom above is a joke. The work behind it is not. Michael has spoken at a number of companies about how hiring decisions get made, where they go wrong, and what it costs when the wrong person is given the wrong responsibility.",
+    "One of those companies was Microsoft.",
+  ],
+  availableLabel: "Also available for",
+  available: [
+    "Mentor programming",
+    "Cross-training",
+    "Other HR work",
+  ],
+  credential: "Michael is certified by Rutgers in Next Generation Human Resources.",
+  /* The second image Michael asked for: "one of my more recent classes",
+     with the Microsoft picture. It is a real photograph of a real event, so
+     it cannot be generated — he has to send it. Until then the slot states
+     what it is waiting for rather than showing a stock substitute. */
+  photo: {
+    key: "michael-speaking",
+    alt: "Michael Schlager speaking to a room at a client company.",
+    caption: "A recent session. Photograph to come from Michael.",
+    waiting: "Photograph needed — one of Michael's recent classes, including the Microsoft session.",
+  },
+  draftNote: "Draft — the facts are Michael's, the sentences are not his yet.",
+};
+
 export const INTRO = {
   title: "Questions Small Companies Should Ask Before Hiring an Executive Recruiter",
   lead: "If you’re nervous about bringing an executive recruiter into your company, ask tough questions. We would.",
