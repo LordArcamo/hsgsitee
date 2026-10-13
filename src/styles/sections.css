@@ -59,6 +59,113 @@
 .hero-badge b { font-family: var(--display); font-size: 26px; font-weight: 800; letter-spacing: -.03em; color: var(--accent); }
 .hero-badge span { font-size: 12.5px; color: var(--ink-2); line-height: 1.4; }
 
+
+/* ---------- the two-path hero panel ----------
+   Heshy, item 2: "The homepage should have 2 very large CTAs that go straight
+   to the point. Instead of 2 small buttons have very large tile graphics."
+
+   The picture IS the choice. Same man, both sides of the desk, one decision
+   and one button each. The old .hero-grid and its placeholder figure are
+   gone; .hero-head is what remains of the text column, now centred above. */
+/* Wider and tighter than the old column: at 50ch the H1 ran to three lines
+   and cost 80px of fold. */
+.hero-head { max-width: 62ch; margin-inline: auto; text-align: center; }
+.hero-head h1 { margin-top: 12px; }
+.hero-head .brandline { margin-top: 9px; }
+
+.tph {
+  position: relative; isolation: isolate; overflow: hidden;
+  margin-top: clamp(18px, 2.2vw, 26px);
+  border-radius: 22px; background: #2d2639;
+  box-shadow: 0 20px 70px rgb(35 21 54 / .16);
+}
+.tph-photo {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  object-fit: cover; object-position: center 48%;
+}
+/* Legibility floor for the copy that sits on the photograph. */
+.tph::before {
+  content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background: linear-gradient(to top,
+    rgb(18 14 27 / .95) 0%, rgb(18 14 27 / .72) 26%,
+    rgb(18 14 27 / .20) 60%, rgb(18 14 27 / .04) 100%);
+}
+/* The divider runs hiring green to career gold: the two sides of the
+   business, in the brand's own colours, meeting in the middle. */
+.tph::after {
+  content: ""; position: absolute; top: -24%; left: 50%; z-index: 2;
+  height: 150%; width: 2.5px; transform: rotate(19deg); pointer-events: none;
+  background: linear-gradient(180deg,
+    color-mix(in srgb, var(--hiring-panel) 15%, transparent),
+    var(--hiring-panel) 32%, #cfe08a 50%,
+    var(--career-fill) 72%, color-mix(in srgb, var(--career-fill) 10%, transparent));
+  box-shadow: 0 0 11px rgb(190 210 90 / .7);
+}
+
+.tph-choices {
+  position: relative; z-index: 3;
+  display: grid; grid-template-columns: 1fr 1fr; align-items: end;
+  min-height: 430px;
+}
+.tph-choice { color: #fff; padding: 0 38px 38px; min-width: 0; }
+.tph-choice--hire   { padding-right: 62px; --side: var(--hiring-panel); }
+.tph-choice--career { padding-left: 62px;  --side: var(--career-fill); }
+
+/* A short rule in the side's own colour, instead of a small-caps label above
+   the heading — the heading already says which side this is, and those
+   labels are exactly what Heshy asked to remove across the site. */
+.tph-rule { display: block; width: 42px; height: 4px; border-radius: 4px; background: var(--side); }
+.tph-choice h2 {
+  margin: 14px 0 11px; color: #fff;
+  font-size: clamp(26px, 2.8vw, 38px); line-height: 1.1; letter-spacing: -.04em;
+}
+.tph-choice p {
+  margin: 0 0 20px; max-width: 44ch;
+  font-size: 14.6px; line-height: 1.6; color: #efecf3;
+}
+.tph-btn { border-radius: 10px; }
+.tph-choice--hire .tph-btn {
+  background: var(--hiring); border-color: var(--hiring); color: #fff;
+}
+.tph-choice--hire .tph-btn:hover { background: #5f9640; border-color: #5f9640; }
+.tph-choice--career .tph-btn {
+  background: var(--career-fill); border-color: var(--career-fill); color: #241c00;
+}
+.tph-choice--career .tph-btn:hover { background: #ffcf3d; border-color: #ffcf3d; }
+
+@media (max-width: 1040px) {
+  .tph-choices { min-height: 560px; }
+  .tph-choice { padding: 0 26px 30px; }
+  .tph-choice--hire { padding-right: 34px; }
+  .tph-choice--career { padding-left: 34px; }
+}
+
+/* ---------- phone ----------
+   The photograph is 2.5:1, so side by side it would be unreadable. Each block
+   takes its own HALF of the same file as a background at 200% width — one
+   image, two panels, no second asset. */
+@media (max-width: 760px) {
+  .tph { border-radius: 16px; }
+  .tph-photo, .tph::before, .tph::after { display: none; }
+  .tph-choices { display: block; min-height: 0; }
+  .tph-choice {
+    position: relative; isolation: isolate;
+    min-height: 370px; padding: 150px 22px 24px;
+  }
+  .tph-choice::before {
+    content: ""; position: absolute; inset: 0; z-index: -1;
+    background:
+      linear-gradient(to top, rgb(16 12 24 / .97), rgb(16 12 24 / .4) 68%, rgb(16 12 24 / .05) 100%),
+      var(--tph-img) center / 200% 100%;
+  }
+  .tph-choice--hire::before   { background-position: center, left center; }
+  .tph-choice--career::before { background-position: center, right center; }
+  .tph-choice--career { border-top: 3px solid var(--career-fill); }
+  .tph-choice h2 { font-size: 29px; }
+  .tph-choice p { font-size: 13.6px; }
+  .tph-btn { width: 100%; justify-content: center; min-height: 48px; }
+}
+
 .proofbar {
   margin-top: clamp(24px, 2.6vw, 34px);
   display: grid; grid-template-columns: repeat(5, 1fr);

@@ -1,41 +1,98 @@
 ---
+import { Image, getImage } from "astro:assets";
 import { url } from "../../lib/url";
 import { FACTS } from "../../data/facts";
 import ProofBar from "../ProofBar.astro";
+import twoSides from "../../assets/editorial/two-sides.png";
+
+/*
+ * 01 HERO — the two-path split.
+ *
+ * WHY IT CHANGED
+ *
+ * Heshy's 6 Oct review, item 2: "The homepage should have 2 very large CTAs
+ * that go straight to the point. Instead of 2 small buttons have very large
+ * tile graphics: a. Find Talent  b. Careers."
+ *
+ * So the two small buttons under the headline are gone. The choice is now the
+ * picture: the same man on both sides of the desk, each half carrying one
+ * decision and one button. The divider runs green to gold — the two sides of
+ * the business in the brand's own colours, meeting in the middle.
+ *
+ * WHAT DID NOT CHANGE
+ *
+ * The H1, the years pill, the tagline, the proof bar, the two paragraphs and
+ * the BSG bridge line are all exactly as they were. The H1 in particular
+ * carries "Executive Recruiting", "Career Solutions" and "New Jersey" and is
+ * the page's main search target — it is not something to rewrite for a
+ * layout change.
+ *
+ * ⚠️ THE TWO HEADINGS AND THEIR SUPPORTING LINES ARE NEW COPY, from the
+ * two-path proposal. Michael has not approved them. The BUTTON labels are the
+ * page's existing approved ones.
+ *
+ * The proof bar still sits directly under the panel: Michael called getting
+ * it above the fold "vital", and that is measured, not assumed — see the
+ * handoff note.
+ */
+const sides = [
+  {
+    key: "hire",
+    heading: "I’m looking to hire.",
+    body:
+      "The right hire changes everything. Let’s find the person who fits the role, the people and the business — not just the job description.",
+    cta: { label: "Find the Right Talent", href: url("/find-talent/") },
+  },
+  {
+    key: "career",
+    heading: "I’m looking for a job.",
+    body:
+      "Whether you are actively looking or planning ahead, you only get one chance to make a strong first impression. Is your resume ready? More importantly, are you?",
+    cta: { label: "Explore Career Solutions", href: url("/find-a-job/") },
+  },
+];
+
+/* The phone layout shows each half of the same photograph behind its own
+   block, so it needs the processed file's URL in CSS rather than in markup. */
+const phone = await getImage({ src: twoSides, width: 980, format: "webp" });
 ---
 
 <!-- ===== 1. HERO ===== -->
 <section class="hero">
   <div class="wrap">
-    <div class="hero-grid">
-      <div>
-        <p class="eyebrow eyebrow--pill rv"><span>{FACTS.years}</span>&nbsp;Years of Executive Recruiting Experience</p>
-        <h1 class="rv" style="--d:1"><span class="t-hire">Executive Recruiting</span> &amp; <span class="t-career">Career Solutions</span> in New Jersey</h1>
-        <p class="brandline rv" style="--d:2">Leading Candidates to Leading Companies.</p>
-
-        <div class="hero-actions rv" style="--d:4">
-          <a class="btn" href={url("/find-talent/")}>Find the Right Talent <span class="arrow" aria-hidden="true">→</span></a>
-          <a class="btn btn--ghost" href={url("/find-a-job/")}>Explore Career Solutions</a>
-        </div>
-
-      </div>
-
-      <figure class="hero-fig rv" style="--d:2">
-        <div class="hero-img">
-          <span class="ph">
-            <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2.5"/><circle cx="9" cy="10" r="2.2"/><path d="M3 17.5l5-4.2 3.4 2.8L15.6 12 21 16.4"/></svg>
-            <strong>Hero image</strong>
-            <span>Executive / leadership environment. Premium business photography — no stock handshakes.</span>
-          </span>
-        </div>
-        <figcaption class="hero-badge">
-          <b>{FACTS.placements}</b>
-          <span>Placements across executive and specialized roles</span>
-        </figcaption>
-      </figure>
+    <div class="hero-head rv">
+      <p class="eyebrow eyebrow--pill"><span>{FACTS.years}</span>&nbsp;Years of Executive Recruiting Experience</p>
+      <h1 style="--d:1"><span class="t-hire">Executive Recruiting</span> &amp; <span class="t-career">Career Solutions</span> in New Jersey</h1>
+      <p class="brandline" style="--d:2">Leading Candidates to Leading Companies.</p>
     </div>
 
     <ProofBar />
+
+    <div class="tph rv" style={`--d:1;--tph-img:url(${phone.src})`}>
+      <Image
+        class="tph-photo"
+        src={twoSides}
+        alt="The same professional on both sides of the desk: in a suit reviewing resumes as an employer, and in casual clothes considering his next move on a laptop."
+        widths={[980, 1440, 1920]}
+        sizes="(max-width: 760px) 100vw, 1180px"
+        loading="eager"
+        fetchpriority="high"
+      />
+
+      <div class="tph-choices">
+        {sides.map((s) => (
+          <div class={`tph-choice tph-choice--${s.key}`}>
+            <span class="tph-rule" aria-hidden="true"></span>
+            <h2>{s.heading}</h2>
+            <p>{s.body}</p>
+            <a class="btn tph-btn" href={s.cta.href}>
+              {s.cta.label} <span class="arrow" aria-hidden="true">→</span>
+            </a>
+          </div>
+        ))}
+      </div>
+    </div>
+
 
     <div class="hero-copy rv" style="--d:3">
       <p>Hiring Solutions Group has decades of experience working with both employers and professionals. We help companies identify, evaluate, and hire exceptional talent while helping accomplished professionals understand where they can create the greatest value next.</p>
