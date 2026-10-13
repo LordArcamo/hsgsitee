@@ -66,8 +66,6 @@ const phone = await getImage({ src: twoSides, width: 980, format: "webp" });
       <p class="brandline" style="--d:2">Leading Candidates to Leading Companies.</p>
     </div>
 
-    <ProofBar />
-
     <div class="tph rv" style={`--d:1;--tph-img:url(${phone.src})`}>
       <Image
         class="tph-photo"
@@ -91,6 +89,8 @@ const phone = await getImage({ src: twoSides, width: 980, format: "webp" });
           </div>
         ))}
       </div>
+
+      <ProofBar />
     </div>
 
 

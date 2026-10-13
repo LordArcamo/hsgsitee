@@ -69,14 +69,22 @@
    gone; .hero-head is what remains of the text column, now centred above. */
 /* Wider and tighter than the old column: at 50ch the H1 ran to three lines
    and cost 80px of fold. */
-.hero-head { max-width: 62ch; margin-inline: auto; text-align: center; }
-.hero-head h1 { margin-top: 12px; }
-.hero-head .brandline { margin-top: 9px; }
+.hero-head { max-width: 60ch; margin-inline: auto; text-align: center; }
+/* Smaller than the old standalone headline: it introduces the panel now
+   rather than carrying the page on its own. */
+.hero-head h1 {
+  margin-top: 11px; font-size: clamp(29px, 3.3vw, 46px); text-wrap: balance;
+}
+/* "Career Solutions" is a product name — it must not break across lines. */
+.hero-head h1 .t-hire,
+.hero-head h1 .t-career { white-space: nowrap; }
+.hero-head .brandline { margin-top: 8px; font-size: clamp(16px, 1.7vw, 21px); }
+.hero-head .eyebrow--pill { font-size: 11px; }
 
 .tph {
   position: relative; isolation: isolate; overflow: hidden;
   margin-top: clamp(18px, 2.2vw, 26px);
-  border-radius: 22px; background: #2d2639;
+  border-radius: 22px 22px 0 0; background: #2d2639;
   box-shadow: 0 20px 70px rgb(35 21 54 / .16);
 }
 .tph-photo {
@@ -105,7 +113,10 @@
 .tph-choices {
   position: relative; z-index: 3;
   display: grid; grid-template-columns: 1fr 1fr; align-items: end;
-  min-height: 430px;
+  /* 420 put the last 23px of the figures below a 900px fold. At 392 the
+     whole hero card — headline, both choices, both buttons and all five
+     numbers — clears it on a 1440x900 laptop. */
+  min-height: 392px;
 }
 .tph-choice { color: #fff; padding: 0 38px 38px; min-width: 0; }
 .tph-choice--hire   { padding-right: 62px; --side: var(--hiring-panel); }
@@ -138,6 +149,16 @@
   .tph-choice { padding: 0 26px 30px; }
   .tph-choice--hire { padding-right: 34px; }
   .tph-choice--career { padding-left: 34px; }
+}
+
+/* The five figures are the BASE OF THE HERO CARD now, joined flush under
+   the picture — not a floating white box wedged between the headline and the
+   image, which is what made the old arrangement read as a stack of unrelated
+   centred blocks. */
+.tph .proofbar {
+  position: relative; z-index: 3;
+  margin-top: 0; border-radius: 0 0 22px 22px;
+  border-top: 0; box-shadow: none;
 }
 
 /* ---------- phone ----------
