@@ -1,6 +1,19 @@
 ---
-import { SECTION, DISCLAIMER, STORIES, NICOLE } from "../../data/career-continuum";
+import { SECTION, DISCLAIMER, STORIES, NICOLE, PICK } from "../../data/career-continuum";
 import Face from "./Face.astro";
+
+/* Every person on this section, flattened, so the survey's summary can
+   reproduce a picked one in full. Michael has to be able to read who Priya
+   is from the printout alone, not from memory. Serialised once rather than
+   spread across data- attributes: the bodies are paragraphs, and attribute
+   escaping is not worth the risk. */
+const PEOPLE = [
+  ...STORIES.flatMap((s) => [
+    { key: s.key, name: s.name, said: s.said, tagline: s.tagline, body: s.body, work: s.work, investment: s.investment },
+    ...(s.examples ?? []).map((e) => ({ key: e.key, name: e.name, said: e.said, tagline: e.tagline, body: e.body, work: e.work })),
+  ]),
+  { key: NICOLE.key, name: NICOLE.name, said: NICOLE.said, tagline: NICOLE.tagline, body: NICOLE.body, work: NICOLE.work, investment: NICOLE.investment },
+];
 
 /*
  * The career-needs continuum: Adam, Rachel, David on one flat line, and
@@ -120,6 +133,10 @@ import Face from "./Face.astro";
               <span>{s.investment.label}</span>
               <b>{s.investment.value}</b>
             </p>
+            <button class="csc-pick" type="button" data-cs-pick={s.key} aria-pressed="false">
+              <span class="csc-pick-b" aria-hidden="true"></span>
+              <span class="csc-pick-t">{PICK.label}</span>
+            </button>
           </div>,
           ...(s.examples ?? []).map((e) => (
             <div
@@ -137,6 +154,10 @@ import Face from "./Face.astro";
               </ul>
               {/* No investment line. These are situations, not engagements. */}
               <p class="csc-ex-note">An example of the kind of situation {STORIES[i].name}&rsquo;s work started from.</p>
+              <button class="csc-pick" type="button" data-cs-pick={e.key} aria-pressed="false">
+                <span class="csc-pick-b" aria-hidden="true"></span>
+                <span class="csc-pick-t">{PICK.label}</span>
+              </button>
             </div>
           )),
         ])}
@@ -157,10 +178,18 @@ import Face from "./Face.astro";
           <span>{NICOLE.investment.label}</span>
           <b>{NICOLE.investment.value}</b>
         </p>
+        <button class="csc-pick" type="button" data-cs-pick={NICOLE.key} aria-pressed="false">
+          <span class="csc-pick-b" aria-hidden="true"></span>
+          <span class="csc-pick-t">{PICK.label}</span>
+        </button>
       </aside>
     </div>
 
   </div>
+
+  {/* Read by the survey's summary builder. Not rendered. */}
+  <script type="application/json" data-cs-people set:html={JSON.stringify(PEOPLE)} is:inline></script>
+  <script type="application/json" data-cs-pick-copy set:html={JSON.stringify(PICK)} is:inline></script>
 </section>
 
 <script>

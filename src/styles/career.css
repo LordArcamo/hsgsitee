@@ -892,6 +892,81 @@
 .wn-why textarea::placeholder { color: var(--ink-3); }
 .wn-why textarea:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-color: var(--accent); }
 
+/* ---------- "This sounds like me" ----------
+   The button that turns reading a story into telling us something. It is
+   deliberately quiet until pressed: the panel is a story, not a sales form,
+   and Michael asked for people to be able to recognise themselves without
+   being pushed. */
+.csc-pick {
+  margin-top: 16px; display: inline-flex; align-items: center; gap: 9px;
+  padding: 9px 15px 9px 11px; border-radius: 99px; cursor: pointer;
+  font: inherit; font-family: var(--display); font-weight: 800; font-size: 13.4px;
+  color: var(--ink-2); background: var(--surface);
+  border: 1.5px solid var(--rule);
+  transition: background .18s ease, border-color .18s ease, color .18s ease;
+}
+.csc-pick:hover { border-color: var(--career-fill); color: var(--ink); }
+.csc-pick:focus-visible { outline: 2px solid var(--career); outline-offset: 3px; }
+.csc-pick-b {
+  flex: none; width: 17px; height: 17px; border-radius: 5px;
+  border: 1.5px solid var(--rule); background: var(--surface);
+  display: grid; place-items: center;
+  transition: background .18s ease, border-color .18s ease;
+}
+/* The tick is drawn with borders so there is no second asset to ship. */
+.csc-pick-b::after {
+  content: ""; width: 4px; height: 8px; margin-top: -2px;
+  border: solid transparent; border-width: 0 2px 2px 0; transform: rotate(45deg);
+  transition: border-color .18s ease;
+}
+.csc-pick[aria-pressed="true"] {
+  background: var(--career-soft); border-color: var(--career-fill); color: var(--ink);
+}
+.csc-pick[aria-pressed="true"] .csc-pick-b { background: var(--career-fill); border-color: var(--career-fill); }
+.csc-pick[aria-pressed="true"] .csc-pick-b::after { border-color: #fff; }
+
+/* ---------- who they said sounds like them ----------
+   Michael reads this printed. It carries the whole write-up, because a
+   printout that only says "Priya" is the thing he is complaining about. */
+.wn-who {
+  margin-top: 20px; padding: 15px 17px; border-radius: 13px;
+  background: var(--career-soft); border: 1px solid color-mix(in srgb, var(--career-fill) 38%, transparent);
+}
+.wn-who[hidden] { display: none; }
+/* The sentence that says whose words these are. Not small print: it is the
+   whole point of the block. */
+.wn-who-attr {
+  margin: 0 0 12px; font-size: 13px; line-height: 1.5; color: var(--ink-2);
+  padding-left: 11px; border-left: 3px solid var(--career-fill);
+}
+.wn-who-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 13px; }
+.wn-who-i {
+  padding: 13px 15px; border-radius: 11px;
+  background: var(--surface); border: 1px solid var(--rule-soft);
+}
+.wn-who-n {
+  margin: 0; font-family: var(--display); font-weight: 800;
+  font-size: 15.5px; letter-spacing: -.016em; color: var(--ink);
+}
+.wn-who-said { margin: 2px 0 0; font-size: 13.6px; color: var(--career); font-weight: 700; }
+.wn-who-tag { margin: 3px 0 0; font-size: 12.6px; color: var(--ink-3); }
+.wn-who-body { margin: 9px 0 0; font-size: 13.2px; line-height: 1.6; color: var(--ink-2); }
+.wn-who-work {
+  margin: 9px 0 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 6px;
+}
+.wn-who-work li {
+  padding: 3px 9px; border-radius: 99px; background: var(--ground);
+  font-size: 12.2px; color: var(--ink-2);
+}
+.wn-who-inv { margin: 9px 0 0; font-size: 12.6px; color: var(--ink-3); }
+
+/* Printing is how Michael actually reads this. Open it all out. */
+@media print {
+  .wn-who { break-inside: avoid; background: #fff; }
+  .wn-who-i { break-inside: avoid; }
+  .csc-pick { display: none; }
+}
+
 /* ---------- the running summary ---------- */
 .wn-out {
   margin-top: 20px; padding: 15px 17px; border-radius: 13px;

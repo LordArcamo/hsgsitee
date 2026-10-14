@@ -381,6 +381,42 @@ const GROUPS: CheckGroup[] = [
   },
 ];
 
+/* ---------- "This sounds like me" ----------
+   Michael, on his printout: "I also need to see all information about Priya
+   to know who we are talking about, along with everything they say. Please
+   differentiate the text so that I know they didn't write that about
+   themselves, but said they were close to Priya."
+
+   So picking a person is an explicit act with its own button, every picked
+   person travels into the summary in full, and both the page and the email
+   say in as many words whose words these are. */
+export const PICK = {
+  /** On the button inside a story panel. */
+  label: "This sounds like me",
+  /** The same button once it is on. */
+  labelOn: "Close to my situation",
+  hint: "Michael reads these himself. Picking one tells him which situation to start from.",
+  /** The recap block on the page. */
+  recapTitle: "Who you said sounds like you",
+  /** Shown on the page and repeated in the email. The whole point of it. */
+  attribution:
+    "These write-ups are ours, not yours. You have told us they are close to your own situation — we have not put any of these words in your mouth.",
+  /** Headings in the plain-text summary Michael reads. */
+  mail: {
+    peopleHead: "WHO THEY SAID SOUNDS LIKE THEM",
+    peopleNote:
+      "The descriptions below were written by Hiring Solutions Group. The visitor did not write any of them — they read them and said each one is close to their own situation.",
+    ownHead: "IN THEIR OWN WORDS",
+    ownNote: "Everything under this heading was typed by the visitor.",
+    answersHead: "WHAT THEY TICKED",
+    said: "The line on the rail they recognised",
+    tagline: "Tagline",
+    story: "Our write-up",
+    work: "What the work involved",
+    none: "Nothing typed.",
+  },
+};
+
 export const SELF_CHECK = {
   eyebrow: "Career Solutions",
   title: "Where Are You Right Now?",

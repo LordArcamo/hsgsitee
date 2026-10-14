@@ -45,7 +45,7 @@ export interface Defense {
 
 export const DEFENSES: Record<number, Defense> = {
   48: {
-    why: "Has done the harder version of this job twice — stood up new sites without letting the existing business slip. The scope on paper is close; the evidence behind it is not.",
+    why: "Has done the harder version of this job twice — developed new locations without letting the existing business slip. The scope on paper is close; the evidence behind it is not.",
     conversations: [
       "Two former direct reports, reached through our own network rather than the list provided.",
       "The CFO who signed off both site builds, who confirmed the numbers and the timeline.",

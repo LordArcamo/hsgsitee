@@ -1,5 +1,5 @@
 ---
-import { SELF_CHECK } from "../../data/career-continuum";
+import { SELF_CHECK, PICK } from "../../data/career-continuum";
 import Icon from "../Icon.astro";
 
 /*
@@ -130,6 +130,16 @@ const NUM = (gi: number, qi: number) => OFFSET[gi] + qi + 1;
         <label class="wn-why-q" for="wn-why-text">{S.why.q}</label>
         <p class="wn-why-hint">{S.why.hint}</p>
         <textarea id="wn-why-text" name="why" rows="4" placeholder={S.why.placeholder}></textarea>
+      </div>
+
+      {/* Michael needs the people in his printout, not just the ticks, and
+          he needs it obvious that the write-ups are ours. This block is the
+          page half of that; summary() in assessment.ts is the email half.
+          It is above the ticks because it is the part he reads first. */}
+      <div class="wn-who" data-wn-who hidden>
+        <p class="wn-out-l">{PICK.recapTitle}</p>
+        <p class="wn-who-attr">{PICK.attribution}</p>
+        <ul class="wn-who-list" data-wn-who-list></ul>
       </div>
 
       <div class="wn-out" data-wn-out hidden>
