@@ -549,8 +549,16 @@
   margin-top: 6px; font-family: var(--display); font-weight: 800;
   font-size: clamp(18px, 2vw, 23px); letter-spacing: -.022em; color: var(--ink); text-wrap: balance;
 }
-.cc-rail-head {
+/* The board. The rail's own white panel now reads as a card sitting ON
+   something, which is the join that was missing. */
+.cc-board {
   margin-top: clamp(36px, 4.4vw, 58px);
+  padding: clamp(22px, 2.8vw, 34px) clamp(18px, 2.6vw, 32px) clamp(26px, 3.2vw, 40px);
+  background: var(--hiring-soft);
+  border: 1px solid color-mix(in srgb, var(--hiring-fill) 26%, transparent);
+  border-radius: 22px;
+}
+.cc-rail-head {
   display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 12px;
 }
 .cc-rail-head h3 { font-size: clamp(20px, 2.2vw, 27px); letter-spacing: -.024em; }
@@ -568,7 +576,7 @@
   margin-top: calc(var(--i) * clamp(10px, 1.3vw, 18px));
   padding: 16px 16px 16px 0; background: none; border: 0; cursor: pointer;
   font: inherit; color: inherit;
-  border-top: 2px solid var(--rule);
+  border-top: 2px solid color-mix(in srgb, var(--hiring-fill) 34%, transparent);
   transition: border-color .25s ease;
 }
 .cc-marker:hover { border-top-color: color-mix(in srgb, var(--hiring-fill) 60%, var(--rule)); }
@@ -576,7 +584,8 @@
 .cc-marker:focus-visible { outline: 2px solid var(--hiring); outline-offset: 3px; border-radius: 6px; }
 .cc-dot {
   position: absolute; top: -8px; left: 0; width: 14px; height: 14px; border-radius: 50%;
-  background: var(--surface); border: 2px solid var(--rule);
+  background: var(--surface);
+  border: 2px solid color-mix(in srgb, var(--hiring-fill) 40%, transparent);
   transition: background .25s ease, border-color .25s ease, transform .25s var(--ease);
 }
 .cc-marker[aria-selected="true"] .cc-dot {
@@ -931,20 +940,47 @@
 .md-row--watch .md-lbl { color: var(--career); }
 .md-row--watch .md-val { color: var(--ink-2); }
 
-.md-why {
-  padding: 15px 17px; border-radius: 13px;
-  background: var(--hiring-soft); border-left: 3px solid var(--hiring-fill);
+/* ---------- the two folds on a finalist card ----------
+   Heshy: fold the argument away to remove the clutter. Closed, each card is
+   a short scannable profile; the reasoning is one click, not four
+   paragraphs. Native <details>, so no script and it prints open. */
+.md-fold { border-radius: 13px; border: 1px solid var(--rule-soft); background: var(--surface); }
+.md-fold + .md-fold { margin-top: 9px; }
+.md-fold > summary {
+  display: flex; align-items: center; gap: 9px;
+  padding: 11px 13px; cursor: pointer; list-style: none; border-radius: 12px;
 }
-.md-why .md-lbl { color: var(--hiring); }
-.md-why p { font-size: 14.4px; line-height: 1.6; color: var(--ink); }
+.md-fold > summary::-webkit-details-marker { display: none; }
+.md-fold > summary:hover { background: var(--hiring-soft); }
+.md-fold > summary:focus-visible { outline: 2px solid var(--hiring); outline-offset: 2px; }
+.md-fold .md-lbl { margin: 0; flex: 1 1 auto; }
+/* The chevron is the only moving part, so it carries the open state. */
+.md-fold-i {
+  flex: none; width: 9px; height: 9px;
+  border-right: 2px solid var(--hiring); border-bottom: 2px solid var(--hiring);
+  transform: rotate(45deg) translateY(-2px); transition: transform .2s var(--ease);
+}
+.md-fold[open] > summary .md-fold-i { transform: rotate(-135deg) translateY(-2px); }
+.md-fold-c {
+  flex: none; min-width: 19px; padding: 1px 6px; border-radius: 99px;
+  background: var(--hiring-soft); color: var(--hiring);
+  font-family: var(--display); font-weight: 800; font-size: 11.5px; text-align: center;
+}
+.md-fold-b { padding: 0 13px 13px; }
+.md-fold--why {
+  background: var(--hiring-soft); border-color: transparent;
+  border-left: 3px solid var(--hiring-fill);
+}
+.md-fold--why > summary:hover { background: color-mix(in srgb, var(--hiring-fill) 16%, transparent); }
+.md-fold--why .md-lbl { color: var(--hiring); }
+.md-fold--why .md-fold-b p { font-size: 14.4px; line-height: 1.6; color: var(--ink); }
 
-.md-conv { padding-top: 13px; border-top: 1px solid var(--rule-soft); }
-.md-conv ul { display: grid; gap: 8px; list-style: none; padding: 0; }
-.md-conv li {
+.md-conv-ul { display: grid; gap: 8px; list-style: none; padding: 0; margin: 0; }
+.md-conv-ul li {
   position: relative; padding-left: 20px; font-size: 13.6px; line-height: 1.5; color: var(--ink-2);
 }
 /* a small speech mark, because these are conversations */
-.md-conv li::before {
+.md-conv-ul li::before {
   content: ""; position: absolute; left: 0; top: .42em; width: 9px; height: 9px;
   border: 2px solid var(--hiring-fill); border-right-color: transparent; border-bottom-color: transparent;
   border-radius: 3px 0 0 0;

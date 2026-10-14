@@ -64,17 +64,29 @@ const finalists = CANDIDATES.filter((c) => c.exitsAt === 0);
 
             {d && (
               <>
-                <div class="md-why">
-                  <p class="md-lbl">{DEFENSE_COPY.whyLabel}</p>
-                  <p>{d.why}</p>
-                </div>
+                {/* Heshy: fold these away to remove the clutter. Native
+                    <details>, so no script, keyboard-operable for free, and
+                    open when the page is printed or searched in-page. */}
+                <details class="md-fold md-fold--why">
+                  <summary>
+                    <span class="md-lbl">{DEFENSE_COPY.whyLabel}</span>
+                    <span class="md-fold-i" aria-hidden="true"></span>
+                  </summary>
+                  <div class="md-fold-b"><p>{d.why}</p></div>
+                </details>
 
-                <div class="md-conv">
-                  <p class="md-lbl">{DEFENSE_COPY.conversationsLabel}</p>
-                  <ul>
-                    {d.conversations.map((line) => <li>{line}</li>)}
-                  </ul>
-                </div>
+                <details class="md-fold md-fold--conv">
+                  <summary>
+                    <span class="md-lbl">{DEFENSE_COPY.conversationsLabel}</span>
+                    <span class="md-fold-c">{d.conversations.length}</span>
+                    <span class="md-fold-i" aria-hidden="true"></span>
+                  </summary>
+                  <div class="md-fold-b">
+                    <ul class="md-conv-ul">
+                      {d.conversations.map((line) => <li>{line}</li>)}
+                    </ul>
+                  </div>
+                </details>
               </>
             )}
           </article>

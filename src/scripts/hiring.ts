@@ -87,10 +87,14 @@ function setupFunnel(root: HTMLElement): void {
   if (!steps.length || !dots.length) return;
 
   let timer: number | undefined;
+  let lead: number | undefined;
   // Once the visitor picks a stage, the autoplay must never start or resume:
   // the observer can fire after the click, and would override their choice.
   let touched = false;
-  const stop = () => { window.clearInterval(timer); timer = undefined; };
+  const stop = () => {
+    window.clearInterval(timer); timer = undefined;
+    window.clearTimeout(lead); lead = undefined;
+  };
 
   const show = (k: number) => {
     steps.forEach((b, i) => b.setAttribute("aria-pressed", String(i === k)));
@@ -116,12 +120,18 @@ function setupFunnel(root: HTMLElement): void {
       io.disconnect();
       if (touched) return;
       let k = 0;
-      timer = window.setInterval(() => {
-        if (touched) { stop(); return; }
-        k += 1;
-        show(k);
-        if (k >= last) stop();
-      }, 1100);
+      // A beat on the full fifty before anything leaves, then a slower step.
+      // At 1100 with no lead-in the narrowing was over before the eye had
+      // settled on the grid it was supposed to be watching shrink.
+      lead = window.setTimeout(() => {
+        if (touched) return;
+        timer = window.setInterval(() => {
+          if (touched) { stop(); return; }
+          k += 1;
+          show(k);
+          if (k >= last) stop();
+        }, 1900);
+      }, 900);
     }, { threshold: 0.45 });
     io.observe(root);
   }

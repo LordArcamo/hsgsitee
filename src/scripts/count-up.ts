@@ -1,20 +1,29 @@
 import { prefersReducedMotion } from "./prefers-reduced-motion";
 
 /**
- * Count the proof figures up from zero as the strip scrolls into view.
+ * Count the proof figures up from zero as the strip comes into view.
  *
- * The real values are in the HTML and stay there unless an animation is
- * actually going to run:
+ * The real values are in the HTML, so a strip the visitor never reaches —
+ * or one on a browser with no IntersectionObserver, or with reduced motion
+ * asked for — simply shows its real figures and is never touched.
  *
- * - A strip already on screen when the script starts is never touched —
- *   resetting it would put a "0" into the first paint, which is what a
- *   phone screenshot captures.
- * - An off-screen strip is primed to zero while it is still just below the
- *   fold, then counts when it is properly in view. Priming early matters:
- *   without it the strip scrolls in showing the real figures and then
- *   visibly drops to zero before counting back up.
- * - A strip the visitor never approaches (a jump link straight past it)
- *   is never primed, so it keeps its real figures.
+ * ONE OBSERVER, ON PURPOSE
+ *
+ * This used to be two: one to prime the strip to zero just below the fold,
+ * a second to play it once properly in view, plus a geometry read to leave
+ * an already-visible strip alone. That arrangement is why Heshy kept seeing
+ * no animation. The homepage strip moved above the fold, so the priming
+ * observer fired on load and wrote "0", and the playing observer — a 0.4
+ * threshold against a 103px strip sitting at the very bottom edge of the
+ * first screen — never did. The figures stuck on zero.
+ *
+ * So: no priming, no geometry read. A single observer, and the first time
+ * the strip is meaningfully on screen it counts. An already-visible strip
+ * gets that callback immediately on observe, which is exactly what the
+ * homepage needs. The cost is that a strip scrolled into view drops from
+ * its real figures to zero for one frame before counting; the benefit is
+ * that the animation always runs, which is the thing that was asked for
+ * twice.
  */
 export function initCountUp(): void {
   if (prefersReducedMotion() || !("IntersectionObserver" in window)) return;
@@ -23,31 +32,20 @@ export function initCountUp(): void {
     if (strip.dataset.countupBound) return;
     strip.dataset.countupBound = "1";
 
-    const r = strip.getBoundingClientRect();
-    if (r.top < window.innerHeight && r.bottom > 0) return;
-
     const figures = Array.from(strip.querySelectorAll<HTMLElement>("[data-count]"));
+    if (!figures.length) return;
 
-    const prime = new IntersectionObserver(
-      (entries) => {
-        if (!entries.some((e) => e.isIntersecting)) return;
-        prime.disconnect();
-        figures.forEach((el) => draw(el, 0));
-      },
-      { rootMargin: "0px 0px 360px 0px" },
-    );
-
+    // 0.25, not 0.4: the homepage strip sits on the fold line with a sliver
+    // of itself below it, and 0.4 was never reached there.
     const play = new IntersectionObserver(
       (entries) => {
         if (!entries.some((e) => e.isIntersecting)) return;
         play.disconnect();
-        prime.disconnect();
         figures.forEach(animate);
       },
-      { threshold: 0.4 },
+      { threshold: 0.25 },
     );
 
-    prime.observe(strip);
     play.observe(strip);
   });
 }
@@ -85,12 +83,20 @@ function draw(el: HTMLElement, t: number): void {
 }
 
 function animate(el: HTMLElement): void {
-  const DURATION = 1100;
+  // 1100 read as a flicker on a five-figure strip. Heshy asked for slower,
+  // "but not too much slow" — at 2000 each figure is legible on the way up
+  // without the strip becoming something you wait for.
+  const DURATION = 2000;
   const start = performance.now();
+  // Safety net. The figure is reset to zero before this runs, so if rAF is
+  // throttled or starved — a background tab, an embedded or headless view —
+  // it must still land on the real number instead of sitting on "0".
+  const land = window.setTimeout(() => draw(el, 1), DURATION + 500);
   const tick = (now: number) => {
     const t = Math.min(1, (now - start) / DURATION);
     draw(el, 1 - Math.pow(1 - t, 3));
     if (t < 1) requestAnimationFrame(tick);
+    else window.clearTimeout(land);
   };
   requestAnimationFrame(tick);
 }

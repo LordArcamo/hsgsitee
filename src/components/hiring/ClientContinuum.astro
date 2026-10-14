@@ -31,6 +31,11 @@ import { SECTION, STORIES, DISCLAIMER, LEARN, SELF_CHECK, CLOSING } from "../../
       <p class="cc-turn">{SECTION.turn}</p>
     </div>
 
+    {/* One tinted board holds the heading, the rail and the open story.
+        Heshy's note was that the block did not flow: the heading and the
+        four markers were loose text on white, sitting above a white panel
+        that looked like a separate thing. */}
+    <div class="cc-board">
     <div class="cc-rail-head rv" style="--d:1">
       <h3>{SECTION.railHeading}</h3>
       {/* Michael's phrase. Four stories can read as the full catalogue of
@@ -131,6 +136,7 @@ import { SECTION, STORIES, DISCLAIMER, LEARN, SELF_CHECK, CLOSING } from "../../
         </div>
       ))}
     </div>
+    </div><!-- /.cc-board -->
 
     <!-- Before we recruit, we learn -->
     <div class="cc-learn rv" style="--d:2">
