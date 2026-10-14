@@ -78,7 +78,7 @@ export const DOORS = [
     // required to: improve your job search skills"
     body: "For professionals who are actively looking for their next opportunity. Improve your job search skills and see the positions HSG is recruiting for now.",
     cta: { label: "Search Current Opportunities", href: JOB_LINKS.search },
-    icon: "target",
+    icon: "search",
   },
   {
     key: "next",
@@ -171,7 +171,7 @@ export const MORE_THAN = {
       label: "Vision",
       // LIVE — Career Coaching, Analysis & Strategy (reality check)
       body: "Objective reality-checking to determine if the timing is right for a job change or simply a mindset change.",
-      icon: "compass",
+      icon: "star",
     },
   ],
   // LIVE — closing line of the transcript's opening
@@ -242,7 +242,7 @@ export const SERVICE_GROUPS: ServiceGroup[] = [
           "Objective reality-checking to determine if the timing is right for a job change or simply a mindset change",
           "“Big picture” strategy planning to establish goals and milestones",
         ],
-        icon: "compass",
+        icon: "graduation",
       },
       {
         key: "education",
@@ -253,7 +253,7 @@ export const SERVICE_GROUPS: ServiceGroup[] = [
           "To get the most out of your time and effort and to land the role that is right for you, we work with a variety of professionals to attune ourselves to your needs.",
           "Once our team determines your needs, we will recommend assessment(s), or further education, to help you evolve.",
         ],
-        icon: "star",
+        icon: "resume",
       },
     ],
   },
@@ -270,7 +270,7 @@ export const SERVICE_GROUPS: ServiceGroup[] = [
           "Our highly experienced HR experts know exactly how these behind-the-scenes processes work. We'll give you the insider scoop to ensure your resume features everything needed to move past the screening software and get forwarded to a live person.",
           "We'll edit, fine-tune, and polish your experiences, accomplishments, and skills so your finished resume highlights all the qualities that hiring managers are looking for. We will even help you draft a compelling cover letter, which complements your resume perfectly.",
         ],
-        icon: "clipboard",
+        icon: "profile",
       },
       {
         key: "online",
@@ -291,7 +291,7 @@ export const SERVICE_GROUPS: ServiceGroup[] = [
           "Don't let your past define your future.",
           "Free yourself of unfavorable Google results, bad press, web lies and unflattering photos. We work within the law to erase links and negative information, so they no longer show up online.",
         ],
-        icon: "shield",
+        icon: "network",
         review: true,
       },
     ],
@@ -309,7 +309,7 @@ export const SERVICE_GROUPS: ServiceGroup[] = [
           "Time and again we encounter job seekers who possess truly outstanding connections through LinkedIn, alumni associations, friends and family, or professional and community ties. Then we discover that these well-connected individuals are failing to maximize the benefits of their relationships.",
           "We'll review your existing network connections, and scout for potential new ones. Then we'll work with you to formulate an unbeatable personalized plan to put these powerful ties to work.",
         ],
-        icon: "network",
+        icon: "mentor",
       },
       {
         key: "mentor",
@@ -319,7 +319,7 @@ export const SERVICE_GROUPS: ServiceGroup[] = [
           "Here's an open secret: the most successful people in business were often not alone as they climbed that ladder to the top. Many reached their dreams by maintaining a long-term mentorship with a leader in their field; someone who worked with them each step of the way.",
           "After completing a few coaching sessions with our clients, we're able to suggest an appropriate mentor. There's no reason to go it alone when you can reap the benefits of having a tailor-fit mentor in your corner.",
         ],
-        icon: "people",
+        icon: "dialogue",
         review: true,
       },
     ],
@@ -343,7 +343,7 @@ export const SERVICE_GROUPS: ServiceGroup[] = [
           "Critical In-Person Interview Practice",
           "Comprehensive Post-Interview Debrief",
         ],
-        icon: "talk",
+        icon: "video-call",
       },
       {
         key: "video",
@@ -353,7 +353,7 @@ export const SERVICE_GROUPS: ServiceGroup[] = [
           "For anyone to seriously boost their skills, they require not only practice but constructive feedback. However, feedback works best when it comes from objective individuals that are qualified to perform such assessments.",
           "This service provides insightful feedback and professional critiques of your presentation and self-promotion skills. Once these skills are honed through our coaching sessions, you'll appear in a brief recorded presentation where you'll introduce yourself and your background. We'll do multiple iterations until we've captured a performance that you are 100% satisfied with.",
         ],
-        icon: "play",
+        icon: "scale",
         review: true,
       },
       {
@@ -365,7 +365,7 @@ export const SERVICE_GROUPS: ServiceGroup[] = [
           "There's absolutely no reason to miss out on potentially thousands of dollars a year in wages. And yet, people do this all the time. We will teach you how to sidestep that pitfall by showing you simple tricks of the trade to determine your “value” within any given hiring scenario.",
           "Next, we'll train you to feel perfectly at ease as you negotiate from a well-informed position. Once an organization recognizes that the person they're dealing with knows what they are doing, they're far less likely to fiddle around.",
         ],
-        icon: "chart",
+        icon: "shield",
       },
     ],
   },
@@ -470,7 +470,7 @@ export const OPPORTUNITIES = {
       title: "Search Current Opportunities", // SPEC
       body: "See the positions HSG is recruiting for now, across professional, management, technical and executive-level roles.", // LIVE (FAQ)
       cta: { label: "View Our Jobs", href: JOB_LINKS.search },
-      icon: "target",
+      icon: "search",
     },
     {
       key: "apply",
@@ -478,7 +478,7 @@ export const OPPORTUNITIES = {
       // LIVE — FAQ answer, near verbatim
       body: "Even if you do not see a current opening that fits your background, we encourage you to submit your resume. New opportunities become available regularly, and our recruiters may be able to connect you with future positions.",
       cta: { label: "Submit Your Resume", href: JOB_LINKS.apply },
-      icon: "clipboard",
+      icon: "resume",
     },
   ],
 };

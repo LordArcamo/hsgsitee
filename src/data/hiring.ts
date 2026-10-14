@@ -126,7 +126,7 @@ export const EVALUATES = [
     body: "Understand what makes the organization, opportunity, leadership, and future compelling.", // SPEC
   },
   {
-    icon: "talk",
+    icon: "dialogue",
     title: "Behavioral Evaluation",
     body: "Go beyond prepared interview answers to better understand how someone thinks and operates.", // SPEC
   },
@@ -136,12 +136,12 @@ export const EVALUATES = [
     body: "Evaluate experience, fit, motivation, background, and the requirements that actually matter.", // SPEC
   },
   {
-    icon: "window",
+    icon: "toolkit",
     title: "Real-World Evaluation",
     body: "Where appropriate, use technical interviews and workplace-style scenarios to better understand capability.", // SPEC
   },
   {
-    icon: "flag",
+    icon: "user-plus",
     // non-breaking hyphen: a narrow card was splitting it "Long- / Term"
     title: "Onboarding & Long‑Term Support",
     body: "The search doesn't necessarily end when the offer is accepted.", // SPEC
@@ -157,7 +157,7 @@ export const BENEFITS = [
   { icon: "network", title: "Access to Networks", body: "Professional networks across numerous industries and niches reach exceptional talent that traditional methods may overlook." },
   { icon: "lock", title: "Confidentiality", body: "Robust protocols for sensitive or confidential positions, so information is handled securely and discreetly." },
   { icon: "clock", title: "Time Savings", body: "From the first call to signing the contract, HSG handles the process — so you can stay focused on your core responsibilities." },
-  { icon: "sprout", title: "Onboarding & Retention", body: "A smooth transition for new hires, and guidance on compensation, career development, and engagement to keep top talent." },
+  { icon: "user-plus", title: "Onboarding & Retention", body: "A smooth transition for new hires, and guidance on compensation, career development, and engagement to keep top talent." },
 ] as const;
 
 /* ---------- 07 From candidate pool to hiring decision ---------- */
@@ -192,7 +192,7 @@ export const BOTH_SIDES = {
    SPEC titles; bodies from the live page's method steps. */
 export const EVALUATION_CARDS = [
   {
-    icon: "people",
+    icon: "dialogue",
     title: "Behavioral Interviews",
     body: "Analytical behavioral assessments look at the soft skills that decide success — emotional intelligence, leadership, and communication.",
   },
@@ -202,7 +202,7 @@ export const EVALUATION_CARDS = [
     body: "HSG's S.M.A.R.T. team conducts detailed, industry-specific interviews using relevant data.",
   },
   {
-    icon: "window",
+    icon: "toolkit",
     title: "Workplace Simulation",
     body: "Candidates work through realistic workplace simulations — at your workspace or in one of our testing environments — to test their abilities.",
   },
